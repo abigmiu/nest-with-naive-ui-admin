@@ -9,4 +9,9 @@ export class UserController {
   getUserInfo() {
     return this.userService.getUserInfo();
   }
+
+  @Get('page')
+  getUserPageData() {
+    return this.userService.getUserPageData();
+  }
 }

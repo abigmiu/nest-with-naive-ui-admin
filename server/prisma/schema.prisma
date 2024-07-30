@@ -21,3 +21,13 @@ model User {
   username String
   password String
 }
+
+model Good {
+  @@map("good")
+  id Int @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  name String
+  restCount Int @map("rest_count")
+  cover String 
+}

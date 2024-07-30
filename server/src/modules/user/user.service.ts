@@ -1,7 +1,10 @@
+import { PrismaService } from '@/app/depend/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UserService {
+  constructor(private readonly prismaService: PrismaService) {}
+
   getUserInfo() {
     const adminInfo = {
       userId: '1',
@@ -32,5 +35,16 @@ export class UserService {
       ],
     };
     return adminInfo;
+  }
+
+  async getUserPageData() {
+    const res = await this.prismaService.getPageData(
+      this.prismaService.user,
+      {},
+      {
+        where: {},
+      },
+    );
+    return res;
   }
 }
