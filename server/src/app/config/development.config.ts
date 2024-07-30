@@ -8,6 +8,21 @@ const config: IConfig = {
     title: '管理系统',
     message: '编译成功',
   },
+  swagger: {
+    enable: true,
+    title: '管理系统',
+    desc: '文档',
+    url: 'swagger',
+  },
+  app: {
+    port: 3000,
+    host: '0.0.0.0', // 这样局域网可以访问
+    apiPrefix: '/api',
+  },
+  jwt: {
+    secret: '123456',
+    expiresIn: '30d',
+  },
 };
 
 export default config;

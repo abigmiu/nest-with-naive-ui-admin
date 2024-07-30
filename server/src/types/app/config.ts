@@ -11,4 +11,29 @@ export interface IAppDevConfig {
       };
 }
 
-export interface IAppConfig {}
+export interface IAppConfig {
+  swagger:
+    | {
+        enable: false;
+      }
+    | {
+        enable: true;
+        title: string;
+        desc: string;
+        url: string;
+      };
+
+  app: {
+    /** 运行的端口 */
+    port: number;
+    /** 运行的host */
+    host: string;
+    /** 接口地址 */
+    apiPrefix: string;
+  };
+
+  jwt: {
+    secret: string;
+    expiresIn: string;
+  };
+}

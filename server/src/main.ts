@@ -1,23 +1,51 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 import * as notifier from 'node-notifier';
 
 import { AppModule } from '@/app/app.module';
 
-import { IAppConfig, IAppDevConfig } from '@/types/app/config';
 import { emptyFunc } from '@/app/utils/func';
 
+import { IAppConfig, IAppDevConfig } from '@/types/app/config';
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService<IAppConfig & IAppDevConfig>);
+
   const notifyCompile = setupNotifyCompile(configService);
-  await app.listen(3000, () => {
+  setupSwagger(app, configService);
+
+  const { port, host, apiPrefix } = configService.get<IAppConfig['app']>('app');
+  app.setGlobalPrefix(apiPrefix);
+
+  await app.listen(port, host, () => {
     notifyCompile();
   });
 }
 bootstrap();
 
+/** 配置 swagger */
+function setupSwagger(
+  app: NestExpressApplication,
+  configService: ConfigService<IAppConfig & IAppDevConfig>,
+) {
+  const swaggerConfig = configService.get<IAppConfig['swagger']>('swagger');
+  if (!swaggerConfig.enable) return;
+
+  const { title, desc, url } = swaggerConfig;
+
+  const documentBuilder = new DocumentBuilder()
+    .setTitle(title)
+    .setDescription(desc)
+    .build();
+  const document = SwaggerModule.createDocument(app, documentBuilder);
+  SwaggerModule.setup(url, app, document);
+}
+
+/** 生成 编译通知函数 */
 function setupNotifyCompile(
   configService: ConfigService<IAppConfig & IAppDevConfig>,
 ) {
