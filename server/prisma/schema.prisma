@@ -30,4 +30,6 @@ model Good {
   name String
   restCount Int @map("rest_count")
   cover String 
+  productionData DateTime @map("production_data")
+  address String
 }
