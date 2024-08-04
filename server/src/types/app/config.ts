@@ -36,4 +36,9 @@ export interface IAppConfig {
     secret: string;
     expiresIn: string;
   };
+
+  redis: {
+    host: string;
+    port: number;
+  };
 }

@@ -23,6 +23,10 @@ const config: IConfig = {
     secret: '123456',
     expiresIn: '30d',
   },
+  redis: {
+    host: '127.0.0.1',
+    port: 6379,
+  },
 };
 
 export default config;

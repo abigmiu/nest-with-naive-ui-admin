@@ -14,6 +14,9 @@ import { RequestValidationPipe } from '@/pipe/request-validation.pipe';
 import { LoginGuard } from '@/guard/login.guard';
 import businessModules from '@/modules';
 import { PrismaModule } from './depend/prisma/prisma.module';
+import { RedisModule } from '@songkeys/nestjs-redis';
+import { PermissionGuard } from '@/guard/permission.guard';
+import { AppRedisModule } from './depend/redis/redis.module';
 
 @Module({
   imports: [
@@ -21,6 +24,7 @@ import { PrismaModule } from './depend/prisma/prisma.module';
     AppClsModule,
     AppLoggerModule,
     PrismaModule,
+    AppRedisModule,
     ...businessModules,
   ],
   controllers: [AppController],
@@ -37,6 +41,10 @@ import { PrismaModule } from './depend/prisma/prisma.module';
     {
       provide: APP_GUARD,
       useClass: LoginGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionGuard,
     },
     {
       provide: APP_FILTER,

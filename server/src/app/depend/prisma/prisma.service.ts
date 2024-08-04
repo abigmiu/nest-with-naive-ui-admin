@@ -1,15 +1,22 @@
 import { IPagerParams } from '@/types/pager';
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Prisma, PrismaClient } from '@prisma/client';
 
-type IPrismaDelegate = Prisma.UserDelegate | Prisma.GoodDelegate;
+type IPrismaDelegate =
+  | Prisma.UserDelegate
+  | Prisma.GoodDelegate
+  | Prisma.RoleDelegate;
 
 @Injectable()
-export class PrismaService extends PrismaClient {
+export class PrismaService extends PrismaClient implements OnModuleInit {
   constructor() {
     super();
   }
 
+  async onModuleInit() {
+    console.log(process.env.DATABASE_URL);
+    await this.$connect();
+  }
   async getPageData<
     T extends IPrismaDelegate,
     M extends Parameters<T['findMany']>[0],

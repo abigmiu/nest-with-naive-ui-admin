@@ -17,11 +17,12 @@ export class AuthService {
         password: data.password,
       },
     });
+    console.log('🚀 ~ AuthService ~ login ~ foundData:', foundData);
 
     if (!foundData) {
       throw new BadRequestException('账号或密码错误');
     }
-    const token = await this.generateToken(foundData.id);
+    const token = await this.generateToken(foundData.id, foundData.roleId);
 
     return {
       ...foundData,
@@ -29,9 +30,10 @@ export class AuthService {
     };
   }
 
-  private async generateToken(id: number) {
+  private async generateToken(id: number, roleId: number) {
     const token = await this.jwtService.signAsync({
       id,
+      roleId,
     });
     return token;
   }
