@@ -1,8 +1,8 @@
-import { defineComponent, h, type Component, type ComponentInternalInstance, type VNode, type VNodeProps } from "vue";
+import { h, type Component,  type VNode } from "vue";
 
 
 interface INestCmp {
-    props?: VNodeProps,
+    props?: any,
     component: Component
 }
 
@@ -20,16 +20,16 @@ export function useNestComponents(cmps: INestCmp[]) {
     //     const vnodes = createCmp(1);
     //     return h(cmps[0].component, cmps[0].props, vnodes);
     // }
-
+    // @ts-ignore
     const nestComponent = (props, ctx) => {
         let childVNodes: VNode | null = null;
         for (let i = cmps.length - 1; i > 0; i--) {
             const props = cmps[i].props || null;
             const childCmp: VNode = childVNodes ? childVNodes : ctx.slots.default && ctx.slots.default();
-            childVNodes = h(cmps[i].component, props, childCmp);
+            childVNodes = h(cmps[i].component, props, () => childCmp);
         }
 
-        return h(cmps[0].component, cmps[0].props, childVNodes!)
+        return h(cmps[0].component, cmps[0].props, () => childVNodes!)
     }
 
     return nestComponent;

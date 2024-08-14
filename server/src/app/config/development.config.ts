@@ -27,6 +27,7 @@ const config: IConfig = {
     host: '127.0.0.1',
     port: 6379,
   },
+  hamcKey: process.env.hmacKey,
 };
 
 export default config;
