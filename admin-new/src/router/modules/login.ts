@@ -12,7 +12,9 @@ const loginRoute: RouteRecordRaw = {
     path: loginRouteConstant.index.path,
     component: () => import("@/views/Login/LoginPage.vue"),
     meta: {
-        title: "登录"
+        title: "登录",
+        menu: false,
+        super: true,
     }
 }
 

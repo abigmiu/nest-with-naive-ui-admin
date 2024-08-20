@@ -1,0 +1,1 @@
+export const VLayout = () => import('@/components/layout/VLayout.vue')

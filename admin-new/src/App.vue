@@ -23,10 +23,8 @@ const AppProvider = useNestComponents([
 
 <template>
   <AppProvider>
-    <RouterView v-slot="{ Component }">
-      <KeepAlive>
-        <component :is="Component"></component>
-      </KeepAlive>
+    <RouterView>
+
     </RouterView>
   </AppProvider>
 </template>
