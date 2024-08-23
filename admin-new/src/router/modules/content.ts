@@ -46,18 +46,7 @@ const contentRoute: RouteRecordRaw = {
                 title: '图片管理',
                 menu: true,
             },
-            children: [
-                {
-                    name: 'text2',
-                    path: 'test2',
-                    meta: {
-                        tab: true,
-                        title: 'test2',
-                        menu: true,
-                    },
-                    component: () => import('@/views/Content/ImagePage.vue'),
-                }
-            ]
+        
         }
     ]
 }

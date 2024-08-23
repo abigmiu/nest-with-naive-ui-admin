@@ -10,6 +10,7 @@
         <LayoutHeader />
       </NLayoutHeader>
       <NLayoutContent class="layout-content layout-default-background" :native-scrollbar="false">
+        <LayoutTabs></LayoutTabs>
         <div class="layout-content-main">
           <LayoutContent></LayoutContent>
         </div>
@@ -25,6 +26,7 @@ import { NLayout, NBackTop, NLayoutHeader, NDrawer, NMenu, NLayoutSider, NLayout
 import LayoutMenu from './components/LayoutMenu.vue';
 import LayoutHeader from './components/LayoutHeader.vue';
 import LayoutContent from './components/LayoutContent.vue';
+import LayoutTabs from './components/LayoutTabs.vue';
 </script>
 
 <style lang="scss">
