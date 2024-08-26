@@ -43,37 +43,42 @@
 
             <!-- 列设置 -->
             <div class="table-toolbar-right-icon">
-                <ColumnSetting :columns="tableColumns"/>
+                <ColumnSetting :columns="tableColumns" @update-column="onUpdateColumnSetting"></ColumnSetting>
             </div>
         </div>
 
     </div>
     <div>
-        <NDataTable :columns="tableColumns" :data="tableData" :pagination="pagination" :striped="striped" :size="tableDensity"></NDataTable>
+        <NDataTable :columns="innerTableColumns" :data="tableData" :pagination="pagination" :striped="striped" :size="tableDensity" :bordered="bordered"></NDataTable>
     </div>
 </template>
 <script setup lang="ts">
-import { NDataTable, NTooltip, NSwitch, NDivider, NIcon, type DataTableColumns, type PaginationProps, NDropdown, type TableProps, NButton } from 'naive-ui';
-import ColumnSetting from './components/ColumnSetting.vue';
+import { NDataTable, NTooltip, NSwitch, NDivider, NIcon, type DataTableColumns, type PaginationProps, NDropdown, type TableProps, NButton, type DataTableColumn, type DataTableBaseColumn } from 'naive-ui';
+import ColumnSetting, { type ITableSettingColumn, type ITableSettingInfo } from './components/ColumnSetting.vue';
 import { ref } from 'vue';
 import { ColumnHeightOutlined, ReloadOutlined } from '@vicons/antd';
-
+import { clone } from 'radash';
 
 
 interface IProps {
-    tableColumns: DataTableColumns
+    tableColumns: DataTableBaseColumn[]
 }
 const props = defineProps<IProps>()
 
+
+const innerTableColumns = ref<DataTableColumns>([])
 const tableData = ref([]);
 const pagination = ref<PaginationProps | false>(false);
 
 
-// 表格斑马纹
+// 表格样式设置
 const striped = ref(false);
 function setStriped(value: boolean) {
     striped.value = value;
 }
+
+const bordered = ref(false);
+
 // 密度
 const tableDensity = ref<TableProps['size']>('medium');
 const densityOptions = [
@@ -95,6 +100,33 @@ const densityOptions = [
 ];
 function onDensitySelect(value: TableProps['size']) {
     tableDensity.value = value;
+}
+
+// 列设置修改
+function onUpdateColumnSetting(columns: ITableSettingColumn[], info: ITableSettingInfo) {
+    const cacheColumns = props.tableColumns;
+    const newColumns: DataTableColumns = [];
+    const { selection, border, resizable } = info;
+    if (selection) {
+        newColumns.push({
+            type: 'selection',
+        })
+    }
+    
+    bordered.value = border;
+    
+
+    columns.forEach((column) => {
+        if (!column.check) {
+            return;
+        }
+        const cacheColumn = cacheColumns.find((cacheColumn) => cacheColumn.key === column.key )!;
+        if (resizable) {
+            cacheColumn.resizable = true;
+        }
+        newColumns.push(clone(cacheColumn));
+    })
+    innerTableColumns.value = newColumns;
 }
 </script>
 

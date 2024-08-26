@@ -34,6 +34,18 @@ const tableColumns: DataTableColumns = [
     {
         title: '名称',
         key: 'name'
+    },
+    {
+        title: '创建时间',
+        key: 'createdAt',
+    },
+    {
+        title: '更新时间',
+        key: 'updateAt',
+    },
+    {
+        title: '账号',
+        key: 'account',
     }
 ]
 </script>
