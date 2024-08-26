@@ -24,6 +24,7 @@ const contentRoute: RouteRecordRaw = {
         menu: true,
         title: '内容管理',
         super: true,
+        order: 2,
     },
     component: VLayout,
     children: [

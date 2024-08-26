@@ -22,6 +22,7 @@ const dashboardRoute: RouteRecordRaw = {
         title: '控制台',
         super: true,
         menu: true,
+        order: 1,
     },
     children: [
         {

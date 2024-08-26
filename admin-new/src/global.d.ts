@@ -6,6 +6,7 @@ declare module "vue-router" {
         menu?: boolean; // 是否展示在侧边栏菜单
         tab?: boolean; // 是否展示在顶部tabsList
         super?: boolean; // 是否是一级路由
+        
     }
 }
 

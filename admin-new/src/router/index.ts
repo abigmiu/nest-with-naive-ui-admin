@@ -3,22 +3,24 @@ import loginRoute from './modules/login';
 import { VLayout } from './lazyRoute';
 import dashboardRoute from './modules/dashboard';
 import contentRoute from './modules/content';
+import userRoute from './modules/user';
 
 // 整个文件都加载进来了， 没必要
 // const modules = import.meta.glob('./modules/**/*.ts', { eager: true })
 
 const publicRoutes = [loginRoute];
 
+const authRoutes = [
+  dashboardRoute,
+  contentRoute,
+  userRoute
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [...publicRoutes,
-  {
-    path: '/test',
-    component: VLayout,
-  },
-    dashboardRoute,
-    contentRoute
+  routes: [
+    ...publicRoutes,
+    ...authRoutes.sort((a, b) => a.meta!.order! - b.meta!.order!)
   ]
 })
 

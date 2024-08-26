@@ -1,6 +1,6 @@
 <template>
     <div class="tabs-card">
-        <span class="tabs-card-prev">
+        <span class="tabs-card-prev" v-show="scrollable">
             <NIcon size="16" color="#515a6e">
                 <LeftOutlined />
             </NIcon>
@@ -8,15 +8,17 @@
         <div class="flex-1 overflow-hidden" ref="scrollWrapEl">
             <div class="tabs-card-scroll" ref="scrollEl">
                 <div class="tabs-card-scroll-item" v-for="item in tabs" :key="item.name"
-                    @contextmenu="onItemContextMenu" :class="{ 'active-item': activeRouteName === item.name }">
+                    @contextmenu="onItemContextMenu" :class="{ 'active-item': activeRouteName === item.name }"
+                    @click="onJumpRoute(item)"
+                    >
                     <span>{{ item.title }}</span>
-                    <NIcon size="14">
+                    <NIcon size="14" @click.stop="closeTab(item)">
                         <CloseOutlined />
                     </NIcon>
                 </div>
             </div>
         </div>
-        <span class="tabs-card-next">
+        <span class="tabs-card-next" v-show="scrollable">
             <NIcon size="16" color="#515a6e">
                 <RightOutlined />
             </NIcon>
@@ -26,14 +28,16 @@
 <script setup lang="ts">
 import { NIcon } from 'naive-ui';
 import { CloseOutlined, LeftOutlined, RightOutlined } from '@vicons/antd';
-import { onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useDebounceFn } from '@vueuse/core';
 import { useRoute, useRouter } from 'vue-router';
 
-const tabs = ref<Array<{
+interface ITab {
     name: string;
     title: string;
-}>>([])
+}
+
+const tabs = ref<Array<ITab>>([])
 const activeRouteName = ref('');
 
 // 滚动处理
@@ -43,8 +47,9 @@ const scrollEl = ref<HTMLDivElement | null>(null);
 /**
  * 判断是否应当滚动
  */
-function judgeScrollable() {
+async function judgeScrollable() {
     if (!scrollEl.value) return;
+    await nextTick();
     const { scrollWidth } = scrollEl.value!;
     const { clientWidth } = scrollWrapEl.value!;
     scrollable.value = scrollWidth > clientWidth;
@@ -77,9 +82,27 @@ function handleRouteChange() {
     tabs.value.push({
         name: route.name as string,
         title: route.meta.title,
+    });
+    judgeScrollable();
+}
+watch(() => route.fullPath, handleRouteChange, { immediate: true });
+
+// 标签页事件处理
+function closeTab(item: ITab) {
+    const index = tabs.value.findIndex((tab) => tab.name === item.name);
+    tabs.value.splice(index, 1);
+    const lastRoute = tabs.value[tabs.value.length - 1] || tabs.value[0];
+    if (!lastRoute) return;
+    router.push({
+        name: lastRoute.name
     })
 }
-watch(() => route.fullPath, handleRouteChange, { immediate: true })
+function onJumpRoute(item: ITab) {
+    if (activeRouteName.value === item.name) return;
+    router.push({
+        name: item.name
+    })
+}
 </script>
 <style lang="scss">
 .tabs-card {
