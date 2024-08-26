@@ -1,11 +1,11 @@
 <template>
     
-    <QueryTable :form-rules="formRules" :form-schemas="formSchemas"></QueryTable>
+    <QueryTable :form-rules="formRules" :form-schemas="formSchemas" :table-columns="tableColumns"></QueryTable>
   
 </template>
 <script setup lang="ts">
 import BasicForm, { type IBasicFormSchemas } from '@/components/form/BasicForm.vue';
-import { NButton, NCard, type FormRules } from 'naive-ui';
+import { NButton, NCard, type DataTableColumns, type FormRules } from 'naive-ui';
 import queryTable from '@/components/queryTable/queryTable.vue';
 import QueryTable from '@/components/queryTable/queryTable.vue';
 import { computed } from 'vue';
@@ -30,4 +30,10 @@ const formSchemas: IBasicFormSchemas[] = [
     }
 ]
 
+const tableColumns: DataTableColumns = [
+    {
+        title: '名称',
+        key: 'name'
+    }
+]
 </script>
