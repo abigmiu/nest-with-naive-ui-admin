@@ -46,10 +46,14 @@
                 <ColumnSetting :columns="tableColumns" @update-column="onUpdateColumnSetting"></ColumnSetting>
             </div>
         </div>
-
     </div>
     <div>
-        <NDataTable :columns="innerTableColumns" :data="tableData" :pagination="pagination" :striped="striped" :size="tableDensity" :bordered="bordered"></NDataTable>
+        <NDataTable :columns="innerTableColumns" :data="tableData" :pagination="pagination" :striped="striped"
+            :size="tableDensity" :bordered="bordered"
+            :on-page-change="onPageChange"
+            :on-page-size-change="onPageSizeChange"
+            :loading="loading"
+            ></NDataTable>
     </div>
 </template>
 <script setup lang="ts">
@@ -61,15 +65,18 @@ import { clone } from 'radash';
 
 
 interface IProps {
-    tableColumns: DataTableBaseColumn[]
+    tableColumns: DataTableBaseColumn[];
+    tableData: any[];
+    pagination: PaginationProps | false;
+    loading: boolean;
 }
 const props = defineProps<IProps>()
 
+const emits = defineEmits<{
+    paginationChange: [data: { page?: number, pageSize?: number }]
+}>()
 
 const innerTableColumns = ref<DataTableColumns>([])
-const tableData = ref([]);
-const pagination = ref<PaginationProps | false>(false);
-
 
 // 表格样式设置
 const striped = ref(false);
@@ -107,27 +114,35 @@ function onUpdateColumnSetting(columns: ITableSettingColumn[], info: ITableSetti
     const cacheColumns = props.tableColumns;
     const newColumns: DataTableColumns = [];
     const { selection, border, resizable } = info;
+    bordered.value = border;
     if (selection) {
         newColumns.push({
             type: 'selection',
         })
     }
-    
-    bordered.value = border;
-    
 
     columns.forEach((column) => {
         if (!column.check) {
             return;
         }
-        const cacheColumn = cacheColumns.find((cacheColumn) => cacheColumn.key === column.key )!;
-        if (resizable) {
-            cacheColumn.resizable = true;
-        }
-        newColumns.push(clone(cacheColumn));
+        const cacheColumn = cacheColumns.find((cacheColumn) => cacheColumn.key === column.key)!;
+        const newColumn = clone(cacheColumn);
+        newColumn.resizable = resizable;
+        newColumns.push(newColumn);
     })
+
     innerTableColumns.value = newColumns;
 }
+
+
+function onPageChange(page: number) {
+   emits('paginationChange', {page})
+}
+function onPageSizeChange(pageSize: number) {
+    emits('paginationChange', {pageSize})
+}
+
+// expose
 </script>
 
 <style lang="scss">
