@@ -1,5 +1,5 @@
 <template>
-    <NForm ref="formRef" :rules="formRules" label-placement="left" :model="formData">
+    <NForm ref="formRef" :rules="formRules" label-placement="left" :model="formData" label-width="100">
         <NGrid :cols="gridColSpanTotal">
             <NFormItemGi :span="gridColSpan" :path="schema.field" v-for="schema in schemas" :key="schema.field"
                 :label="schema.label">
@@ -23,11 +23,11 @@ type IBasicFormSchemasBase<T extends ISchemaTypes> = {
     field: string;
     label: string;
     type: T;
-    props: T extends 'input' 
-        ? InputProps
-        : T extends 'select'
-        ? SelectProps
-        : never;
+    props: T extends 'input'
+    ? InputProps
+    : T extends 'select'
+    ? SelectProps
+    : never;
 }
 export type IBasicFormSchemas = {
     [k in ISchemaTypes]: IBasicFormSchemasBase<k>
@@ -59,9 +59,8 @@ const formRules = computed(() => {
             }
 
             fieldRules.forEach((rule) => {
-
                 if (rule.required) {
-                    if (!rule.message || !rule.validator || !rule.asyncValidator) {
+                    if (!(rule.message || rule.validator || rule.asyncValidator)) {
                         rule.message = '未填写该字段';
                     }
                     if (!rule.trigger) {
@@ -84,9 +83,9 @@ async function validateForm() {
 
 function resetForm() {
     Object.keys(formData.value)
-    .forEach((key) => {
-        formData.value[key] = null;
-    })
+        .forEach((key) => {
+            formData.value[key] = null;
+        })
     formRef.value!.restoreValidation();
 }
 

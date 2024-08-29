@@ -1,6 +1,8 @@
 <template>
     <div class="flex justify-between mb-2 table-toolbar">
-        <div></div>
+        <div>
+            <slot></slot>
+        </div>
         <div class="flex items-center">
             <!--斑马纹-->
             <NTooltip trigger="hover">
@@ -17,7 +19,7 @@
             <NTooltip trigger="hover">
                 <template #trigger>
                     <div class="table-toolbar-right-icon">
-                        <NIcon size="18">
+                        <NIcon size="18" @click="refresh">
                             <ReloadOutlined />
                         </NIcon>
                     </div>
@@ -28,8 +30,7 @@
             <!--密度-->
             <NTooltip trigger="hover">
                 <template #trigger>
-                    <NDropdown @select="onDensitySelect" trigger="click" :options="densityOptions"
-                        v-model:value="tableDensity">
+                    <NDropdown @select="setDensity" trigger="click" :options="densityOptions" v-model:value="density">
                         <div class="table-toolbar-right-icon">
                             <NIcon size="18">
                                 <ColumnHeightOutlined />
@@ -49,11 +50,8 @@
     </div>
     <div>
         <NDataTable :columns="innerTableColumns" :data="tableData" :pagination="pagination" :striped="striped"
-            :size="tableDensity" :bordered="bordered"
-            :on-page-change="onPageChange"
-            :on-page-size-change="onPageSizeChange"
-            :loading="loading"
-            ></NDataTable>
+            :size="density" :bordered="bordered" :on-update:page="onPageChange" :on-update:page-size="onPageSizeChange"
+            :loading="loading"></NDataTable>
     </div>
 </template>
 <script setup lang="ts">
@@ -62,32 +60,31 @@ import ColumnSetting, { type ITableSettingColumn, type ITableSettingInfo } from 
 import { ref } from 'vue';
 import { ColumnHeightOutlined, ReloadOutlined } from '@vicons/antd';
 import { clone } from 'radash';
+import { useState } from '@/hooks/common';
+import { useBasicTable } from '@/hooks/basicComponent';
+import type { IPageData } from '@/types/api/base';
+import type { IBasicPagination } from '@/types/common';
 
 
 interface IProps {
     tableColumns: DataTableBaseColumn[];
-    tableData: any[];
-    pagination: PaginationProps | false;
-    loading: boolean;
+    pageable: boolean;
+    fetchFn: (query: Record<string, any>, ...args: any[]) => Promise<any[] | IPageData<any>>;
 }
 const props = defineProps<IProps>()
-
-const emits = defineEmits<{
-    paginationChange: [data: { page?: number, pageSize?: number }]
-}>()
-
 const innerTableColumns = ref<DataTableColumns>([])
 
-// 表格样式设置
-const striped = ref(false);
-function setStriped(value: boolean) {
-    striped.value = value;
-}
+// 数据
+const { loading, pagination, handlePaginationChange, refresh, tableData, fetchData } = useBasicTable(
+    props.fetchFn,
+    props.pageable,
+)
 
+// 表格样式设置
+const [striped, setStriped] = useState<boolean>(false);
 const bordered = ref(false);
 
-// 密度
-const tableDensity = ref<TableProps['size']>('medium');
+
 const densityOptions = [
     {
         type: 'menu',
@@ -105,9 +102,7 @@ const densityOptions = [
         key: 'large',
     },
 ];
-function onDensitySelect(value: TableProps['size']) {
-    tableDensity.value = value;
-}
+const [density, setDensity] = useState<TableProps['size']>('medium');
 
 // 列设置修改
 function onUpdateColumnSetting(columns: ITableSettingColumn[], info: ITableSettingInfo) {
@@ -135,14 +130,18 @@ function onUpdateColumnSetting(columns: ITableSettingColumn[], info: ITableSetti
 }
 
 
+// 分页处理
 function onPageChange(page: number) {
-   emits('paginationChange', {page})
+    handlePaginationChange(page);
 }
 function onPageSizeChange(pageSize: number) {
-    emits('paginationChange', {pageSize})
+    handlePaginationChange(undefined, pageSize);
 }
 
 // expose
+defineExpose({
+    fetchData,
+})
 </script>
 
 <style lang="scss">

@@ -14,55 +14,61 @@ datasource db {
 }
 
 model User {
-  @@map("user")
-  id Int @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  username String
-  password String
-  roleId Int @default(1)
-  role Role @relation(fields: [roleId], references: [id])
+  username  String
+  password  String
+  account   String
+  roleId    Int      @default(1)
+  role      Role     @relation(fields: [roleId], references: [id])
+
+  @@map("user")
 }
 
 model Good {
-  @@map("good")
-  id Int @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  name String
-  restCount Int @map("rest_count")
-  cover String 
+  id             Int      @id @default(autoincrement())
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  name           String
+  restCount      Int      @map("rest_count")
+  cover          String
   productionData DateTime @map("production_data")
-  address String
+  address        String
+
+  @@map("good")
 }
 
 model Permission {
+  id        Int                @id @unique
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @updatedAt @map("updated_at")
+  type      Int // 1 是菜单权限， 2 是功能权限
+  parentId  Int?               @map("parent_id")
+  name      String
+  value     String
+  roles     RoleToPermission[]
+
   @@map("permission")
-  id Int @id @unique
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  type Int // 1 是菜单权限， 2 是功能权限
-  parentId Int? @map("parent_id")
-  name String
-  value String
-  roles RoleToPermission[]
 }
 
 model Role {
-  @@map("role")
-   id Int @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id          Int                @id @default(autoincrement())
+  createdAt   DateTime           @default(now()) @map("created_at")
+  updatedAt   DateTime           @updatedAt @map("updated_at")
   permissions RoleToPermission[]
-  users User[]
-  name String
-  remark String?
+  users       User[]
+  name        String
+  remark      String?
+
+  @@map("role")
 }
 
 model RoleToPermission {
-  role Role @relation(fields: [roleId], references: [id])
-  roleId Int
-  permission Permission @relation(fields: [permissionId], references: [id])
+  role         Role       @relation(fields: [roleId], references: [id])
+  roleId       Int
+  permission   Permission @relation(fields: [permissionId], references: [id])
   permissionId Int
+
   @@id([roleId, permissionId])
 }

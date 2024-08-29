@@ -1,9 +1,18 @@
 import { PrismaService } from '@/app/depend/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  CreateUserRequestDto,
+  CreateUserResponseDto,
+} from './dto/create-user.dto';
+import { ConfigService } from '@nestjs/config';
+import { createHmac } from 'crypto';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly configService: ConfigService,
+  ) { }
 
   getUserInfo() {
     const adminInfo = {
@@ -46,5 +55,42 @@ export class UserService {
       },
     );
     return res;
+  }
+
+  async createUser(dto: CreateUserRequestDto) {
+    if (!dto.password) {
+      dto.password = '123456';
+    }
+
+    const foundRole = await this.prismaService.role.findFirst({
+      where: { id: dto.roleId },
+    });
+    if (!foundRole) {
+      throw new BadRequestException('角色不存在');
+    }
+
+    const foundAccount = await this.prismaService.user.findFirst({
+      where: { account: dto.account },
+    });
+    if (foundAccount) {
+      throw new BadRequestException('账号已存在');
+    }
+
+    const signedPassword = createHmac(
+      'sha1',
+      this.configService.get<string>('hamcKey'),
+    )
+      .update(dto.password)
+      .digest('hex');
+
+    const savedData = await this.prismaService.user.create({
+      data: {
+        username: dto.username,
+        account: dto.account,
+        password: signedPassword,
+        roleId: dto.roleId,
+      },
+    });
+    return new CreateUserResponseDto(savedData);
   }
 }

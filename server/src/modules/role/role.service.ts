@@ -4,7 +4,7 @@ import { CreateRoleRequestDto } from './dto/create-role.dto';
 
 @Injectable()
 export class RoleService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(private readonly prismaService: PrismaService) { }
 
   async getList() {
     const foundData = await this.prismaService.getPageData(
@@ -14,6 +14,17 @@ export class RoleService {
       },
       {},
     );
+    return foundData;
+  }
+
+  /** 获取角色简单列表 */
+  async getSimpleList() {
+    const foundData = await this.prismaService.role.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
     return foundData;
   }
 

@@ -2,35 +2,35 @@ import { mergeRoutePath } from "../util"
 import { VLayout } from "../lazyRoute";
 import type { RouteRecordRaw } from "vue-router";
 
-export const userRouteConstant = {
+export const companyRouteConstant = {
     index: {
-        path: '/user',
-        name: 'user',
+        path: '/company',
+        name: 'company',
     },
     role: {
         path: 'auth',
-        name: 'user.role'
+        name: 'company.role'
     },
     crew: {
         path: 'crew',
-        name: 'crew'
+        name: 'company.crew'
     }
 }
 
-const userRoute: RouteRecordRaw = {
-    name: userRouteConstant.index.name,
-    path: userRouteConstant.index.path,
+const companyRoute: RouteRecordRaw = {
+    name: companyRouteConstant.index.name,
+    path: companyRouteConstant.index.path,
     component: VLayout,
     meta: {
-        title: '用户管理',
+        title: '公司管理',
         super: true,
         menu: true,
         order: 3,
     },
     children: [
         {
-            path: mergeRoutePath(userRouteConstant.index.path, userRouteConstant.role.path),
-            name: userRouteConstant.role.name,
+            path: mergeRoutePath(companyRouteConstant.index.path, companyRouteConstant.role.path),
+            name: companyRouteConstant.role.name,
             component: () => import('@/views/Dashboard/DashboardWorkspace.vue'),
             meta: {
                 tab: true,
@@ -38,9 +38,9 @@ const userRoute: RouteRecordRaw = {
             }
         },
         {
-            path: mergeRoutePath(userRouteConstant.index.path, userRouteConstant.crew.path),
-            name: userRouteConstant.crew.name,
-            component: () => import('@/views/User/CrewPage.vue'),
+            path: mergeRoutePath(companyRouteConstant.index.path, companyRouteConstant.crew.path),
+            name: companyRouteConstant.crew.name,
+            component: () => import('@/views/Company/CrewPage.vue'),
             meta: {
                 tab: true,
                 title: '用户管理',
@@ -49,4 +49,4 @@ const userRoute: RouteRecordRaw = {
     ]
 }
 
-export default userRoute;
+export default companyRoute;

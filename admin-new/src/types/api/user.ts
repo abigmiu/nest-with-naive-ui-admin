@@ -1,12 +1,12 @@
 import type { IPaginationQuery } from "./base";
 
 export interface ILoginRequest {
-    username: string;
-    password: string;
+	username: string;
+	password: string;
 }
 
 export interface ILoginResponse {
-    id: number;
+	id: number;
 	createdAt: string;
 	updatedAt: string;
 	username: string;
@@ -16,4 +16,11 @@ export interface ILoginResponse {
 
 export interface IUserPageRequest extends IPaginationQuery {
 	username: string;
+}
+
+export interface IUserCreateRequest {
+	account: string;
+	username: string;
+	password?: string;
+	roleId: number;
 }

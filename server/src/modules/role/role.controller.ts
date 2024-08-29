@@ -4,12 +4,17 @@ import { CreateRoleRequestDto } from './dto/create-role.dto';
 
 @Controller('role')
 export class RoleController {
-  constructor(private readonly roleService: RoleService) {}
+  constructor(private readonly roleService: RoleService) { }
 
   @Get('list')
   getList() {
     console.log('get role List');
     return this.roleService.getList();
+  }
+
+  @Get('simple-list')
+  getSimpleList() {
+    return this.roleService.getSimpleList();
   }
 
   @Post()
