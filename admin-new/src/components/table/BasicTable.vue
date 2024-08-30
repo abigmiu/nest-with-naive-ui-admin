@@ -93,14 +93,14 @@ interface IProps {
     pageable: boolean;
     fetchFn: (query: Record<string, any>, ...args: any[]) => Promise<any[] | IPageData<any>>;
 }
-const props = defineProps<IProps>()
-const innerTableColumns = ref<DataTableColumns>([])
+const props = defineProps<IProps>();
+const innerTableColumns = ref<DataTableColumns>([]);
 
 // 数据
 const { loading, pagination, handlePaginationChange, refresh, tableData, fetchData } = useBasicTable(
     props.fetchFn,
     props.pageable,
-)
+);
 
 // 表格样式设置
 const [striped, setStriped] = useState<boolean>(false);
@@ -135,7 +135,7 @@ function onUpdateColumnSetting(columns: ITableSettingColumn[], info: ITableSetti
     if (selection) {
         newColumns.push({
             type: 'selection',
-        })
+        });
     }
 
     columns.forEach((column) => {
@@ -146,7 +146,7 @@ function onUpdateColumnSetting(columns: ITableSettingColumn[], info: ITableSetti
         const newColumn = clone(cacheColumn);
         newColumn.resizable = resizable;
         newColumns.push(newColumn);
-    })
+    });
 
     innerTableColumns.value = newColumns;
 }
@@ -163,7 +163,7 @@ function onPageSizeChange(pageSize: number) {
 // expose
 defineExpose({
     fetchData,
-})
+});
 </script>
 
 <style lang="scss">

@@ -4,6 +4,6 @@ export function useState<T>(defaultValue: T): [Ref<UnwrapRef<T>, T | UnwrapRef<T
     const state = ref<T>(defaultValue);
     const setState = (value: T) => {
         state.value = value;
-    }
-    return [state, setState]
+    };
+    return [state, setState];
 }

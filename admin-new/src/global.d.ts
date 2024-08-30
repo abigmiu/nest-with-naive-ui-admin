@@ -10,4 +10,4 @@ declare module "vue-router" {
     }
 }
 
-export { }
+export { };

@@ -27,16 +27,16 @@ function getNormalizedRouteRecordChild(route: RouteRecordNormalized) {
         if (routeRaw.children) {
             routeRaw.children.forEach((childRouteRaw) => {
                 getChildRecordRaw(childRouteRaw);
-            })
+            });
         }
 
         parentRoutePath.pop();
-    }
+    };
 
     children.forEach((child) => {
         childrenRecord.set(child.path, child);
         getChildRecordRaw(child);
-    })
+    });
 
     return childrenRecord;
 }
@@ -49,15 +49,15 @@ function getTreeRoutes() {
     const routePathMap = new Map<string, RouteRecordNormalized>();
     routes.forEach((route) => {
         routePathMap.set(route.path, route);
-    })
+    });
     routes.forEach((route) => {
         const childRouteRaw = getNormalizedRouteRecordChild(route);
         childRouteRaw.forEach((record, childRoutePath) => {
             if (routePathMap.has(childRoutePath)) {
                 routePathMap.delete(childRoutePath);
             }
-        })
-    })
+        });
+    });
     return Array.from(routePathMap);
 }
 
@@ -73,8 +73,8 @@ function getMenuOptions() {
             label: route.meta?.title,
             key: route.name!.toString(),
             children: route.children?.map((item) => generateMenuOption(item)),
-        }
-    }
+        };
+    };
 
     const menus = routes.map((route) => generateMenuOption(route));
     menuOptions = menus;
@@ -84,13 +84,13 @@ getMenuOptions();
 
 // start 菜单处理
 
-const selectMenuKey = ref('')
+const selectMenuKey = ref('');
 const onMenuItemClick = (key: string) =>  {
     if (selectMenuKey.value === key) return;
     selectMenuKey.value = key;
     router.push({
         name: key
-    })
-}
+    });
+};
 // # end 菜单处理
 </script>

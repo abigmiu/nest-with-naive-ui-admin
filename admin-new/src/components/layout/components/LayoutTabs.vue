@@ -62,7 +62,7 @@ interface ITab {
     title: string;
 }
 
-const tabs = ref<Array<ITab>>([])
+const tabs = ref<Array<ITab>>([]);
 const activeRouteName = ref('');
 
 // 滚动处理
@@ -82,10 +82,10 @@ async function judgeScrollable() {
 const debounceJudgeScrollable = useDebounceFn(judgeScrollable, 500);
 onMounted(() => {
     window.addEventListener('resize', debounceJudgeScrollable);
-})
+});
 onUnmounted(() => {
     window.removeEventListener('resize', debounceJudgeScrollable);
-})
+});
 
 
 // 标签页右键
@@ -120,13 +120,13 @@ function closeTab(item: ITab) {
     if (!lastRoute) return;
     router.push({
         name: lastRoute.name
-    })
+    });
 }
 function onJumpRoute(item: ITab) {
     if (activeRouteName.value === item.name) return;
     router.push({
         name: item.name
-    })
+    });
 }
 </script>
 <style lang="scss">

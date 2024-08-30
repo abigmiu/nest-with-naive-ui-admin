@@ -42,12 +42,11 @@ const modelVisible = ref(false);
 const visible = defineModel({ default: false });
 watch(visible, (val) => {
     modelVisible.value = val;
-}, { immediate: true })
+}, { immediate: true });
 
 function onModelVisibleChange(val: boolean) {
-    console.log("🚀 ~ onModelVisibleChange ~ val:", val);
     if (!val) {
-        visible.value = false
+        visible.value = false;
     }
 }
 
@@ -63,7 +62,7 @@ const formRules: FormRules = {
     roleId: [
         { required: true, message: '请选择角色', type: 'number' }
     ]
-}
+};
 const formSchemas = reactive<IBasicFormSchemas[]>([
     {
         field: 'account',
@@ -98,10 +97,11 @@ const formSchemas = reactive<IBasicFormSchemas[]>([
             options: [],
         }
     }
-])
+]);
 
 // 获取角色数据
 async function getRoleData() {
+    // @ts-expect-error 实例化过深
     const roleIdSchema = formSchemas.find((item) => item.field === 'roleId');
     const roleList = await reqRoleSimpleList();
 
@@ -118,15 +118,16 @@ onMounted(getRoleData);
 // 提交数据
 const submitLoading = ref(false);
 async function onSubmit() {
-    submitLoading.value = true
+    submitLoading.value = true;
     try {
         await formRef.value!.validateForm();
         const formData = clone(formRef.value!.formData);
         await reqUserCreate(formData as IUserCreateRequest);
+        modelVisible.value = false;
         onModelVisibleChange(false);
         message.success('创建成功');
     } finally {
-        submitLoading.value = false
+        submitLoading.value = false;
     }
 
 }

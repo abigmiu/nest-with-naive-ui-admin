@@ -1,4 +1,4 @@
-import { mergeRoutePath } from "../util"
+import { mergeRoutePath } from "../util";
 import { VLayout } from "../lazyRoute";
 import type { RouteRecordRaw } from "vue-router";
 
@@ -15,7 +15,7 @@ export const companyRouteConstant = {
         path: 'crew',
         name: 'company.crew'
     }
-}
+};
 
 const companyRoute: RouteRecordRaw = {
     name: companyRouteConstant.index.name,
@@ -47,6 +47,6 @@ const companyRoute: RouteRecordRaw = {
             }
         }
     ]
-}
+};
 
 export default companyRoute;

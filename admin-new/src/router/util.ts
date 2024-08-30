@@ -4,10 +4,10 @@ import type { RouteRecordRaw } from "vue-router";
 export function mergeRoutePath(...paths: string[]): string {
     return paths.reduce((prePath, currentPath) => {
         if (currentPath.startsWith('/')) {
-            currentPath = currentPath.slice(1)
+            currentPath = currentPath.slice(1);
         }
         return `${prePath}/${currentPath}`;
-    },  '')
+    },  '');
 }
 
 export function flatRoutes(routes: RouteRecordRaw[]): RouteRecordRaw[] {

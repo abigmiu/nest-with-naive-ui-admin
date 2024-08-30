@@ -26,12 +26,12 @@
 <script lang="ts" setup>
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@vicons/antd';
 import { ref } from 'vue';
-import { NIcon } from 'naive-ui'
+import { NIcon } from 'naive-ui';
 
 const collapsed = ref(false);
 const handleMenuCollapsed = () => {
     collapsed.value = !collapsed.value;
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -20,15 +20,15 @@ class VAxios {
         this.axiosInstance.interceptors.request.use((config) => {
             const token = localStorage.getItem('token');
             if (token) {
-                config.headers['Authorization'] = `Bearer ${token}`
+                config.headers['Authorization'] = `Bearer ${token}`;
             }
 
             return config;
-        })
+        });
 
         this.axiosInstance.interceptors.response.use((response: AxiosResponse<IBaseResponse>) => {
             return response.data.result;
-        })
+        });
     }
 }
 
@@ -62,8 +62,8 @@ export function useNewestRequest<T extends any[]>(fn: (...args: T) => Promise<un
                     } else {
                         throw new IgnoreLastRequestError();
                     }
-                })
-        })
-    }
+                });
+        });
+    };
 
 }

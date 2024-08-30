@@ -1,5 +1,5 @@
-import type { RouteRecord, RouteRecordRaw } from "vue-router"
-import { mergeRoutePath } from "../util"
+import type { RouteRecord, RouteRecordRaw } from "vue-router";
+import { mergeRoutePath } from "../util";
 import { VLayout } from "../lazyRoute";
 
 
@@ -12,7 +12,7 @@ export const dashboardRouteConstant = {
         path: 'workspace',
         name: 'dashboard.workspace'
     }
-}
+};
 
 const dashboardRoute: RouteRecordRaw = {
     name: dashboardRouteConstant.index.name,
@@ -35,6 +35,6 @@ const dashboardRoute: RouteRecordRaw = {
             }
         }
     ]
-}
+};
 
 export default dashboardRoute;

@@ -16,5 +16,5 @@ export function reqUserCreate(data: IUserCreateRequest) {
         url: '/api/user',
         method: 'POST',
         data
-    })
+    });
 }

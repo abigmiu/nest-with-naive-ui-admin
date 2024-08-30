@@ -27,7 +27,7 @@ import { useState } from '@/hooks/common';
 const [createVisible, setCreateVisible] = useState<boolean>(false);
 
 
-const formRules: FormRules = {}
+const formRules: FormRules = {};
 
 const formSchemas: IBasicFormSchemas[] = [
     {
@@ -38,7 +38,7 @@ const formSchemas: IBasicFormSchemas[] = [
             placeholder: '请选择名称'
         }
     }
-]
+];
 
 const tableColumns: DataTableBaseColumn<IUserPageResponse>[] = [
     {
@@ -61,11 +61,11 @@ const tableColumns: DataTableBaseColumn<IUserPageResponse>[] = [
         title: '更新时间',
         key: 'updatedAt',
     },
-]
+];
 
 
 const fetchData = async (data: IUserPageRequest) => {
     const res = await reqUserPage(data);
     return res;
-}
+};
 </script>

@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 import loginRoute from './modules/login';
 import { VLayout } from './lazyRoute';
 import dashboardRoute from './modules/dashboard';
@@ -14,7 +14,7 @@ const authRoutes = [
   dashboardRoute,
   contentRoute,
   companyRoute
-]
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,13 +22,13 @@ const router = createRouter({
     ...publicRoutes,
     ...authRoutes.sort((a, b) => a.meta!.order! - b.meta!.order!)
   ]
-})
+});
 
 router.beforeEach((to) => {
   const { title } = to.meta;
   if (title) {
     document.title = title;
   }
-})
+});
 
-export default router
+export default router;

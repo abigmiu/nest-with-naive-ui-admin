@@ -39,7 +39,7 @@ export function useBasicTable(
                     pageSize: data.pageSize,
                     itemCount: data.itemCount,
                     pageCount: data.pageCount
-                }
+                };
             }
 
         } finally {
@@ -72,5 +72,5 @@ export function useBasicTable(
         refresh,
         handlePaginationChange,
         fetchData
-    }
+    };
 }

@@ -55,7 +55,7 @@ interface IProps {
     col: number;
     schemas: Array<IBasicFormSchemas>
 }
-const props = defineProps<IProps>()
+const props = defineProps<IProps>();
 
 const formRef = ref<null | FormInst>(null);
 
@@ -72,7 +72,7 @@ const formRules = computed(() => {
         .forEach((key) => {
             let fieldRules = props.rules![key];
             if (!Array.isArray(fieldRules)) {
-                fieldRules = [fieldRules]
+                fieldRules = [fieldRules];
             }
 
             fieldRules.forEach((rule) => {
@@ -84,11 +84,11 @@ const formRules = computed(() => {
                         rule.trigger = 'blur';
                     }
                 }
-            })
-        })
+            });
+        });
 
     return rules;
-})
+});
 
 const formData = ref<Record<string, any>>({});
 
@@ -102,7 +102,7 @@ function resetForm() {
     Object.keys(formData.value)
         .forEach((key) => {
             formData.value[key] = null;
-        })
+        });
     formRef.value!.restoreValidation();
 }
 

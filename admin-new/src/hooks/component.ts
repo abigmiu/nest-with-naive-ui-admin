@@ -29,8 +29,8 @@ export function useNestComponents(cmps: INestCmp[]) {
             childVNodes = h(cmps[i].component, props, () => childCmp);
         }
 
-        return h(cmps[0].component, cmps[0].props, () => childVNodes!)
-    }
+        return h(cmps[0].component, cmps[0].props, () => childVNodes!);
+    };
 
     return nestComponent;
 }

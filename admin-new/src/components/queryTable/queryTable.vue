@@ -41,7 +41,7 @@ interface IProps {
     pageable: boolean;
     fetchFn: IFetchFn;
 }
-const props = defineProps<IProps>()
+const props = defineProps<IProps>();
 
 const basicFormRef = ref<null | InstanceType<typeof BasicForm>>(null);
 const basicTableRef = ref<null | InstanceType<typeof BasicTable>>(null);

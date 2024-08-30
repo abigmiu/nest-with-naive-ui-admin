@@ -20,7 +20,7 @@ export const useUserStore = defineStore(STORE_NAMES.USER, {
     state(): IUserStoreState {
         return {
             userInfo: null,
-        }
+        };
     },
     actions: {
         setUserInfo(data: IUserInfo) {
@@ -28,4 +28,4 @@ export const useUserStore = defineStore(STORE_NAMES.USER, {
             localStorage.setItem('token', data.token);
         }
     }
-})
+});

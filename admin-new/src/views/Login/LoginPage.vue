@@ -119,7 +119,7 @@ const handleLogin = async () => {
         router.replace('/');
     }
     await nextTick();
-}
+};
 const handleSubmit = (e: MouseEvent) => {
     e.preventDefault();
     formRef.value?.validate(async (errors) => {

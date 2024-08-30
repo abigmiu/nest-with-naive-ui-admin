@@ -1,11 +1,11 @@
-import type { RouteRecordRaw } from "vue-router"
+import type { RouteRecordRaw } from "vue-router";
 
 export const loginRouteConstant = {
     index: {
         path: '/login',
         name: 'login',
     }
-}
+};
 
 const loginRoute: RouteRecordRaw = {
     name: loginRouteConstant.index.name,
@@ -16,6 +16,6 @@ const loginRoute: RouteRecordRaw = {
         menu: false,
         super: true,
     }
-}
+};
 
-export default loginRoute
+export default loginRoute;

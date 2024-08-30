@@ -1,6 +1,6 @@
-import type { RouteRecordRaw } from "vue-router"
-import { mergeRoutePath } from "../util"
-import { VLayout } from "../lazyRoute"
+import type { RouteRecordRaw } from "vue-router";
+import { mergeRoutePath } from "../util";
+import { VLayout } from "../lazyRoute";
 
 export const contentRouteConstant = {
     index: {
@@ -15,7 +15,7 @@ export const contentRouteConstant = {
         path: 'image',
         name: 'content.image',
     }
-}
+};
 
 const contentRoute: RouteRecordRaw = {
     name: contentRouteConstant.index.name,
@@ -50,6 +50,6 @@ const contentRoute: RouteRecordRaw = {
         
         }
     ]
-}
+};
 
 export default contentRoute;

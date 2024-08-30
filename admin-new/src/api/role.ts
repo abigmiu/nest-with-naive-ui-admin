@@ -5,5 +5,5 @@ import { http } from "@/utils/http";
 export function reqRoleSimpleList() {
     return http.request<IRoleSimpleListResponse[]>({
         url: '/api/role/simple-list',
-    })
+    });
 }

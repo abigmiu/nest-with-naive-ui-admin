@@ -108,11 +108,11 @@ import Draggerable from 'vuedraggable';
 interface IProps {
     columns: DataTableBaseColumn[]
 }
-const props = defineProps<IProps>()
+const props = defineProps<IProps>();
 
 const emits = defineEmits<{
     updateColumn: [columns: ITableSettingColumn[], info: ITableSettingInfo]
-}>()
+}>();
 
 export interface ITableSettingInfo {
     selection: boolean;
@@ -123,7 +123,7 @@ const setting = reactive<ITableSettingInfo>({
     selection: false,
     border: false,
     resizable: false,
-})
+});
 
 export interface ITableSettingColumn {
     title: string;
@@ -133,10 +133,10 @@ export interface ITableSettingColumn {
     check: boolean;
 }
 const columnChecked = ref<string[] | null>(null);
-const columnsSettingList = ref<ITableSettingColumn[]>([])
+const columnsSettingList = ref<ITableSettingColumn[]>([]);
 
 function init() {
-    console.log('init')
+    console.log('init');
     if (!columnChecked.value) {
         columnChecked.value = [];
     }
@@ -147,10 +147,10 @@ function init() {
             isLeftFix: false,
             isRightFix: false,
             check: true,
-        }
+        };
         columnsSettingList.value.push(settingItem);
         columnChecked.value!.push(column.key.toString());
-    })
+    });
     updateSetting();
 }
 init();
@@ -161,7 +161,7 @@ function onMove(e) {
     return true;
 }
 function onDragEnd() {
-    console.log(unref(columnsSettingList))
+    console.log(unref(columnsSettingList));
     const newColumns = toRaw(unref(columnsSettingList));
     emits('updateColumn', newColumns, setting);
 }
@@ -174,16 +174,16 @@ function onPopoverShowUpdate(visible: boolean) {
 
 function updateSetting() {
     const newColumns = toRaw(unref(columnsSettingList));
-    emits('updateColumn', newColumns, setting)
+    emits('updateColumn', newColumns, setting);
 }
 
 const handleColumnCheck: CheckboxGroupProps['onUpdate:value'] = (checkedValue, meta) => {
     const { actionType, value } = meta;
 
     const columnSetting = columnsSettingList.value.find((column) => column.key === value)!;
-    columnSetting.check = actionType === 'check'
+    columnSetting.check = actionType === 'check';
     columnChecked.value = checkedValue as string[];
-}
+};
 </script>
 
 <style lang="scss">
