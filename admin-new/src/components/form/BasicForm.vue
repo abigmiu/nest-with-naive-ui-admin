@@ -34,6 +34,7 @@
 import { NForm, NFormItem, type FormInst, type FormRules, NGrid, NFormItemGi, NInput, NSelect, type FormItemRule, type InputProps, type SelectProps } from 'naive-ui';
 import { computed, ref, defineExpose } from 'vue';
 import { clone } from 'radash';
+import { watch } from 'vue';
 
 type ISchemaTypes = 'input' | 'select';
 type IBasicFormSchemasBase<T extends ISchemaTypes> = {
@@ -53,9 +54,16 @@ export type IBasicFormSchemas = {
 interface IProps {
     rules?: FormRules,
     col: number;
-    schemas: Array<IBasicFormSchemas>
+    schemas: Array<IBasicFormSchemas>,
+    data?: Record<string, any>,
 }
 const props = defineProps<IProps>();
+
+watch(() => props.data, (data) => {
+    if (data) {
+        formData.value = clone(data);
+    }
+});
 
 const formRef = ref<null | FormInst>(null);
 

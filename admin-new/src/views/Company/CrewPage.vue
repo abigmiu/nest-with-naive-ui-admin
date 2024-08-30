@@ -21,16 +21,18 @@
 
     </QueryTable>
     <CreateCrew v-model="createVisible"></CreateCrew>
+    <EditCrew :userId="editUserId"></EditCrew>
 </template>
 <script setup lang="ts">
 import BasicForm, { type IBasicFormSchemas } from '@/components/form/BasicForm.vue';
 import { NButton, NDropdown, NIcon, NCard, useDialog, useMessage, type DataTableBaseColumn, type DataTableColumns, type DropdownProps, type FormRules } from 'naive-ui';
 import queryTable from '@/components/queryTable/queryTable.vue';
 import QueryTable from '@/components/queryTable/queryTable.vue';
-import { computed, h, ref } from 'vue';
-import { reqUserExport, reqUserPage, reqUserResetPassword, reqUserTemplate } from '@/api/user';
+import { computed, h, onBeforeUnmount, ref } from 'vue';
+import { reqUserExport, reqUserImport, reqUserPage, reqUserResetPassword, reqUserTemplate } from '@/api/user';
 import type { IUserPageRequest, IUserPageResponse } from '@/types/api/user';
 import CreateCrew from './components/CreateCrew.vue';
+import EditCrew from './components/EditCrew.vue';
 import { useState } from '@/hooks/common';
 import TableActionMore from '../../components/table/components/TableActionMore.vue';
 import { rowDark } from 'naive-ui/es/legacy-grid/styles';
@@ -85,7 +87,7 @@ const onMoreActionSelect = (key: string, rowData: IUserPageResponse) => {
     }
 };
 
-const tableColumns: DataTableBaseColumn[] = [
+const tableColumns: DataTableBaseColumn<IUserPageResponse>[] = [
     {
         title: 'ID',
         key: 'id',
@@ -116,7 +118,7 @@ const tableColumns: DataTableBaseColumn[] = [
                     size: 'small',
 
                     onClick: () => {
-                        console.log(row);
+                        onEdit(row.id);
                     }
                 }, {
                     default: () => '编辑'
@@ -174,13 +176,55 @@ const getUserExport = async () => {
     }
 };
 
+const userImport = () => {
+    let inputEl: null | HTMLInputElement = document.createElement('input');
+    inputEl.type = 'file';
+    inputEl.style.display = 'none';
+
+    const removeEl = () => {
+        if (inputEl) {
+            inputEl.remove();
+            inputEl = null;
+        }
+    };
+    inputEl.onchange = async () => {
+        const file = inputEl!.files?.[0];
+        if (!file) {
+            message.error('请选择文件');
+            return;
+        }
+        importDropDownLoading.value = true;
+        try {
+            await reqUserImport(file);
+        } finally {
+            removeEl();
+            importDropDownLoading.value = false;
+        }
+    };
+    document.body.appendChild(inputEl);
+    inputEl.click();
+
+    onBeforeUnmount(() => {
+        removeEl();
+    });
+};
+
 const importDropdownSelect = (key: string) => {
     if (key === 'getTemplate') {
         getUserImportTemplate();
     }
-    if (key === 'importUser') {}
+    if (key === 'importUser') {
+        userImport();
+    }
     if (key === 'exportUser') {
         getUserExport();
     }
+};
+
+// 编辑
+const editUserId = ref(0);
+
+const onEdit = (id: number) => {
+    editUserId.value = id;
 };
 </script>

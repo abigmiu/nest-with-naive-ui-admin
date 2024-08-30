@@ -37,7 +37,7 @@ export type IFetchFn = (...args: any[]) => Promise<any[] | IPageData>;
 interface IProps {
     formRules: FormRules;
     formSchemas: IBasicFormSchemas[];
-    tableColumns: DataTableBaseColumn[];
+    tableColumns: DataTableBaseColumn<any>[];
     pageable: boolean;
     fetchFn: IFetchFn;
 }

@@ -15,7 +15,7 @@
         <template #footer>
             <slot name="footer">
                 <div class="flex justify-end">
-                    <NButton type="primary" @click="onSubmit">提交</NButton>
+                    <NButton type="primary" @click="onSubmit" :loading="loading">提交</NButton>
                 </div>
             </slot>
         </template>
@@ -23,10 +23,11 @@
 </template>
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { NModal } from 'naive-ui';
+import { NModal, NButton } from 'naive-ui';
 
 interface IProps {
-    title: boolean
+    title: string;
+    loading: boolean
 }
 const props = defineProps<IProps>();
 

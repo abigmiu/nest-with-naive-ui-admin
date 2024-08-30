@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Res, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Res, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserRequestDto } from './dto/create-user.dto';
 import { UserResetPasswordDto } from './dto/reset-password.dto';
@@ -6,6 +6,7 @@ import { UserImportService } from './user-import.service';
 import { Response } from 'express';
 import { createReadStream } from 'fs';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { UserBaseQueryResponseDto } from './dto/query-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -55,6 +56,12 @@ export class UserController {
     @Get('info')
     getUserInfo() {
         return this.userService.getUserInfo();
+    }
+
+    @Get('base-info')
+    async getUserBaseInfo(@Query('userId') userId: string) {
+        const data = await this.userService.getUserBaseInfo(Number(userId));
+        return new UserBaseQueryResponseDto(data);
     }
 
     @Get('page')

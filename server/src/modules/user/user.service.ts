@@ -6,6 +6,7 @@ import {
 } from './dto/create-user.dto';
 import { ConfigService } from '@nestjs/config';
 import { createHmac } from 'crypto';
+import { UserBaseQueryResponseDto } from './dto/query-user.dto';
 
 @Injectable()
 export class UserService {
@@ -13,6 +14,24 @@ export class UserService {
     private readonly prismaService: PrismaService,
     private readonly configService: ConfigService,
     ) { }
+
+    /** 获取用户基本信息 */
+    async getUserBaseInfo(userId: number) {
+        const foundData = await this.prismaService.user.findFirst({
+            where: {
+                id: userId,
+
+            },
+            include: {
+                role: true,
+            }
+        });
+        if (foundData) {
+            return new UserBaseQueryResponseDto(foundData);
+        } else {
+            throw new BadRequestException('用户不存在');
+        }
+    }
 
     getUserInfo() {
         const adminInfo = {
@@ -157,7 +176,7 @@ export class UserService {
             orderBy: {
                 id: 'desc',
             },
-        })
+        });
         return foundData;
     }
 }
