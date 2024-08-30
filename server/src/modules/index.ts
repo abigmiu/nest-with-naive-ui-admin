@@ -1,4 +1,5 @@
 import { AuthModule } from './auth/auth.module';
+import { CommonModule } from './common/common.module';
 import { ListModule } from './list/list.module';
 import { PermissionModule } from './permission/permission.module';
 import { PermissionService } from './permission/permission.service';
@@ -11,5 +12,6 @@ const businessModules = [
     ListModule,
     PermissionModule,
     RoleModule,
+    CommonModule,
 ];
 export default businessModules;

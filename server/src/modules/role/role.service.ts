@@ -4,7 +4,9 @@ import { CreateRoleRequestDto } from './dto/create-role.dto';
 
 @Injectable()
 export class RoleService {
-    constructor(private readonly prismaService: PrismaService) { }
+    constructor(private readonly prismaService: PrismaService) {
+        console.log('roleService');
+    }
 
     async getList() {
         const foundData = await this.prismaService.getPageData(

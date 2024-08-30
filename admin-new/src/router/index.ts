@@ -19,6 +19,12 @@ const authRoutes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/',
+      redirect: {
+        name: 'dashboard.workspace'
+      }
+    },
     ...publicRoutes,
     ...authRoutes.sort((a, b) => a.meta!.order! - b.meta!.order!)
   ]

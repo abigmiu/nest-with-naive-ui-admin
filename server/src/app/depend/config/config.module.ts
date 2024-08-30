@@ -5,7 +5,7 @@ import loadConfig from '@/app/config';
 import { join }  from 'path';
 
 const cwd = process.cwd();
-const envFile = `${join(cwd, '.env.' + process.env.NODE_ENV)}`
+const envFile = `${join(cwd, '.env.' + process.env.NODE_ENV)}`;
 
 console.log("🚀 ~ envFile:", envFile);
 @Module({

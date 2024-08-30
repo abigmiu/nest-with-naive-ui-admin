@@ -18,3 +18,30 @@ export function reqUserCreate(data: IUserCreateRequest) {
         data
     });
 }
+
+/** 重置用户密码 */
+export function reqUserResetPassword(userId: number) {
+    return http.request({
+        url: '/api/user/reset-password',
+        method: 'POST',
+        data: {
+            userId
+        }
+    });
+}
+
+/** 获取用户导入模板 */
+export function reqUserTemplate() {
+    return http.request({
+        url: '/api/user/import-template',
+        responseType: 'blob',
+    });
+}
+
+/** 获取用户导出数据 */
+export function reqUserExport() {
+    return http.request({
+        url: '/api/user/export',
+        responseType: 'blob',
+    });
+}

@@ -22,9 +22,27 @@ import { PrismaModule } from './depend/prisma/prisma.module';
 import { RedisModule } from '@songkeys/nestjs-redis';
 import { PermissionGuard } from '@/guard/permission.guard';
 import { AppRedisModule } from './depend/redis/redis.module';
+import { extname, join } from 'path';
+import { v4 } from 'uuid';
+import { diskStorage } from 'multer';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
     imports: [
+        MulterModule.register({
+            storage: diskStorage({
+                destination(req, file, callback) {
+                    console.log(file);
+                    callback(null, join(process.cwd(), 'upload'));
+                },
+                filename(req, file, callback) {
+                    console.log(file);
+                    const filename = `${v4()}${extname(file.originalname)}`;
+                    return callback(null, filename);
+                }
+            }),
+            
+        }),
         AppConfigModule,
         AppClsModule,
         AppLoggerModule,

@@ -117,4 +117,47 @@ export class UserService {
 
         return new CreateUserResponseDto(savedData);
     }
+
+    /** 重置用户密码 */
+    async resetUserPassword(userId: number) {
+        const password = '123456';
+        const signedPassword = createHmac(
+            'sha1',
+            this.configService.get<string>('hamcKey'),
+        )
+            .update(password)
+            .digest('hex');
+
+        await this.prismaService.user.update({
+            where: {
+                id: userId,
+            },
+            data: {
+                password: signedPassword,
+            },
+        });
+    }
+
+    async getList() {
+        const foundData = await this.prismaService.user.findMany({
+            select: {
+                role: {
+                    select: {
+                        name: true,
+                    },
+                },
+                password: false,
+                id: true,
+                username: true,
+                account: true,
+                updatedAt: true,
+                createdAt: true,
+            },
+            where: {},
+            orderBy: {
+                id: 'desc',
+            },
+        })
+        return foundData;
+    }
 }

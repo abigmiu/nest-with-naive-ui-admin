@@ -2,6 +2,7 @@ import type { IBaseResponse } from "@/types/api/base";
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CreateAxiosDefaults } from "axios";
 import axios from "axios";
 import { IgnoreLastRequestError } from "./errors";
+import { download, getHttpHeaderFilename } from "./file";
 
 class VAxios {
     private axiosInstance: AxiosInstance;
@@ -27,6 +28,10 @@ class VAxios {
         });
 
         this.axiosInstance.interceptors.response.use((response: AxiosResponse<IBaseResponse>) => {
+            if (response.config.responseType === 'blob') {
+                download(response.data, getHttpHeaderFilename(response.headers['content-disposition']));
+                return response.data;
+            }
             return response.data.result;
         });
     }
