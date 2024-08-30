@@ -1,25 +1,50 @@
 <template>
     <div class="tabs-card">
-        <span class="tabs-card-prev" v-show="scrollable">
-            <NIcon size="16" color="#515a6e">
+        <span
+            class="tabs-card-prev"
+            v-show="scrollable"
+        >
+            <NIcon
+                size="16"
+                color="#515a6e"
+            >
                 <LeftOutlined />
             </NIcon>
         </span>
-        <div class="flex-1 overflow-hidden" ref="scrollWrapEl">
-            <div class="tabs-card-scroll" ref="scrollEl">
-                <div class="tabs-card-scroll-item" v-for="item in tabs" :key="item.name"
-                    @contextmenu="onItemContextMenu" :class="{ 'active-item': activeRouteName === item.name }"
+        <div
+            class="flex-1 overflow-hidden"
+            ref="scrollWrapEl"
+        >
+            <div
+                class="tabs-card-scroll"
+                ref="scrollEl"
+            >
+                <div
+                    class="tabs-card-scroll-item"
+                    v-for="item in tabs"
+                    :key="item.name"
+                    @contextmenu="onItemContextMenu"
+                    :class="{ 'active-item': activeRouteName === item.name }"
                     @click="onJumpRoute(item)"
-                    >
+                >
                     <span>{{ item.title }}</span>
-                    <NIcon size="14" @click.stop="closeTab(item)">
+                    <NIcon
+                        size="14"
+                        @click.stop="closeTab(item)"
+                    >
                         <CloseOutlined />
                     </NIcon>
                 </div>
             </div>
         </div>
-        <span class="tabs-card-next" v-show="scrollable">
-            <NIcon size="16" color="#515a6e">
+        <span
+            class="tabs-card-next"
+            v-show="scrollable"
+        >
+            <NIcon
+                size="16"
+                color="#515a6e"
+            >
                 <RightOutlined />
             </NIcon>
         </span>

@@ -9,21 +9,40 @@
                 <div class="view-account-top-desc">后台管理系统</div>
             </div>
             <div class="view-account-form">
-                <n-form ref="formRef" label-placement="left" size="large" :model="formInline" :rules="rules">
+                <n-form
+                    ref="formRef"
+                    label-placement="left"
+                    size="large"
+                    :model="formInline"
+                    :rules="rules"
+                >
                     <n-form-item path="username">
-                        <n-input v-model:value="formInline.username" placeholder="请输入用户名">
+                        <n-input
+                            v-model:value="formInline.username"
+                            placeholder="请输入用户名"
+                        >
                             <template #prefix>
-                                <n-icon size="18" color="#808695">
+                                <n-icon
+                                    size="18"
+                                    color="#808695"
+                                >
                                     <PersonOutline />
                                 </n-icon>
                             </template>
                         </n-input>
                     </n-form-item>
                     <n-form-item path="password">
-                        <n-input v-model:value="formInline.password" type="password" showPasswordOn="click"
-                            placeholder="请输入密码">
+                        <n-input
+                            v-model:value="formInline.password"
+                            type="password"
+                            showPasswordOn="click"
+                            placeholder="请输入密码"
+                        >
                             <template #prefix>
-                                <n-icon size="18" color="#808695">
+                                <n-icon
+                                    size="18"
+                                    color="#808695"
+                                >
                                     <LockClosedOutline />
                                 </n-icon>
                             </template>
@@ -37,7 +56,13 @@
                         </div>
                     </n-form-item>
                     <n-form-item>
-                        <n-button type="primary" @click="handleSubmit" size="large" :loading="loading" block>
+                        <n-button
+                            type="primary"
+                            @click="handleSubmit"
+                            size="large"
+                            :loading="loading"
+                            block
+                        >
                             登录
                         </n-button>
                     </n-form-item>

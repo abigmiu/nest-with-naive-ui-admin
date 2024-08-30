@@ -4,27 +4,27 @@ import { QueryListRequestDto } from './dto/query-list.dto';
 
 @Injectable()
 export class ListService {
-  constructor(private readonly prismaService: PrismaService) {}
+    constructor(private readonly prismaService: PrismaService) {}
 
-  async getList(query: QueryListRequestDto) {
-    const { page, pageSize } = query;
+    async getList(query: QueryListRequestDto) {
+        const { page, pageSize } = query;
 
-    const findManyOptions: Parameters<
+        const findManyOptions: Parameters<
       (typeof this.prismaService.good)['findMany']
     >[0] = {
-      where: {},
+        where: {},
     };
-    if (query.name) {
-      findManyOptions.where.name = query.name;
-    }
+        if (query.name) {
+            findManyOptions.where.name = query.name;
+        }
 
-    return this.prismaService.getPageData(
-      this.prismaService.good,
-      {
-        page,
-        pageSize,
-      },
-      findManyOptions,
-    );
-  }
+        return this.prismaService.getPageData(
+            this.prismaService.good,
+            {
+                page,
+                pageSize,
+            },
+            findManyOptions,
+        );
+    }
 }

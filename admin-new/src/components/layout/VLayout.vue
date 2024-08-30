@@ -1,24 +1,33 @@
 <template>
-  <NLayout class="layout" has-sider>
+    <NLayout
+        class="layout"
+        has-sider
+    >
 
-    <NLayoutSider class="layout-sider" :inverted="true">
-      <LayoutMenu></LayoutMenu>
-    </NLayoutSider>
+        <NLayoutSider
+            class="layout-sider"
+            :inverted="true"
+        >
+            <LayoutMenu></LayoutMenu>
+        </NLayoutSider>
 
-    <NLayout>
-      <NLayoutHeader>
-        <LayoutHeader />
-      </NLayoutHeader>
-      <NLayoutContent class="layout-content layout-default-background" :native-scrollbar="false">
-        <LayoutTabs></LayoutTabs>
-        <div class="layout-content-main">
-          <LayoutContent></LayoutContent>
-        </div>
-      </NLayoutContent>
+        <NLayout>
+            <NLayoutHeader>
+                <LayoutHeader />
+            </NLayoutHeader>
+            <NLayoutContent
+                class="layout-content layout-default-background"
+                :native-scrollbar="false"
+            >
+                <LayoutTabs></LayoutTabs>
+                <div class="layout-content-main">
+                    <LayoutContent></LayoutContent>
+                </div>
+            </NLayoutContent>
+        </NLayout>
+
+
     </NLayout>
-
-
-  </NLayout>
 </template>
 
 <script lang="ts" setup>

@@ -5,11 +5,11 @@ import { Public } from '@/decorator/public.decorator';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+    constructor(private readonly authService: AuthService) {}
 
   @Public()
   @Post('login')
-  login(@Body() body: LoginRequestDto) {
-    return this.authService.login(body);
-  }
+    login(@Body() body: LoginRequestDto) {
+        return this.authService.login(body);
+    }
 }

@@ -2,15 +2,15 @@ import { IsBoolean, IsString, IsInt, IsOptional } from 'class-validator';
 
 export class CreatePermissionRequestDto {
   @IsString()
-  name: string;
+      name: string;
 
   @IsInt()
-  type: number;
+      type: number;
 
   @IsInt()
   @IsOptional()
-  parentId?: number;
+      parentId?: number;
 
   @IsString()
-  value: string;
+      value: string;
 }

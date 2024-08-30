@@ -6,23 +6,23 @@ import { ConfigService } from '@nestjs/config';
 import { IAppConfig } from '@/types/app/config';
 
 @Module({
-  imports: [
-    JwtModule.registerAsync({
-      global: true,
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService<IAppConfig>) => {
-        const { secret, expiresIn } =
+    imports: [
+        JwtModule.registerAsync({
+            global: true,
+            inject: [ConfigService],
+            useFactory: (configService: ConfigService<IAppConfig>) => {
+                const { secret, expiresIn } =
           configService.get<IAppConfig['jwt']>('jwt');
-        return {
-          secret,
-          signOptions: {
-            expiresIn,
-          },
-        };
-      },
-    }),
-  ],
-  controllers: [AuthController],
-  providers: [AuthService],
+                return {
+                    secret,
+                    signOptions: {
+                        expiresIn,
+                    },
+                };
+            },
+        }),
+    ],
+    controllers: [AuthController],
+    providers: [AuthService],
 })
 export class AuthModule {}

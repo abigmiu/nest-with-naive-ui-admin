@@ -1,5 +1,9 @@
 <template>
-    <NMenu :options="menuOptions" :inverted="true" :on-update:value="onMenuItemClick"></NMenu>
+    <NMenu
+        :options="menuOptions"
+        :inverted="true"
+        :on-update:value="onMenuItemClick"
+    ></NMenu>
 </template>
 
 <script lang="ts" setup>

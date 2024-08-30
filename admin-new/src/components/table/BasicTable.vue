@@ -8,7 +8,10 @@
             <NTooltip trigger="hover">
                 <template #trigger>
                     <div class="mr-2 table-toolbar-right-icon">
-                        <NSwitch v-model:value="striped" @update:value="setStriped" />
+                        <NSwitch
+                            v-model:value="striped"
+                            @update:value="setStriped"
+                        />
                     </div>
                 </template>
                 <span>表格斑马纹</span>
@@ -19,7 +22,10 @@
             <NTooltip trigger="hover">
                 <template #trigger>
                     <div class="table-toolbar-right-icon">
-                        <NIcon size="18" @click="refresh">
+                        <NIcon
+                            size="18"
+                            @click="refresh"
+                        >
                             <ReloadOutlined />
                         </NIcon>
                     </div>
@@ -30,7 +36,12 @@
             <!--密度-->
             <NTooltip trigger="hover">
                 <template #trigger>
-                    <NDropdown @select="setDensity" trigger="click" :options="densityOptions" v-model:value="density">
+                    <NDropdown
+                        @select="setDensity"
+                        trigger="click"
+                        :options="densityOptions"
+                        v-model:value="density"
+                    >
                         <div class="table-toolbar-right-icon">
                             <NIcon size="18">
                                 <ColumnHeightOutlined />
@@ -44,14 +55,25 @@
 
             <!-- 列设置 -->
             <div class="table-toolbar-right-icon">
-                <ColumnSetting :columns="tableColumns" @update-column="onUpdateColumnSetting"></ColumnSetting>
+                <ColumnSetting
+                    :columns="tableColumns"
+                    @update-column="onUpdateColumnSetting"
+                ></ColumnSetting>
             </div>
         </div>
     </div>
     <div>
-        <NDataTable :columns="innerTableColumns" :data="tableData" :pagination="pagination" :striped="striped"
-            :size="density" :bordered="bordered" :on-update:page="onPageChange" :on-update:page-size="onPageSizeChange"
-            :loading="loading"></NDataTable>
+        <NDataTable
+            :columns="innerTableColumns"
+            :data="tableData"
+            :pagination="pagination"
+            :striped="striped"
+            :size="density"
+            :bordered="bordered"
+            :on-update:page="onPageChange"
+            :on-update:page-size="onPageSizeChange"
+            :loading="loading"
+        ></NDataTable>
     </div>
 </template>
 <script setup lang="ts">

@@ -2,11 +2,20 @@
     <div class="layout-header">
         <div class="layout-header__left">
             <!-- 菜单收起 -->
-            <div class="ml-1 layout-header-trigger layout-header-trigger-min" @click="handleMenuCollapsed">
-                <NIcon size="18" v-if="collapsed">
+            <div
+                class="ml-1 layout-header-trigger layout-header-trigger-min"
+                @click="handleMenuCollapsed"
+            >
+                <NIcon
+                    size="18"
+                    v-if="collapsed"
+                >
                     <MenuUnfoldOutlined />
                 </NIcon>
-                <NIcon size="18" v-else>
+                <NIcon
+                    size="18"
+                    v-else
+                >
                     <MenuFoldOutlined />
                 </NIcon>
             </div>

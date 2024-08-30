@@ -1,11 +1,25 @@
 <template>
     <NCard>
-        <BasicForm :col="4" :rules="formRules" :schemas="formSchemas" ref="basicFormRef"></BasicForm>
+        <BasicForm
+            :col="4"
+            :rules="formRules"
+            :schemas="formSchemas"
+            ref="basicFormRef"
+        ></BasicForm>
         <div class="flex justify-end mb-4">
-            <NButton class="mr-2" type="primary" @click="onQuery">查询</NButton>
+            <NButton
+                class="mr-2"
+                type="primary"
+                @click="onQuery"
+            >查询</NButton>
             <NButton @click="onReset">重置</NButton>
         </div>
-        <BasicTable :table-columns="tableColumns" :fetch-fn="fetchFn" :pageable="pageable" ref="basicTableRef">
+        <BasicTable
+            :table-columns="tableColumns"
+            :fetch-fn="fetchFn"
+            :pageable="pageable"
+            ref="basicTableRef"
+        >
             <slot></slot>
         </BasicTable>
     </NCard>

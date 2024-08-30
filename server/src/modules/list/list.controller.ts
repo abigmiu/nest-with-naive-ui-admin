@@ -6,11 +6,11 @@ import { GOOD_PERMISSION } from '@/constant/permission';
 
 @Controller('list')
 export class ListController {
-  constructor(private readonly listService: ListService) {}
+    constructor(private readonly listService: ListService) {}
 
   @Permission(GOOD_PERMISSION.LIST.id)
   @Get()
-  getList(@Query() query: QueryListRequestDto) {
-    return this.listService.getList(query);
-  }
+    getList(@Query() query: QueryListRequestDto) {
+        return this.listService.getList(query);
+    }
 }

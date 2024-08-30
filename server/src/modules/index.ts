@@ -6,10 +6,10 @@ import { RoleModule } from './role/role.module';
 import { UserModule } from './user/user.module';
 
 const businessModules = [
-  AuthModule,
-  UserModule,
-  ListModule,
-  PermissionModule,
-  RoleModule,
+    AuthModule,
+    UserModule,
+    ListModule,
+    PermissionModule,
+    RoleModule,
 ];
 export default businessModules;

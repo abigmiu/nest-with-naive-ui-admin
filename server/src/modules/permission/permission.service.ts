@@ -7,28 +7,28 @@ import { Redis } from 'ioredis';
 
 @Injectable()
 export class PermissionService {
-  constructor(private readonly prismaService: PrismaService) {}
+    constructor(private readonly prismaService: PrismaService) {}
 
-  async update(id: number, data: UpdatePermissionRequestDto) {
-    const savedData = await this.prismaService.permission.update({
-      where: {
-        id,
-      },
-      data: {
-        name: data.name,
-        parentId: data.parentId,
-        value: data.value,
-        type: data.type,
-      },
-    });
+    async update(id: number, data: UpdatePermissionRequestDto) {
+        const savedData = await this.prismaService.permission.update({
+            where: {
+                id,
+            },
+            data: {
+                name: data.name,
+                parentId: data.parentId,
+                value: data.value,
+                type: data.type,
+            },
+        });
 
-    return savedData;
-  }
+        return savedData;
+    }
 
-  async getList() {
-    const data = await this.prismaService.permission.findMany();
-    return data;
-  }
+    async getList() {
+        const data = await this.prismaService.permission.findMany();
+        return data;
+    }
 
-  async findRolePermission() {}
+    async findRolePermission() {}
 }

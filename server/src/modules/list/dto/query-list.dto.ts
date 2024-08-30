@@ -5,14 +5,14 @@ export class QueryListRequestDto {
   @IsInt()
   @Type(() => Number)
   @IsOptional()
-  page = 1;
+      page = 1;
 
   @IsInt()
   @Type(() => Number)
   @IsOptional()
-  pageSize = 20;
+      pageSize = 20;
 
   @IsString()
   @IsOptional()
-  name?: string;
+      name?: string;
 }

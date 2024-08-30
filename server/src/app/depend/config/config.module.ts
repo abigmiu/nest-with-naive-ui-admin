@@ -9,12 +9,12 @@ const envFile = `${join(cwd, '.env.' + process.env.NODE_ENV)}`
 
 console.log("🚀 ~ envFile:", envFile);
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      load: [loadConfig],
-      envFilePath: [`${join(cwd, '.env')}`, envFile],
-    }),
-  ],
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            load: [loadConfig],
+            envFilePath: [`${join(cwd, '.env')}`, envFile],
+        }),
+    ],
 })
 export class AppConfigModule {}

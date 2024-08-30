@@ -5,31 +5,31 @@ import { AppClsService } from '../cls/cls.service';
 
 @Injectable()
 export class AppLoggerService {
-  constructor(
+    constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
     private readonly appClsService: AppClsService,
-  ) {}
+    ) {}
 
-  info(message: string, payload?: any) {
-    this.logger.info(message, {
-      requestId: this.appClsService.getClsId(),
-      data: payload,
-    });
-  }
+    info(message: string, payload?: any) {
+        this.logger.info(message, {
+            requestId: this.appClsService.getClsId(),
+            data: payload,
+        });
+    }
 
-  error(message: string, e?: Error, payload?: any) {
-    const logData = {
-      data: payload,
-      error: e.message,
-    };
-    this.logger.error(
-      message,
-      {
-        data: logData,
-        requestId: this.appClsService.getClsId(),
-      },
-      e.stack,
-    );
-  }
+    error(message: string, e?: Error, payload?: any) {
+        const logData = {
+            data: payload,
+            error: e.message,
+        };
+        this.logger.error(
+            message,
+            {
+                data: logData,
+                requestId: this.appClsService.getClsId(),
+            },
+            e.stack,
+        );
+    }
 }

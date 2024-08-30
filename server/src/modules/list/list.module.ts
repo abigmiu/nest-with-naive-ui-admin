@@ -3,7 +3,7 @@ import { ListService } from './list.service';
 import { ListController } from './list.controller';
 
 @Module({
-  controllers: [ListController],
-  providers: [ListService],
+    controllers: [ListController],
+    providers: [ListService],
 })
 export class ListModule {}

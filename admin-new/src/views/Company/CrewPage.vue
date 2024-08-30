@@ -1,7 +1,15 @@
 <template>
-    <QueryTable :form-rules="formRules" :form-schemas="formSchemas" :table-columns="tableColumns" :fetch-fn="fetchData"
-        :pageable="true">
-        <NButton type="primary" @click="showCreateModel">新增</NButton>
+    <QueryTable
+        :form-rules="formRules"
+        :form-schemas="formSchemas"
+        :table-columns="tableColumns"
+        :fetch-fn="fetchData"
+        :pageable="true"
+    >
+        <NButton
+            type="primary"
+            @click="setCreateVisible(true)"
+        >新增</NButton>
     </QueryTable>
     <CreateCrew v-model="createVisible"></CreateCrew>
 </template>
@@ -12,13 +20,11 @@ import queryTable from '@/components/queryTable/queryTable.vue';
 import QueryTable from '@/components/queryTable/queryTable.vue';
 import { computed, ref } from 'vue';
 import { reqUserPage } from '@/api/user';
-import type { IUserPageRequest } from '@/types/api/user';
+import type { IUserPageRequest, IUserPageResponse } from '@/types/api/user';
 import CreateCrew from './components/CreateCrew.vue';
+import { useState } from '@/hooks/common';
 
-const createVisible = ref(false);
-function showCreateModel() {
-    createVisible.value = true;
-}
+const [createVisible, setCreateVisible] = useState<boolean>(false);
 
 
 const formRules: FormRules = {}
@@ -34,7 +40,15 @@ const formSchemas: IBasicFormSchemas[] = [
     }
 ]
 
-const tableColumns: DataTableBaseColumn[] = [
+const tableColumns: DataTableBaseColumn<IUserPageResponse>[] = [
+    {
+        title: 'ID',
+        key: 'id',
+    },
+    {
+        title: '账号',
+        key: 'account',
+    },
     {
         title: '名称',
         key: 'username'
@@ -47,10 +61,6 @@ const tableColumns: DataTableBaseColumn[] = [
         title: '更新时间',
         key: 'updatedAt',
     },
-    {
-        title: '账号',
-        key: 'username',
-    }
 ]
 
 

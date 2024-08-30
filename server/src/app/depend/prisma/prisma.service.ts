@@ -5,10 +5,10 @@ import { Prisma, PrismaClient } from '@prisma/client';
 type IPrismaDelegate<T extends Prisma.ModelName> = T extends 'User'
   ? Prisma.UserDelegate
   : T extends 'Good'
-    ? Prisma.GoodDelegate
-    : T extends 'Role'
-      ? Prisma.RoleDelegate
-      : never;
+  ? Prisma.GoodDelegate
+  : T extends 'Role'
+  ? Prisma.RoleDelegate
+  : never;
 
 type ModelDelegates = {
   [K in Prisma.ModelName]: PrismaClient[Uncapitalize<K>];
@@ -21,38 +21,39 @@ type ModelDelegates = {
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
-  constructor() {
-    super();
-  }
+    constructor() {
+        super();
+    }
 
-  async onModuleInit() {
-    console.log(process.env.DATABASE_URL);
-    await this.$connect();
-  }
+    async onModuleInit() {
+        console.log(process.env.DATABASE_URL);
+        await this.$connect();
+    }
 
-  async getPageData<T extends ModelDelegates>(
-    model: T,
-    pageQuery: IPagerParams,
-    queryOptions: Prisma.Args<T, 'findMany'>,
-  ) {
-    const { page = 1, pageSize = 20 } = pageQuery;
+    async getPageData<T extends ModelDelegates>(
+        model: T,
+        pageQuery: IPagerParams,
+        queryOptions: Prisma.Args<T, 'findMany'>,
+    ) {
+        const { page = 1, pageSize = 20 } = pageQuery;
 
-    const [total, data] = await this.$transaction([
-      (model as any).count({ where: queryOptions.where }),
-      (model as any).findMany({
-        take: pageSize,
-        skip: pageSize * (page - 1),
-      }),
-    ]);
+        const [total, data] = await this.$transaction([
+            (model as any).count({ where: queryOptions.where }),
+            (model as any).findMany({
+                take: pageSize,
+                skip: pageSize * (page - 1),
+                ...queryOptions,
+            }),
+        ]);
 
-    const totalPage = Math.ceil(total / pageSize);
+        const totalPage = Math.ceil(total / pageSize);
 
-    return {
-      page,
-      pageSize,
-      pageCount: totalPage,
-      itemCount: total,
-      list: data,
-    };
-  }
+        return {
+            page,
+            pageSize,
+            pageCount: totalPage,
+            itemCount: total,
+            list: data,
+        };
+    }
 }

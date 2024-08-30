@@ -1,7 +1,14 @@
 <template>
-    <NTooltip trigger="hover" placement="top">
+    <NTooltip
+        trigger="hover"
+        placement="top"
+    >
         <template #trigger>
-            <NPopover trigger="click" placement="bottom-end" @update-show="onPopoverShowUpdate">
+            <NPopover
+                trigger="click"
+                placement="bottom-end"
+                @update-show="onPopoverShowUpdate"
+            >
                 <template #trigger>
                     <NIcon size="18">
                         <SettingOutlined />
@@ -9,7 +16,10 @@
                 </template>
                 <template #header>
                     <NSpace>
-                        <NButton text type="primary">重置</NButton>
+                        <NButton
+                            text
+                            type="primary"
+                        >重置</NButton>
                         <NCheckbox v-model:checked="setting.selection">
                             勾选列
                         </NCheckbox>
@@ -21,20 +31,40 @@
                         </NCheckbox>
                     </NSpace>
                 </template>
-                <NCheckboxGroup v-model:value="columnChecked" :on-update:value="handleColumnCheck">
+                <NCheckboxGroup
+                    v-model:value="columnChecked"
+                    :on-update:value="handleColumnCheck"
+                >
 
-                    <Draggerable v-model="columnsSettingList" animation="300" item-key="key" filter=".no-draggable"
-                        :move="onMove">
+                    <Draggerable
+                        v-model="columnsSettingList"
+                        animation="300"
+                        item-key="key"
+                        filter=".no-draggable"
+                        :move="onMove"
+                    >
                         <template #item="{ element }">
-                            <div class="column-setting-list-item" :class="{
-                                'no-draggable': element.draggable === false,
-                            }">
-                                <NIcon size="18" class="drag-icon mr-2">
+                            <div
+                                class="column-setting-list-item"
+                                :class="{
+                                    'no-draggable': element.draggable === false,
+                                }"
+                            >
+                                <NIcon
+                                    size="18"
+                                    class="drag-icon mr-2"
+                                >
                                     <DragOutlined></DragOutlined>
                                 </NIcon>
-                                <NCheckbox :label="element.title" :value="element.key"></NCheckbox>
+                                <NCheckbox
+                                    :label="element.title"
+                                    :value="element.key"
+                                ></NCheckbox>
                                 <div class="flex items-center ml-auto">
-                                    <NTooltip trigger="hover" placement="bottom">
+                                    <NTooltip
+                                        trigger="hover"
+                                        placement="bottom"
+                                    >
                                         <template #trigger>
                                             <NIcon size="18">
                                                 <VerticalRightOutlined />
@@ -43,7 +73,10 @@
                                         <span>固定到左侧</span>
                                     </NTooltip>
                                     <NDivider vertical></NDivider>
-                                    <NTooltip trigger="hover" placement="bottom">
+                                    <NTooltip
+                                        trigger="hover"
+                                        placement="bottom"
+                                    >
                                         <template #trigger>
                                             <NIcon size="18">
                                                 <VerticalLeftOutlined />

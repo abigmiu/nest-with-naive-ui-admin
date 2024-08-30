@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+    ClassSerializerInterceptor,
+    MiddlewareConsumer,
+    Module,
+    NestModule,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClsMiddleware } from 'nestjs-cls';
@@ -19,45 +24,49 @@ import { PermissionGuard } from '@/guard/permission.guard';
 import { AppRedisModule } from './depend/redis/redis.module';
 
 @Module({
-  imports: [
-    AppConfigModule,
-    AppClsModule,
-    AppLoggerModule,
-    PrismaModule,
-    AppRedisModule,
-    ...businessModules,
-  ],
-  controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: ResponseTransformInterceptor,
-    },
-    {
-      provide: APP_PIPE,
-      useClass: RequestValidationPipe,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: LoginGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: PermissionGuard,
-    },
-    {
-      provide: APP_FILTER,
-      useFactory(appLoggerService: AppLoggerService) {
-        return new BusinessHttpException(appLoggerService);
-      },
-      inject: [AppLoggerService],
-    },
-  ],
+    imports: [
+        AppConfigModule,
+        AppClsModule,
+        AppLoggerModule,
+        PrismaModule,
+        AppRedisModule,
+        ...businessModules,
+    ],
+    controllers: [AppController],
+    providers: [
+        AppService,
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: ResponseTransformInterceptor,
+        },
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: ClassSerializerInterceptor,
+        },
+        {
+            provide: APP_PIPE,
+            useClass: RequestValidationPipe,
+        },
+        {
+            provide: APP_GUARD,
+            useClass: LoginGuard,
+        },
+        {
+            provide: APP_GUARD,
+            useClass: PermissionGuard,
+        },
+        {
+            provide: APP_FILTER,
+            useFactory(appLoggerService: AppLoggerService) {
+                return new BusinessHttpException(appLoggerService);
+            },
+            inject: [AppLoggerService],
+        },
+    ],
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(ClsMiddleware).forRoutes('*');
-    consumer.apply(AppRequestMiddleware).forRoutes('*');
-  }
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(ClsMiddleware).forRoutes('*');
+        consumer.apply(AppRequestMiddleware).forRoutes('*');
+    }
 }

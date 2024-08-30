@@ -1,13 +1,30 @@
 <template>
-    <NForm ref="formRef" :rules="formRules" label-placement="left" :model="formData" label-width="100">
+    <NForm
+        ref="formRef"
+        :rules="formRules"
+        label-placement="left"
+        :model="formData"
+        label-width="100"
+    >
         <NGrid :cols="gridColSpanTotal">
-            <NFormItemGi :span="gridColSpan" :path="schema.field" v-for="schema in schemas" :key="schema.field"
-                :label="schema.label">
+            <NFormItemGi
+                :span="gridColSpan"
+                :path="schema.field"
+                v-for="schema in schemas"
+                :key="schema.field"
+                :label="schema.label"
+            >
                 <template v-if="schema.type === 'input'">
-                    <NInput v-model:value="formData[schema.field]" v-bind="schema.props"></NInput>
+                    <NInput
+                        v-model:value="formData[schema.field]"
+                        v-bind="schema.props"
+                    ></NInput>
                 </template>
                 <template v-if="schema.type === 'select'">
-                    <NSelect v-model:value="formData[schema.field]" v-bind="schema.props"></NSelect>
+                    <NSelect
+                        v-model:value="formData[schema.field]"
+                        v-bind="schema.props"
+                    ></NSelect>
                 </template>
             </NFormItemGi>
         </NGrid>

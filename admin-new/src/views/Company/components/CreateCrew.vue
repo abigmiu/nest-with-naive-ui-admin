@@ -1,11 +1,23 @@
 <template>
-    <NModal v-model:show="modelVisible" preset="card" size="huge" :bordered="false"
-        :on-update:show="onModelVisibleChange" style="width: 600px" :mask-closable="false">
+    <NModal
+        v-model:show="modelVisible"
+        preset="card"
+        size="huge"
+        :bordered="false"
+        :on-update:show="onModelVisibleChange"
+        style="width: 600px"
+        :mask-closable="false"
+    >
         <template #header>
             新增用户
         </template>
 
-        <BasicForm ref="formRef" :col="1" :schemas="formSchemas" :rules="formRules"></BasicForm>
+        <BasicForm
+            ref="formRef"
+            :col="1"
+            :schemas="formSchemas"
+            :rules="formRules"
+        ></BasicForm>
 
         <template #footer>
             <div class="flex justify-end">
@@ -33,6 +45,7 @@ watch(visible, (val) => {
 }, { immediate: true })
 
 function onModelVisibleChange(val: boolean) {
+    console.log("🚀 ~ onModelVisibleChange ~ val:", val);
     if (!val) {
         visible.value = false
     }
@@ -44,7 +57,7 @@ const formRules: FormRules = {
     account: [
         { required: true, message: '请输入账号' }
     ],
-    name: [
+    username: [
         { required: true, message: '请输入名称' }
     ],
     roleId: [
@@ -110,7 +123,7 @@ async function onSubmit() {
         await formRef.value!.validateForm();
         const formData = clone(formRef.value!.formData);
         await reqUserCreate(formData as IUserCreateRequest);
-        modelVisible.value = false;
+        onModelVisibleChange(false);
         message.success('创建成功');
     } finally {
         submitLoading.value = false

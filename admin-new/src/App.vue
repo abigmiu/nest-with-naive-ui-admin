@@ -22,9 +22,9 @@ const AppProvider = useNestComponents([
 </script>
 
 <template>
-  <AppProvider>
-    <RouterView>
+    <AppProvider>
+        <RouterView>
 
-    </RouterView>
-  </AppProvider>
+        </RouterView>
+    </AppProvider>
 </template>

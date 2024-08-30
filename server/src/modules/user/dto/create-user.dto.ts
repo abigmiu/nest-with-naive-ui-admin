@@ -1,24 +1,36 @@
-import { Exclude } from 'class-transformer';
+import { Role, User } from '@prisma/client';
+import { Exclude, Expose } from 'class-transformer';
 import { IsInt, IsOptional, IsString } from 'class-validator';
 
 export class CreateUserRequestDto {
     @IsString()
-    username: string;
+        username: string;
     @IsString()
-    account: string;
+        account: string;
     @IsString()
     @IsOptional()
-    password?: string;
+        password?: string;
 
     @IsInt()
-    roleId: number;
+        roleId: number;
 }
 
-export class CreateUserResponseDto {
-    constructor(data: CreateUserResponseDto) {
+export class CreateUserResponseDto implements Partial<User> {
+    constructor(data: Partial<User>) {
         Object.assign(this, data);
+        console.log(this);
     }
 
+    username: string;
+
     @Exclude()
-    password: string;
+        role: Role;
+
+    @Exclude()
+        password?: string;
+
+    @Expose()
+    get roleName() {
+        return this.role.name;
+    }
 }
