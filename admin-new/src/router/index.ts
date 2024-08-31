@@ -3,7 +3,7 @@ import loginRoute from './modules/login';
 import { VLayout } from './lazyRoute';
 import dashboardRoute from './modules/dashboard';
 import contentRoute from './modules/content';
-import companyRoute from './modules/user';
+import companyRoute from './modules/company';
 
 // 整个文件都加载进来了， 没必要
 // const modules = import.meta.glob('./modules/**/*.ts', { eager: true })

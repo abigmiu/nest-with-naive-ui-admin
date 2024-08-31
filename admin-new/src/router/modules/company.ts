@@ -8,7 +8,7 @@ export const companyRouteConstant = {
         name: 'company',
     },
     role: {
-        path: 'auth',
+        path: 'role',
         name: 'company.role'
     },
     crew: {
@@ -31,7 +31,7 @@ const companyRoute: RouteRecordRaw = {
         {
             path: mergeRoutePath(companyRouteConstant.index.path, companyRouteConstant.role.path),
             name: companyRouteConstant.role.name,
-            component: () => import('@/views/Dashboard/DashboardWorkspace.vue'),
+            component: () => import('@/views/Company/RolePage.vue'),
             meta: {
                 tab: true,
                 title: '角色管理',

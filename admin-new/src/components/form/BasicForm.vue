@@ -26,6 +26,9 @@
                         v-bind="schema.props"
                     ></NSelect>
                 </template>
+                <template v-if="schema.type === 'slot'">
+                    <slot :name="schema.field"></slot>
+                </template>
             </NFormItemGi>
         </NGrid>
     </NForm>
@@ -36,12 +39,12 @@ import { computed, ref, defineExpose } from 'vue';
 import { clone } from 'radash';
 import { watch } from 'vue';
 
-type ISchemaTypes = 'input' | 'select';
+type ISchemaTypes = 'input' | 'select' | 'slot';
 type IBasicFormSchemasBase<T extends ISchemaTypes> = {
     field: string;
     label: string;
     type: T;
-    props: T extends 'input'
+    props?: T extends 'input'
     ? InputProps
     : T extends 'select'
     ? SelectProps

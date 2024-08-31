@@ -1,24 +1,35 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { RoleService } from './role.service';
 import { CreateRoleRequestDto } from './dto/create-role.dto';
+import { EditRoleRequestDto } from './dto/edit-role.dto';
 
 @Controller('role')
 export class RoleController {
     constructor(private readonly roleService: RoleService) { }
 
-  @Get('list')
+    @Get('list')
     getList() {
         console.log('get role List');
         return this.roleService.getList();
     }
 
-  @Get('simple-list')
-  getSimpleList() {
-      return this.roleService.getSimpleList();
-  }
+    @Get('info')
+    getRoleInfo(@Query('roleId') roleId: string) {
+        return this.roleService.getRoleInfo(Number(roleId));
+    }
 
-  @Post()
-  create(@Body() body: CreateRoleRequestDto) {
-      return this.roleService.createRole(body);
-  }
+    @Get('simple-list')
+    getSimpleList() {
+        return this.roleService.getSimpleList();
+    }
+
+    @Post()
+    create(@Body() body: CreateRoleRequestDto) {
+        return this.roleService.createRole(body);
+    }
+
+    @Post('edit')
+    editRole(@Body() body: EditRoleRequestDto) {
+        return this.roleService.updateRole(body);
+    }
 }

@@ -30,5 +30,17 @@ export class PermissionService {
         return data;
     }
 
+    /** 获取权限简单列表 */
+    async getSimpleList() {
+        const data = await this.prismaService.permission.findMany({
+            select: {
+                id: true,
+                name: true,
+                parentId: true,
+            },
+        });
+        return data;
+    }
+
     async findRolePermission() {}
 }

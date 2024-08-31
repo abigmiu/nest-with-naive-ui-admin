@@ -60,8 +60,9 @@ export class UserController {
 
     @Get('base-info')
     async getUserBaseInfo(@Query('userId') userId: string) {
-        const data = await this.userService.getUserBaseInfo(Number(userId));
-        return new UserBaseQueryResponseDto(data);
+        return this.userService.getUserBaseInfo(Number(userId));
+       
+        
     }
 
     @Get('page')

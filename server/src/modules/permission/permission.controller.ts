@@ -6,18 +6,24 @@ import { UpdatePermissionRequestDto } from './dto/update-permission.dto';
 
 @Controller('permission')
 export class PermissionController {
-    constructor(private readonly permissionService: PermissionService) {}
+    constructor(private readonly permissionService: PermissionService) { }
 
-  @Get('list')
+    @Get('list')
     async getPermissionList() {
         return this.permissionService.getList();
     }
 
-  @Post('update')
-  async updatePermission(
-    @Query() query: { id: string },
-    @Body() body: UpdatePermissionRequestDto,
-  ) {
-      return this.permissionService.update(+query.id, body);
-  }
+    /** 获取权限简单列表 */
+    @Get('simple-list')
+    async getSimplePermissionList() {
+        return this.permissionService.getSimpleList();
+    }
+
+    @Post('update')
+    async updatePermission(
+      @Query() query: { id: string },
+      @Body() body: UpdatePermissionRequestDto,
+    ) {
+        return this.permissionService.update(+query.id, body);
+    }
 }

@@ -1,6 +1,9 @@
-import { IsInt, IsOptional, IsString } from 'class-validator';
+import { IsInt, IsOptional, IsString } from "class-validator";
 
-export class CreateRoleRequestDto {
+export class EditRoleRequestDto {
+    @IsInt()
+    roleId: number;
+
     @IsString()
     name: string;
     
