@@ -11,6 +11,10 @@ export const contentRouteConstant = {
         path: 'article',
         name: 'content.article'
     },
+    articleCreate: {
+        path: 'article-create',
+        name: 'content.articleCreate'
+    },
     image: {
         path: 'image',
         name: 'content.image',
@@ -36,6 +40,16 @@ const contentRoute: RouteRecordRaw = {
                 tab: true,
                 title: '文章管理',
                 menu: true,
+            }
+        },
+        {
+            name: contentRouteConstant.articleCreate.name,
+            path: mergeRoutePath(contentRouteConstant.index.path, contentRouteConstant.articleCreate.path),
+            component: () => import('@/views/Content/CreateArticle.vue'),
+            meta: {
+                tab: true,
+                title: '文章创建',
+                menu: false,
             }
         },
         {
