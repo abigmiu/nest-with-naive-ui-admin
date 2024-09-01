@@ -88,7 +88,6 @@ const permissionTreeData = ref<TreeOption[]>([]);
 const fetchPermission = async () => {
     const data = await reqPermissionSimpleList();
     const treeData = listToTree(data);
-    console.log("🚀 ~ fetchPermission ~ treeData:", treeData);
     permissionTreeData.value = treeData as unknown as TreeOption[];
     
 };

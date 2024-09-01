@@ -91,7 +91,6 @@ onUnmounted(() => {
 // 标签页右键
 function onItemContextMenu(e: MouseEvent) {
     e.preventDefault();
-    console.log('onItemContextMenu');
 }
 
 // 路由监听修改标签页

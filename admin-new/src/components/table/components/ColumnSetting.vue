@@ -136,7 +136,6 @@ const columnChecked = ref<string[] | null>(null);
 const columnsSettingList = ref<ITableSettingColumn[]>([]);
 
 function init() {
-    console.log('init');
     if (!columnChecked.value) {
         columnChecked.value = [];
     }
@@ -161,7 +160,6 @@ function onMove(e) {
     return true;
 }
 function onDragEnd() {
-    console.log(unref(columnsSettingList));
     const newColumns = toRaw(unref(columnsSettingList));
     emits('updateColumn', newColumns, setting);
 }

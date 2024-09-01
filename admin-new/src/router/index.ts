@@ -34,9 +34,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
-  console.log(to);
   const { title, permission, keepAlive } = to.meta;
-  console.log("🚀 ~ router.beforeEach ~ keepAlive:", keepAlive);
   if (title) {
     document.title = title;
   }
@@ -53,7 +51,6 @@ router.beforeEach((to) => {
     const keepAliveStore = useAliveStoreWithout();
     const matchedCmp = to.matched.find((matched) => matched.name === to.name);
     const cmpName = matchedCmp?.name;
-    console.log("🚀 ~ router.beforeEach ~ cmpName:", cmpName);
     if (cmpName) {
       keepAliveStore.setKeepCmp(cmpName as string, true);
     }
