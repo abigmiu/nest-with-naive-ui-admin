@@ -29,6 +29,7 @@ const contentRoute: RouteRecordRaw = {
         title: '内容管理',
         super: true,
         order: 2,
+        keepAlive: false,
     },
     component: VLayout,
     children: [
@@ -40,6 +41,7 @@ const contentRoute: RouteRecordRaw = {
                 tab: true,
                 title: '文章管理',
                 menu: true,
+                keepAlive: true,
             }
         },
         {
@@ -50,6 +52,7 @@ const contentRoute: RouteRecordRaw = {
                 tab: true,
                 title: '文章创建',
                 menu: false,
+                keepAlive: false,
             }
         },
         {
@@ -60,6 +63,7 @@ const contentRoute: RouteRecordRaw = {
                 tab: true,
                 title: '图片管理',
                 menu: true,
+                keepAlive: true,
             },
         
         }

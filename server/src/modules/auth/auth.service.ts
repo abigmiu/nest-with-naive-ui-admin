@@ -20,6 +20,7 @@ export class AuthService {
 
     /** 登录 */
     async login(data: LoginRequestDto, ip: string) {
+        await this.banByIncorrectTimes(ip);
         const signedPassword = this.commonService.signPassword(data.password);
         const foundData = await this.prismaService.user.findFirst({
             where: {
@@ -29,7 +30,8 @@ export class AuthService {
         });
 
         if (!foundData) {
-            await this.setIncorrectTimes(ip);
+            const times = await this.setIncorrectTimes(ip);
+            await this.banByIncorrectTimes(ip, times);
             throw new BadRequestException('账号或密码错误');
         }
         const token = await this.generateToken(foundData.id, foundData.roleId);
@@ -40,21 +42,31 @@ export class AuthService {
         });
     }
 
-    private async setIncorrectTimes(ip: string) {
+    /** 登录错误次数过多，返回稍后重试异常 */
+    private async banByIncorrectTimes(ip: string, times?: number) {
         const redisKey = mergeRedisKey(REDIS_LOGIN_INCORRECT_TIMES, ip);
-        const times = await this.redisService.getJson<number>(redisKey) || 0;
+        if (!times) {
+            times = await this.redisService.getJson<number>(redisKey) || 0;
+        }
         
         const incorrectRetryTimes = this.configService.get<number>('incorrectRetryTimes');
         if (times + 1 > incorrectRetryTimes) {
             const incorrectRetryExpire = this.configService.get<number>('incorrectRetryExpire');
             await this.redisService.client.set(redisKey, times, 'EX', incorrectRetryExpire);
             throw new BadRequestException(`登录错误次数过多, 请${Math.floor(incorrectRetryExpire/60)}分钟后稍后重试`);
-        } else {
-            await this.redisService.client.set(redisKey, times + 1);
         }
-        
     }
 
+    /** 设置登录错误次数 */
+    private async setIncorrectTimes(ip: string) {
+        const redisKey = mergeRedisKey(REDIS_LOGIN_INCORRECT_TIMES, ip);
+        let times = await this.redisService.getJson<number>(redisKey) || 0;
+        times += 1;
+        await this.redisService.client.set(redisKey, times);
+        return times;
+    }
+
+    /** 清除登录错误次数 */
     private async removeIncorrectTimes(ip: string) {
         const redisKey = mergeRedisKey(REDIS_LOGIN_INCORRECT_TIMES, ip);
         await this.redisService.client.del(redisKey);

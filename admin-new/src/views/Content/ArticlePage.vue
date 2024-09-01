@@ -17,6 +17,10 @@ import { reqArticlePageRequest } from '@/types/api/article';
 import { NButton, type DataTableBaseColumn, type FormRules } from 'naive-ui';
 import { useRouter } from 'vue-router';
 
+defineOptions({
+    name: contentRouteConstant.article.name,
+});
+
 const router  = useRouter();
 
 // 表单配置

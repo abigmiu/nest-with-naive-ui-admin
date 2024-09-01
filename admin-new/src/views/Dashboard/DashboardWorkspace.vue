@@ -31,8 +31,13 @@
 </template>
 
 <script setup lang="ts">
+import { dashboardRouteConstant } from '@/router/modules/dashboard';
 import { useUserStore } from '@/stores/userStore';
 import { NCard, NGrid, NGi, NAvatar } from 'naive-ui';
+
+defineOptions({
+    name: dashboardRouteConstant.workspace.name
+});
 
 const userStore = useUserStore();
 

@@ -6,6 +6,7 @@ import contentRoute from './modules/content';
 import companyRoute from './modules/company';
 import { useUserStoreWithout } from '@/stores/userStore';
 import { message } from '@/utils/global';
+import { useAliveStoreWithout } from '@/stores/aliveStore';
 
 // 整个文件都加载进来了， 没必要
 // const modules = import.meta.glob('./modules/**/*.ts', { eager: true })
@@ -33,15 +34,28 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
-  const { title, permission } = to.meta;
+  console.log(to);
+  const { title, permission, keepAlive } = to.meta;
+  console.log("🚀 ~ router.beforeEach ~ keepAlive:", keepAlive);
   if (title) {
     document.title = title;
   }
+  // 权限
   if (permission) {
     const userStore = useUserStoreWithout();
     if (!userStore.userInfo) {
       message.info('请先登录');
       return { name: loginRouteConstant.index.name };
+    }
+  }
+  // keepAlive
+  if (keepAlive) {
+    const keepAliveStore = useAliveStoreWithout();
+    const matchedCmp = to.matched.find((matched) => matched.name === to.name);
+    const cmpName = matchedCmp?.name;
+    console.log("🚀 ~ router.beforeEach ~ cmpName:", cmpName);
+    if (cmpName) {
+      keepAliveStore.setKeepCmp(cmpName as string, true);
     }
   }
 });

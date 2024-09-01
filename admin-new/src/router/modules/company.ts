@@ -27,6 +27,7 @@ const companyRoute: RouteRecordRaw = {
         super: true,
         menu: true,
         order: 3,
+        keepAlive: false,
     },
     children: [
         {
@@ -36,7 +37,8 @@ const companyRoute: RouteRecordRaw = {
             meta: {
                 tab: true,
                 title: '角色管理',
-                permission: PERMISSIONS.ROLE_PAGE
+                permission: PERMISSIONS.ROLE_PAGE,
+                keepAlive: true,
             }
         },
         {
@@ -46,6 +48,7 @@ const companyRoute: RouteRecordRaw = {
             meta: {
                 tab: true,
                 title: '用户管理',
+                keepAlive: true,
             }
         }
     ]

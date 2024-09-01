@@ -23,6 +23,7 @@ const dashboardRoute: RouteRecordRaw = {
         super: true,
         menu: true,
         order: 1,
+        keepAlive: false,
     },
     children: [
         {
@@ -32,6 +33,7 @@ const dashboardRoute: RouteRecordRaw = {
             meta: {
                 tab: true,
                 title: '工作台',
+                keepAlive: true,
             }
         }
     ]

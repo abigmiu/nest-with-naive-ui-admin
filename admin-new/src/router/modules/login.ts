@@ -15,6 +15,7 @@ const loginRoute: RouteRecordRaw = {
         title: "登录",
         menu: false,
         super: true,
+        keepAlive: false
     }
 };
 

@@ -21,6 +21,11 @@ import { NButton, type DataTableBaseColumn, type FormRules } from 'naive-ui';
 import CreateRole from './components/CreateRole.vue';
 import EditRole from './components/EditRole.vue';
 import { h, ref } from 'vue';
+import { companyRouteConstant } from '@/router/modules/company';
+
+defineOptions({
+    name: companyRouteConstant.role.name
+});
 
 // 搜索表单配置
 const formRules: FormRules = {};

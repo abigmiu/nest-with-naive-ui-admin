@@ -27,7 +27,6 @@ const AppProvider = useNestComponents([
 <template>
     <AppProvider>
         <RouterView>
-
         </RouterView>
     </AppProvider>
 </template>

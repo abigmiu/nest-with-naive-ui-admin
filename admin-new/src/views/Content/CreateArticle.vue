@@ -17,10 +17,15 @@
 </template>
 <script setup lang="ts">
 import { reqArticleRequest } from '@/api/article';
+import { contentRouteConstant } from '@/router/modules/content';
 import { NButton, NCard, NForm, NFormItem, NInput, type FormRules } from 'naive-ui';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 import { onMounted, reactive, ref } from 'vue';
+
+defineOptions({
+    name: contentRouteConstant.articleCreate.name
+});
 
 const formData = reactive({
     title: '',

@@ -37,6 +37,11 @@ import { useState } from '@/hooks/common';
 import TableActionMore from '../../components/table/components/TableActionMore.vue';
 import { rowDark } from 'naive-ui/es/legacy-grid/styles';
 import { DownOutlined } from '@vicons/antd';
+import { companyRouteConstant } from '@/router/modules/company';
+
+defineOptions({
+    name: companyRouteConstant.crew.name
+});
 
 const [createVisible, setCreateVisible] = useState<boolean>(false);
 
