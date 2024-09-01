@@ -3,7 +3,7 @@ import type { IPaginationQuery } from "./base";
 import type { IRole } from "./role";
 
 export interface ILoginRequest {
-	username: string;
+	account: string;
 	password: string;
 }
 

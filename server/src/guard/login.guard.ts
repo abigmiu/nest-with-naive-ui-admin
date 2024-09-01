@@ -24,7 +24,6 @@ export class LoginGuard implements CanActivate {
         if (token) {
             try {
                 const payload = await this.jwtService.verifyAsync(token);
-
                 request['user'] = payload;
                 return true;
             } catch (e) {

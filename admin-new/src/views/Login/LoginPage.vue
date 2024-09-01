@@ -16,10 +16,10 @@
                     :model="formInline"
                     :rules="rules"
                 >
-                    <n-form-item path="username">
+                    <n-form-item path="account">
                         <n-input
-                            v-model:value="formInline.username"
-                            placeholder="请输入用户名"
+                            v-model:value="formInline.account"
+                            placeholder="请输入用户账号"
                         >
                             <template #prefix>
                                 <n-icon
@@ -89,12 +89,12 @@ const message = useMessage();
 const loading = ref(false);
 const autoLogin = ref(true);
 const formInline = reactive({
-    username: '',
+    account: '',
     password: '',
 });
 
 const rules = {
-    username: { required: true, message: '请输入用户名', trigger: 'blur' },
+    account: { required: true, message: '请输入用户名', trigger: 'blur' },
     password: { required: true, message: '请输入密码', trigger: 'blur' },
 };
 
@@ -104,9 +104,9 @@ const router = useRouter();
 const route = useRoute();
 
 const handleLogin = async () => {
-    const { username, password } = formInline;
+    const { account, password } = formInline;
     const params: ILoginRequest = {
-        username,
+        account,
         password: MD5(password).toString(),
     };
 

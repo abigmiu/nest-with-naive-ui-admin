@@ -43,4 +43,6 @@ export interface IAppConfig {
   };
 
   hamcKey: string;
+  incorrectRetryTimes: number;
+  incorrectRetryExpire: number;
 }

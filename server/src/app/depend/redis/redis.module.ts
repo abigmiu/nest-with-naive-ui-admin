@@ -1,7 +1,8 @@
 import { IAppConfig } from '@/types/app/config';
-import { Global, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { RedisModule } from '@songkeys/nestjs-redis';
+import { AppRedisService } from './redis.service';
 
 @Module({
     imports: [
@@ -21,5 +22,7 @@ import { RedisModule } from '@songkeys/nestjs-redis';
             true,
         ),
     ],
+    providers: [AppRedisService],
+    exports: [AppRedisService]
 })
 export class AppRedisModule {}

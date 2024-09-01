@@ -1,6 +1,7 @@
 import { mergeRoutePath } from "../util";
 import { VLayout } from "../lazyRoute";
 import type { RouteRecordRaw } from "vue-router";
+import { PERMISSIONS } from "@/utils/constant";
 
 export const companyRouteConstant = {
     index: {
@@ -35,6 +36,7 @@ const companyRoute: RouteRecordRaw = {
             meta: {
                 tab: true,
                 title: '角色管理',
+                permission: PERMISSIONS.ROLE_PAGE
             }
         },
         {

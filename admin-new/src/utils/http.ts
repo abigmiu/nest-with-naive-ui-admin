@@ -3,6 +3,7 @@ import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CreateAxiosDefau
 import axios from "axios";
 import { IgnoreLastRequestError } from "./errors";
 import { download, getHttpHeaderFilename } from "./file";
+import { message } from "./global";
 
 class VAxios {
     private axiosInstance: AxiosInstance;
@@ -32,6 +33,12 @@ class VAxios {
                 download(response.data, getHttpHeaderFilename(response.headers['content-disposition']));
                 return response.data;
             }
+
+            if (response.data.code !== 200) {
+                message.error(response?.data?.message || '服务器错误');
+                return Promise.reject(response);
+            }
+
             return response.data.result;
         });
     }

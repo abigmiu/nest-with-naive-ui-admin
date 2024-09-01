@@ -4,6 +4,8 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { IAppConfig } from '@/types/app/config';
+import { CommonService } from '../common/common.service';
+import { AppRedisService } from '@/app/depend/redis/redis.service';
 
 @Module({
     imports: [
@@ -11,8 +13,7 @@ import { IAppConfig } from '@/types/app/config';
             global: true,
             inject: [ConfigService],
             useFactory: (configService: ConfigService<IAppConfig>) => {
-                const { secret, expiresIn } =
-          configService.get<IAppConfig['jwt']>('jwt');
+                const { secret, expiresIn } = configService.get<IAppConfig['jwt']>('jwt');
                 return {
                     secret,
                     signOptions: {
@@ -23,6 +24,6 @@ import { IAppConfig } from '@/types/app/config';
         }),
     ],
     controllers: [AuthController],
-    providers: [AuthService],
+    providers: [AuthService, CommonService, AppRedisService],
 })
-export class AuthModule {}
+export class AuthModule { }

@@ -28,6 +28,8 @@ const config: IConfig = {
         port: 6379,
     },
     hamcKey: process.env.hmacKey,
+    incorrectRetryTimes: 5,
+    incorrectRetryExpire: 5 * 60,
 };
 
 export default config;
