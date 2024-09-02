@@ -23,6 +23,7 @@
                     key-field="id"
                     label-field="name"
                     @update-checked-keys="onPermissionChange"
+                    @update-indeterminate-keys="onHalfPermissionChange"
                 ></NTree>
             </template>
         </BasicForm>
@@ -75,6 +76,7 @@ async function onSubmit() {
         await reqRoleEdit({
             ...formData,
             roleId: props.roleId!,
+            permissionIds: [...defaultPermissionIds.value, ...halfCheckedKeys ]
         });
         modalVisible.value = false;
     } finally {
@@ -93,10 +95,16 @@ onMounted(fetchPermission);
 
 // 权限修改
 const defaultPermissionIds = ref<number[]>([]);
+    let halfCheckedKeys: number[] = [];
 const onPermissionChange = (keys: Array<number>) => {
     const formData = formRef.value!.formData;
     formData.permissionIds = keys;
     defaultPermissionIds.value = keys;
+};
+const onHalfPermissionChange = (keys: Array<number>) => {
+    console.log("🚀 ~ onHalfPermissionChange ~ keys:", keys);
+    
+    halfCheckedKeys = keys;
 };
 
 // 获取基本数据

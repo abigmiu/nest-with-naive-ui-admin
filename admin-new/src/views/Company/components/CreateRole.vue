@@ -22,6 +22,7 @@
                     key-field="id"
                     label-field="name"
                     @update-checked-keys="onPermissionChange"
+                    @update-indeterminate-keys="onHalfPermissionChange"
                 ></NTree>
             </template>
         </BasicForm>
@@ -55,10 +56,16 @@ async function onSubmit() {
     const formEl = formRef.value!;
     await formEl.validateForm();
     const formData = formEl.formData as IRoleCreateRequest;
-    
+
+    const permissionIds = [...fullCheckedKeys, ...halfCheckedKeys ];
+    const submitData: IRoleCreateRequest = {
+        ...formData,
+        permissionIds: permissionIds
+    };
+
     loading.value = true;
     try {
-        await reqRoleCreate(formData);
+        await reqRoleCreate(submitData);
         visible.value = false;
     } finally {
         loading.value = false;
@@ -85,17 +92,28 @@ const formSchemas = reactive<IBasicFormSchemas[]>([
 
 // 获取权限
 const permissionTreeData = ref<TreeOption[]>([]);
+let originPermissionTreeData: IPermissionSimpleListResponse[] = [];
 const fetchPermission = async () => {
     const data = await reqPermissionSimpleList();
+    originPermissionTreeData = data;
     const treeData = listToTree(data);
     permissionTreeData.value = treeData as unknown as TreeOption[];
     
 };
 
 // 权限修改
+let fullCheckedKeys: number[] = [];
+let halfCheckedKeys: number[] = [];
 const onPermissionChange = (keys: Array<number>) => {
     const formData = formRef.value!.formData;
     formData.permissionIds = keys;
+    fullCheckedKeys = keys;
+    
+};
+const onHalfPermissionChange = (keys: Array<number>) => {
+    console.log("🚀 ~ onHalfPermissionChange ~ keys:", keys);
+    
+    halfCheckedKeys = keys;
 };
 
 // 

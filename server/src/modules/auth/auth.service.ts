@@ -34,10 +34,37 @@ export class AuthService {
             await this.banByIncorrectTimes(ip, times);
             throw new BadRequestException('账号或密码错误');
         }
+
+        const roleToPermission = await this.prismaService.roleToPermission.findMany({
+            where: {
+                roleId: foundData.roleId
+            },
+            select: {
+                permission: {
+                    select: {
+                        value: true,
+                        type: true  
+                    }
+                }
+            }
+        });
+        const menuPermissions: string[] = [];
+        const actionPermissions: string[] = [];
+
+        roleToPermission.forEach(item => {
+            if (item.permission.type === 1) {
+                menuPermissions.push(item.permission.value);
+            } else if (item.permission.type === 2) {
+                actionPermissions.push(item.permission.value);
+            }
+        });
+
         const token = await this.generateToken(foundData.id, foundData.roleId);
         await this.removeIncorrectTimes(ip);
         return new LoginResponseDto({
             ...foundData,
+            menuPermissions,
+            actionPermissions,
             token,
         });
     }

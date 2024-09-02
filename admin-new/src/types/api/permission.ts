@@ -3,4 +3,5 @@ export interface IPermissionSimpleListResponse {
     id: number;
     name: string;
     parentId?: number;
+    type: number; // 1 是菜单， 2 是功能
 }

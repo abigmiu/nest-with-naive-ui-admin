@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 import { mergeRoutePath } from "../util";
 import { VLayout } from "../lazyRoute";
+import { PERMISSIONS } from "@/utils/constant";
 
 export const contentRouteConstant = {
     index: {
@@ -30,6 +31,7 @@ const contentRoute: RouteRecordRaw = {
         super: true,
         order: 2,
         keepAlive: false,
+        permission: PERMISSIONS.CONTENT
     },
     component: VLayout,
     children: [
@@ -42,6 +44,7 @@ const contentRoute: RouteRecordRaw = {
                 title: '文章管理',
                 menu: true,
                 keepAlive: true,
+                permission: PERMISSIONS.ARTICLE
             }
         },
         {
@@ -53,6 +56,7 @@ const contentRoute: RouteRecordRaw = {
                 title: '文章创建',
                 menu: false,
                 keepAlive: false,
+                permission: PERMISSIONS.ARTICLE_CREATE
             }
         },
         {
@@ -64,6 +68,7 @@ const contentRoute: RouteRecordRaw = {
                 title: '图片管理',
                 menu: true,
                 keepAlive: true,
+                permission: PERMISSIONS.IMAGE
             },
         
         }

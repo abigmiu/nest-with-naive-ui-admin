@@ -99,7 +99,8 @@ export class RoleService {
                 permissions: {
                     select: {
                         permission: true,
-                        permissionId: true
+                        permissionId: true,
+                        
                     }
                 }
             }

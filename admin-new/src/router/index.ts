@@ -45,6 +45,10 @@ router.beforeEach((to) => {
       message.info('请先登录');
       return { name: loginRouteConstant.index.name };
     }
+    if (!userStore.hasMenuPermissions(permission)) {
+      message.info('没有权限');
+      return false;
+    }
   }
   // keepAlive
   if (keepAlive) {

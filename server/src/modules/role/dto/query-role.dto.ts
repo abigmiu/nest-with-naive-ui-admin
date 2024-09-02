@@ -70,7 +70,7 @@ export class QueryRoleInfoResponseDto implements Partial<
 
     @Expose({ name: 'permissionIds' })
     get permissionIds(): number[] {
-        return this.permissions?.map((item) => item.permissionId) || [];
+        return this.permissions?.filter((item) => item.permission.type === 2).map((item) => item.permissionId) || [];
     }
 
     permissions?: Array<{ roleId: number; permissionId: number; } & { permission: Permission; }>;

@@ -1,6 +1,4 @@
 
-SET FOREIGN_KEY_CHECKS = 0; 
-truncate table `permission`;
 INSERT INTO `permission`
 (`id`, `type`, `parent_id`, `name`, `value`, `updated_at`)
 VALUES 
@@ -21,7 +19,4 @@ VALUES
 (15, 1, 10, '用户管理', 'company.crew', NOW()),
 (16, 2, 15, '新增用户', 'company.crew.create', NOW()),
 (17, 2, 15, '编辑用户', 'company.crew.update', NOW()),
-(18, 2, 15, '删除用户', 'company.crew.delete', NOW());
-
-
-SET FOREIGN_KEY_CHECKS = 1;
+(18, 2, 15, '删除用户', 'company.crew.delete', NOW()),

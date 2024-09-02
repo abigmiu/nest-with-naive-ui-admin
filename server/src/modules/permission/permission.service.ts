@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePermissionRequestDto } from './dto/create-permission.dto';
 import { PrismaService } from '@/app/depend/prisma/prisma.service';
 import { UpdatePermissionRequestDto } from './dto/update-permission.dto';
-import { InjectRedis } from '@songkeys/nestjs-redis';
-import { Redis } from 'ioredis';
 
 @Injectable()
 export class PermissionService {
@@ -37,6 +34,7 @@ export class PermissionService {
                 id: true,
                 name: true,
                 parentId: true,
+                type: true,
             },
         });
         return data;

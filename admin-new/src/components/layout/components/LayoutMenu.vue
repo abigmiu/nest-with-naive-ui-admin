@@ -10,12 +10,15 @@
 </template>
 
 <script lang="ts" setup>
+import { useUserStore } from '@/stores/userStore';
 import { NMenu, type MenuOption } from 'naive-ui';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter, type RouteRecordNormalized, type RouteRecordRaw } from 'vue-router';
 
 const router = useRouter();
 const route = useRoute();
+
+const userStore = useUserStore();
 
 // #start 树状路由处理
 function getNormalizedRouteRecordChild(route: RouteRecordNormalized) {
@@ -69,13 +72,22 @@ function getTreeRoutes() {
 // #start 获取菜单项
 let menuOptions: MenuOption[] = [];
 function getMenuOptions() {
-    const routes = router.getRoutes().filter((route) => route.meta.super && route.meta.menu);
+    const routes = router.getRoutes()
+        .filter((route) => route.meta.super && route.meta.menu);
 
     const generateMenuOption = (route: RouteRecordRaw): MenuOption => {
+        const children = route.children?.map((item) => generateMenuOption(item));
+        let hasPermission = true;
+        if (route.meta?.permission) {
+            hasPermission = userStore.hasMenuPermissions(route.meta.permission);
+        }
+
+
         return {
             label: route.meta?.title,
             key: route.name!.toString(),
-            children: route.children?.map((item) => generateMenuOption(item)),
+            children,
+            show: Array.isArray(children) ? children.some((item) => item.show) : hasPermission,
         };
     };
 
@@ -93,12 +105,15 @@ const onExpandedKeysUpdate = (keys: string[]) => {
     console.log("🚀 ~ onExpandedKeysUpdate ~ keys:", keys);
     expandedKeys.value = keys;
 };
-const onMenuItemClick = (key: string) => {
+const onMenuItemClick = async (key: string) => {
     if (selectMenuKey.value === key) return;
-    selectMenuKey.value = key;
-    router.push({
+
+    const navigateResult = await router.push({
         name: key
     });
+    if (!navigateResult) {
+        selectMenuKey.value = key;
+    }
 };
 // # end 菜单处理
 

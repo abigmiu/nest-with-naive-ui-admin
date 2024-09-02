@@ -6,7 +6,10 @@
         :fetch-fn="fetchData"
         :pageable="true"
     >
-        <NButton type="primary" @click="setCreateVisible(true)">新增</NButton>
+        <AuthWrapper :auth="PERMISSIONS.CREW_CREATE">
+            <NButton type="primary" @click="setCreateVisible(true)">新增</NButton>
+        </AuthWrapper>
+        
 
         <NDropdown trigger="hover" :options="importDropdownOptions" :on-select="importDropdownSelect" >
             <NButton icon-placement="right" class="ml-2" :loading="importDropDownLoading">
@@ -38,6 +41,8 @@ import TableActionMore from '../../components/table/components/TableActionMore.v
 import { rowDark } from 'naive-ui/es/legacy-grid/styles';
 import { DownOutlined } from '@vicons/antd';
 import { companyRouteConstant } from '@/router/modules/company';
+import AuthWrapper from '@/components/common/AuthWrapper.vue';
+import { PERMISSIONS } from '@/utils/constant';
 
 defineOptions({
     name: companyRouteConstant.crew.name

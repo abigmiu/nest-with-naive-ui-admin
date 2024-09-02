@@ -12,7 +12,7 @@ export class LoginRequestDto {
 
 @Exclude()
 export class LoginResponseDto implements Partial<User> {
-    constructor(data: Partial<User & { token: string }>) {
+    constructor(data: Partial<User & { token: string, menuPermissions: string[], actionPermissions: string[] }>) {
         Object.assign(this, data);
     }
 
@@ -21,4 +21,11 @@ export class LoginResponseDto implements Partial<User> {
 
     @Expose()
     token: string;
+
+    /** 权限列表 */
+    @Expose()
+    menuPermissions: string[];
+
+    @Expose()
+    actionPermissions: string[];
 }
