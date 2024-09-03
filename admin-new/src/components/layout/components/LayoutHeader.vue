@@ -4,7 +4,7 @@
             <!-- 菜单收起 -->
             <div
                 class="ml-1 layout-header-trigger layout-header-trigger-min"
-                @click="handleMenuCollapsed"
+                @click="toggleCollapsed"
             >
                 <NIcon
                     size="18"
@@ -27,11 +27,12 @@
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@vicons/antd';
 import { ref } from 'vue';
 import { NIcon } from 'naive-ui';
+import { useMenuStore } from '@/stores/menuStore';
+import { storeToRefs } from 'pinia';
 
-const collapsed = ref(false);
-const handleMenuCollapsed = () => {
-    collapsed.value = !collapsed.value;
-};
+const menuStore = useMenuStore();
+const { collapsed,  } = storeToRefs(menuStore);
+const { toggleCollapsed } = menuStore;
 </script>
 
 <style lang="scss" scoped>

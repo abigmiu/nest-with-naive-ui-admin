@@ -1,6 +1,7 @@
 export const STORE_NAMES = {
     USER: 'user',
     ALIVE: 'alive',
+    MENU: 'menu',
 };
 
 export const PERMISSIONS = {

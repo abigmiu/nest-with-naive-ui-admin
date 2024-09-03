@@ -1,24 +1,11 @@
 <template>
-    <NLayout
-        class="layout"
-        has-sider
-    >
-
-        <NLayoutSider
-            class="layout-sider"
-            :inverted="true"
-        >
-            <LayoutMenu></LayoutMenu>
-        </NLayoutSider>
-
+    <NLayout class="layout" has-sider>
+        <LayoutMenu></LayoutMenu>
         <NLayout>
             <NLayoutHeader>
                 <LayoutHeader />
             </NLayoutHeader>
-            <NLayoutContent
-                class="layout-content layout-default-background"
-                :native-scrollbar="false"
-            >
+            <NLayoutContent class="layout-content layout-default-background" :native-scrollbar="false">
                 <LayoutTabs></LayoutTabs>
                 <div class="layout-content-main">
                     <LayoutContent></LayoutContent>

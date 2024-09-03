@@ -1,19 +1,36 @@
 <template>
-    <NMenu
-        :options="menuOptions"
+    <NLayoutSider
+        class="layout-sider"
         :inverted="true"
-        :on-update:value="onMenuItemClick"
-        :on-update:expanded-keys="onExpandedKeysUpdate"
-        :value="selectMenuKey"
-        :expanded-keys="expandedKeys"
-    ></NMenu>
+        collapse-mode="width"
+        :collapsed-width="64"
+        :width="240"
+        :collapsed="collapsed"
+    >
+        <NMenu
+            :options="menuOptions"
+            :inverted="true"
+            :on-update:value="onMenuItemClick"
+            :on-update:expanded-keys="onExpandedKeysUpdate"
+            :value="selectMenuKey"
+            :expanded-keys="expandedKeys"
+            :collapsed="collapsed"
+            :collapsed-width="64"
+            :collapsed-icon-size="22"
+        ></NMenu>
+    </NLayoutSider>
 </template>
 
 <script lang="ts" setup>
+import { useMenuStore } from '@/stores/menuStore';
 import { useUserStore } from '@/stores/userStore';
-import { NMenu, type MenuOption } from 'naive-ui';
+import { NMenu, type MenuOption, NLayoutSider } from 'naive-ui';
+import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
 import { useRoute, useRouter, type RouteRecordNormalized, type RouteRecordRaw } from 'vue-router';
+
+const menuStore = useMenuStore();
+const { collapsed } = storeToRefs(menuStore);
 
 const router = useRouter();
 const route = useRoute();
