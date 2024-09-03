@@ -86,6 +86,7 @@ function getMenuOptions() {
         return {
             label: route.meta?.title,
             key: route.name!.toString(),
+            icon: route.meta?.icon,
             children,
             show: Array.isArray(children) ? children.some((item) => item.show) : hasPermission,
         };

@@ -1,8 +1,8 @@
 import type { RouteRecordRaw } from "vue-router";
-import { mergeRoutePath } from "../util";
+import { mergeRoutePath, renderIcon } from "../util";
 import { VLayout } from "../lazyRoute";
 import { PERMISSIONS } from "@/utils/constant";
-
+import { ArticleOutlined } from '@vicons/material';
 export const contentRouteConstant = {
     index: {
         path: '/content',
@@ -31,7 +31,8 @@ const contentRoute: RouteRecordRaw = {
         super: true,
         order: 2,
         keepAlive: false,
-        permission: PERMISSIONS.CONTENT
+        permission: PERMISSIONS.CONTENT,
+        icon: renderIcon(ArticleOutlined)
     },
     component: VLayout,
     children: [

@@ -1,7 +1,7 @@
 import type { RouteRecord, RouteRecordRaw } from "vue-router";
-import { mergeRoutePath } from "../util";
+import { mergeRoutePath, renderIcon } from "../util";
 import { VLayout } from "../lazyRoute";
-
+import { DashboardOutlined } from '@vicons/antd';
 
 export const dashboardRouteConstant = {
     index: {
@@ -24,6 +24,7 @@ const dashboardRoute: RouteRecordRaw = {
         menu: true,
         order: 1,
         keepAlive: false,
+        icon: renderIcon(DashboardOutlined)
     },
     children: [
         {

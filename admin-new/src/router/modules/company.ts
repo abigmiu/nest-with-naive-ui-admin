@@ -1,8 +1,8 @@
-import { mergeRoutePath } from "../util";
+import { mergeRoutePath, renderIcon } from "../util";
 import { VLayout } from "../lazyRoute";
 import type { RouteRecordRaw } from "vue-router";
 import { PERMISSIONS } from "@/utils/constant";
-
+import {  ManageAccountsOutlined} from '@vicons/material';
 export const companyRouteConstant = {
     index: {
         path: '/company',
@@ -28,7 +28,8 @@ const companyRoute: RouteRecordRaw = {
         menu: true,
         order: 3,
         keepAlive: false,
-        permission: PERMISSIONS.COMPANY
+        permission: PERMISSIONS.COMPANY,
+        icon: renderIcon(ManageAccountsOutlined)
     },
     children: [
         {

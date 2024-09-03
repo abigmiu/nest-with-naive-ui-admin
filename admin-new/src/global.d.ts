@@ -1,3 +1,5 @@
+import type { VNode, VNodeChild } from "vue";
+
 declare module "vue-router" {
     interface RouteMeta {
         permission?: string | string[]; // 权限
@@ -7,6 +9,7 @@ declare module "vue-router" {
         tab?: boolean; // 是否展示在顶部tabsList
         super?: boolean; // 是否是一级路由
         keepAlive: boolean; // 是否缓存
+        icon?: () => VNode
     }
 }
 
