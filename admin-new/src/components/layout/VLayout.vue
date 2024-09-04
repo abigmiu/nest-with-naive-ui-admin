@@ -2,9 +2,7 @@
     <NLayout class="layout" has-sider>
         <LayoutMenu></LayoutMenu>
         <NLayout>
-            <NLayoutHeader>
-                <LayoutHeader />
-            </NLayoutHeader>
+            <LayoutHeader />
             <NLayoutContent class="layout-content layout-default-background" :native-scrollbar="false">
                 <LayoutTabs></LayoutTabs>
                 <div class="layout-content-main">
@@ -12,9 +10,8 @@
                 </div>
             </NLayoutContent>
         </NLayout>
-
-
     </NLayout>
+    <LayoutSetting></LayoutSetting>
 </template>
 
 <script lang="ts" setup>
@@ -23,6 +20,7 @@ import LayoutMenu from './components/LayoutMenu.vue';
 import LayoutHeader from './components/LayoutHeader.vue';
 import LayoutContent from './components/LayoutContent.vue';
 import LayoutTabs from './components/LayoutTabs.vue';
+import LayoutSetting from './components/LayoutSetting.vue';
 </script>
 
 <style lang="scss">

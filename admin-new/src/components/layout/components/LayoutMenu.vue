@@ -1,7 +1,7 @@
 <template>
     <NLayoutSider
         class="layout-sider"
-        :inverted="true"
+        :inverted="menuDark"
         collapse-mode="width"
         :collapsed-width="64"
         :width="240"
@@ -9,7 +9,7 @@
     >
         <NMenu
             :options="menuOptions"
-            :inverted="true"
+            :inverted="menuDark"
             :on-update:value="onMenuItemClick"
             :on-update:expanded-keys="onExpandedKeysUpdate"
             :value="selectMenuKey"
@@ -23,6 +23,7 @@
 
 <script lang="ts" setup>
 import { useMenuStore } from '@/stores/menuStore';
+import { useSettingStore } from '@/stores/settingStore';
 import { useUserStore } from '@/stores/userStore';
 import { NMenu, type MenuOption, NLayoutSider } from 'naive-ui';
 import { storeToRefs } from 'pinia';
@@ -30,7 +31,9 @@ import { ref, watch } from 'vue';
 import { useRoute, useRouter, type RouteRecordNormalized, type RouteRecordRaw } from 'vue-router';
 
 const menuStore = useMenuStore();
+const settingStore = useSettingStore();
 const { collapsed } = storeToRefs(menuStore);
+const { menuDark } = storeToRefs(settingStore);
 
 const router = useRouter();
 const route = useRoute();
