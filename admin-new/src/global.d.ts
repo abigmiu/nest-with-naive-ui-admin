@@ -9,7 +9,8 @@ declare module "vue-router" {
         tab?: boolean; // 是否展示在顶部tabsList
         super?: boolean; // 是否是一级路由
         keepAlive: boolean; // 是否缓存
-        icon?: () => VNode
+        icon?: () => VNode; 
+        tabDisallowClose?: boolean; // 是否不可关闭标签页
     }
 }
 

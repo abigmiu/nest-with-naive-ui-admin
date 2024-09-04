@@ -1,24 +1,12 @@
 <template>
     <div class="tabs-card">
-        <span
-            class="tabs-card-prev"
-            v-show="scrollable"
-        >
-            <NIcon
-                size="16"
-                color="#515a6e"
-            >
+        <span class="tabs-card-prev" v-show="scrollable">
+            <NIcon size="16" color="#515a6e">
                 <LeftOutlined />
             </NIcon>
         </span>
-        <div
-            class="flex-1 overflow-hidden"
-            ref="scrollWrapEl"
-        >
-            <div
-                class="tabs-card-scroll"
-                ref="scrollEl"
-            >
+        <div class="flex-1 overflow-hidden" ref="scrollWrapEl">
+            <div class="tabs-card-scroll" ref="scrollEl">
                 <div
                     class="tabs-card-scroll-item"
                     v-for="item in tabs"
@@ -28,23 +16,14 @@
                     @click="onJumpRoute(item)"
                 >
                     <span>{{ item.title }}</span>
-                    <NIcon
-                        size="14"
-                        @click.stop="closeTab(item)"
-                    >
+                    <NIcon size="14" @click.stop="closeTab(item)" v-if="item.closeAble" >
                         <CloseOutlined />
                     </NIcon>
                 </div>
             </div>
         </div>
-        <span
-            class="tabs-card-next"
-            v-show="scrollable"
-        >
-            <NIcon
-                size="16"
-                color="#515a6e"
-            >
+        <span class="tabs-card-next" v-show="scrollable">
+            <NIcon size="16" color="#515a6e">
                 <RightOutlined />
             </NIcon>
         </span>
@@ -56,11 +35,16 @@ import { CloseOutlined, LeftOutlined, RightOutlined } from '@vicons/antd';
 import { nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useDebounceFn } from '@vueuse/core';
 import { useRoute, useRouter } from 'vue-router';
+import { useAliveStore } from '@/stores/aliveStore';
 
 interface ITab {
     name: string;
     title: string;
+    closeAble: boolean;
 }
+
+const aliveStore = useAliveStore();
+const { setKeepCmp } = aliveStore;
 
 const tabs = ref<Array<ITab>>([]);
 const activeRouteName = ref('');
@@ -97,15 +81,18 @@ function onItemContextMenu(e: MouseEvent) {
 const router = useRouter();
 const route = useRoute();
 function handleRouteChange() {
+    console.log(route.meta);
     activeRouteName.value = route.name as string;
     const isExit = tabs.value.some((tab) => tab.name === route.name);
     if (isExit) {
         return;
     }
 
+    
     tabs.value.push({
         name: route.name as string,
         title: route.meta.title,
+        closeAble: !route.meta.tabDisallowClose
     });
     judgeScrollable();
 }
@@ -114,7 +101,10 @@ watch(() => route.fullPath, handleRouteChange, { immediate: true });
 // 标签页事件处理
 function closeTab(item: ITab) {
     const index = tabs.value.findIndex((tab) => tab.name === item.name);
+    if (index === -1) return;
+    setKeepCmp(tabs.value[index].name, false);
     tabs.value.splice(index, 1);
+    // 获取上一个路由
     const lastRoute = tabs.value[tabs.value.length - 1] || tabs.value[0];
     if (!lastRoute) return;
     router.push({
@@ -127,6 +117,7 @@ function onJumpRoute(item: ITab) {
         name: item.name
     });
 }
+
 </script>
 <style lang="scss">
 .tabs-card {
@@ -160,7 +151,7 @@ function onJumpRoute(item: ITab) {
 
     &-scroll {
         white-space: nowrap;
-
+        display: flex;
         &-item {
             background: #fff;
             color: rgb(31, 34, 37);

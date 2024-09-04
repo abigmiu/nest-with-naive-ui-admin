@@ -35,7 +35,7 @@
 </template>
 <script setup lang="ts">
 import { NForm, NFormItem, type FormInst, type FormRules, NGrid, NFormItemGi, NInput, NSelect, type FormItemRule, type InputProps, type SelectProps } from 'naive-ui';
-import { computed, ref, defineExpose } from 'vue';
+import { computed, ref } from 'vue';
 import { clone } from 'radash';
 import { watch } from 'vue';
 
