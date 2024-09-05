@@ -56,6 +56,7 @@
             <!-- 列设置 -->
             <div class="table-toolbar-right-icon">
                 <ColumnSetting
+                    :table-key="tableKey"
                     :columns="tableColumns"
                     @update-column="onUpdateColumnSetting"
                 ></ColumnSetting>
@@ -92,6 +93,7 @@ interface IProps {
     tableColumns: DataTableBaseColumn[];
     pageable: boolean;
     fetchFn: (query: Record<string, any>, ...args: any[]) => Promise<any[] | IPageData<any>>;
+    tableKey: string;
 }
 const props = defineProps<IProps>();
 const innerTableColumns = ref<DataTableColumns>([]);

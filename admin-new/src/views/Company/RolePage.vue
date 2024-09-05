@@ -5,6 +5,7 @@
         :pageable="false"
         :fetch-fn="fetchTableData"
         :table-columns="tableColumns"
+        :table-key="companyRouteConstant.role.name"
     >
         <NButton @click="setCreateVisible(true)" type="primary">新增</NButton>
     </QueryTable>

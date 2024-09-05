@@ -5,6 +5,7 @@
         :pageable="true"
         :table-columns="tableColumns"
         :fetch-fn="fetchTableData"
+        :table-key="contentRouteConstant.article.name"
     >
         <NButton @click="onAddBtn">新增</NButton>
     </QueryTable>

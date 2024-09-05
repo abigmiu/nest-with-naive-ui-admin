@@ -18,6 +18,7 @@
             :table-columns="tableColumns"
             :fetch-fn="fetchFn"
             :pageable="pageable"
+            :table-key="tableKey"
             ref="basicTableRef"
         >
             <slot></slot>
@@ -40,6 +41,7 @@ interface IProps {
     tableColumns: DataTableBaseColumn<any>[];
     pageable: boolean;
     fetchFn: IFetchFn;
+    tableKey: string;
 }
 const props = defineProps<IProps>();
 

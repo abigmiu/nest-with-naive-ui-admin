@@ -5,6 +5,7 @@
         :table-columns="tableColumns"
         :fetch-fn="fetchData"
         :pageable="true"
+        :table-key="companyRouteConstant.crew.name"
     >
         <AuthWrapper :auth="PERMISSIONS.CREW_CREATE">
             <NButton type="primary" @click="setCreateVisible(true)">新增</NButton>

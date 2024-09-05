@@ -19,6 +19,7 @@
                         <NButton
                             text
                             type="primary"
+                            @click="onReset"
                         >重置</NButton>
                         <NCheckbox v-model:checked="setting.selection">
                             勾选列
@@ -105,8 +106,13 @@ import { NTooltip, NPopover, NIcon, NSpace, NSwitch, NButton, NCheckbox, NCheckb
 import { DragOutlined, SettingOutlined, VerticalLeftOutlined, VerticalRightOutlined } from '@vicons/antd';
 import { reactive, ref, toRaw, unref, watch } from 'vue';
 import Draggerable from 'vuedraggable';
+import { useSettingStore } from '@/stores/settingStore';
+import { storeToRefs } from 'pinia';
+import type { ISettingTableColumn } from '@/types/setting';
+import { clone } from 'radash';
 interface IProps {
-    columns: DataTableBaseColumn[]
+    columns: DataTableBaseColumn[];
+    tableKey: string;
 }
 const props = defineProps<IProps>();
 
@@ -114,16 +120,18 @@ const emits = defineEmits<{
     updateColumn: [columns: ITableSettingColumn[], info: ITableSettingInfo]
 }>();
 
+const settingStore = useSettingStore();
+const { tableSetting } = storeToRefs(settingStore);
+if (!tableSetting.value[props.tableKey]) {
+    tableSetting.value[props.tableKey] = JSON.parse(JSON.stringify(tableSetting.value.default));
+}
+
 export interface ITableSettingInfo {
     selection: boolean;
     border: boolean;
     resizable: boolean;
 }
-const setting = reactive<ITableSettingInfo>({
-    selection: false,
-    border: false,
-    resizable: false,
-});
+const setting = tableSetting.value[props.tableKey].column;
 
 export interface ITableSettingColumn {
     title: string;
@@ -181,6 +189,12 @@ const handleColumnCheck: CheckboxGroupProps['onUpdate:value'] = (checkedValue, m
     const columnSetting = columnsSettingList.value.find((column) => column.key === value)!;
     columnSetting.check = actionType === 'check';
     columnChecked.value = checkedValue as string[];
+};
+
+// 重置设置
+
+const onReset = () => {
+    Object.assign(setting, tableSetting.value.default.column);    
 };
 </script>
 
