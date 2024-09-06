@@ -9,7 +9,8 @@ interface IState {
     tableSetting: Record<string, {
         style: ISettingTableStyle;
         column: ISettingTableColumn;
-    }>
+    }>;
+    themeColor: string;
 }
 
 export const useSettingStore = defineStore(STORE_NAMES.SETTING, {
@@ -32,7 +33,8 @@ export const useSettingStore = defineStore(STORE_NAMES.SETTING, {
                         resizable: false
                     })
                 })
-            }
+            },
+            themeColor: '#409EF0'
         };
     },
     actions: {

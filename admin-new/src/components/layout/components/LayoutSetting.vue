@@ -5,7 +5,7 @@
             <NDivider title-placement="center">导航栏风格</NDivider>
 
             <div class="drawer-setting-item align-items-top">
-                <div class="drawer-setting-item-style align-items-top" @click="setMenuDark(true);setHeaderDark(false)">
+                <div class="drawer-setting-item-style align-items-top" @click="setMenuDark(true); setHeaderDark(false)">
                     <NTooltip placement="top">
                         <template #trigger>
                             <img src="~@/assets/images/nav-theme-dark.svg" alt="暗色侧边栏" />
@@ -15,7 +15,7 @@
                     <NBadge dot color="#19be6b" v-if="!headerDark && menuDark" />
                 </div>
 
-                <div class="drawer-setting-item-style align-items-top" @click="setMenuDark(false);setHeaderDark(false)">
+                <div class="drawer-setting-item-style align-items-top" @click="setMenuDark(false); setHeaderDark(false)">
                     <NTooltip placement="top">
                         <template #trigger>
                             <img src="~@/assets/images/nav-theme-light.svg" alt="亮色侧边栏" />
@@ -25,7 +25,7 @@
                     <NBadge dot color="#19be6b" v-if="!menuDark && !headerDark" />
                 </div>
 
-                <div class="drawer-setting-item-style align-items-top" @click="setHeaderDark(true);setMenuDark(true)" >
+                <div class="drawer-setting-item-style align-items-top" @click="setHeaderDark(true); setMenuDark(true)">
                     <NTooltip placement="top">
                         <template #trigger>
                             <img src="~@/assets/images/header-theme-dark.svg" alt="暗色顶栏" />
@@ -36,6 +36,22 @@
 
                 </div>
             </div>
+
+            <NDivider title-placement="center">系统主题</NDivider>
+            <div class="drawer-setting-theme align-items-top">
+
+                <div
+                    class="drawer-setting-theme-item"
+                    v-for="item in THEME_LIST"
+                    :key="item.hex"
+                    @click="themeColor = item.hex"
+                >
+                    <div class="theme-item-hex" :style="{ background: item.hex }"></div>
+                    <div class="theme-item-name">{{ item.name }}</div>
+                    <NBadge dot color="#19be6b" v-if="item.hex === themeColor" />
+                </div>
+
+            </div>
         </NDrawerContent>
     </NDrawer>
 </template>
@@ -43,9 +59,10 @@
 import { useSettingStore } from '@/stores/settingStore';
 import { NDrawer, NDrawerContent, NDivider, NTooltip, NBadge } from 'naive-ui';
 import { storeToRefs } from 'pinia';
+import { THEME_LIST } from '@/utils/constant';
 
 const settingStore = useSettingStore();
-const { visible, menuDark, headerDark } = storeToRefs(settingStore);
+const { visible, menuDark, headerDark, themeColor } = storeToRefs(settingStore);
 const { setMenuDark, setHeaderDark } = settingStore;
 </script>
 
@@ -82,22 +99,6 @@ const { setMenuDark, setHeaderDark } = settingStore;
         &-select {
             flex: 1;
         }
-
-        .theme-item {
-            width: 20px;
-            min-width: 20px;
-            height: 20px;
-            cursor: pointer;
-            border: 1px solid #eee;
-            border-radius: 2px;
-            margin: 0 5px 5px 0;
-            text-align: center;
-            line-height: 14px;
-
-            .n-icon {
-                color: #fff;
-            }
-        }
     }
 
     .align-items-top {
@@ -113,6 +114,27 @@ const { setMenuDark, setHeaderDark } = settingStore;
         ::v-deep(.n-switch__rail) {
             background-color: #000e1c;
         }
+    }
+
+    &-setting-theme {
+        display: grid;
+        column-gap: 10px;
+        row-gap: 10px;
+        grid-template-columns: repeat(4, 1fr);
+        &-item {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .theme-item-hex {
+                height: 30px;
+                width: 30px;
+                border-radius: 4px
+            }
+        }
+
     }
 }
 </style>

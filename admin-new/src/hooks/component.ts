@@ -6,7 +6,9 @@ interface INestCmp {
     component: Component
 }
 
-/** 多个组件嵌套 */
+/** 多个组件嵌套
+ * 生成的vnode 是固定的
+ */
 export function useNestComponents(cmps: INestCmp[]) {
     // return () => h('div', null, createCmp(0));
     // const nestComponent = (props, ctx) => {
@@ -29,8 +31,14 @@ export function useNestComponents(cmps: INestCmp[]) {
             childVNodes = h(cmps[i].component, props, () => childCmp);
         }
 
+        if (cmps.length === 1) {
+            childVNodes = ctx.slots.default && ctx.slots.default();
+          }
+
         return h(cmps[0].component, cmps[0].props, () => childVNodes!);
     };
+
+   
 
     return nestComponent;
 }

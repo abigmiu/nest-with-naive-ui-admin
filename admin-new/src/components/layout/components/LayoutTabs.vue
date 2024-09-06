@@ -30,12 +30,15 @@
     </div>
 </template>
 <script setup lang="ts">
-import { NIcon } from 'naive-ui';
+import { NIcon, useThemeVars } from 'naive-ui';
 import { CloseOutlined, LeftOutlined, RightOutlined } from '@vicons/antd';
-import { nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useDebounceFn } from '@vueuse/core';
 import { useRoute, useRouter } from 'vue-router';
 import { useAliveStore } from '@/stores/aliveStore';
+
+const themeVars = useThemeVars();
+const primaryColor = computed(() => themeVars.value.primaryColor);
 
 interface ITab {
     name: string;
@@ -195,7 +198,7 @@ function onJumpRoute(item: ITab) {
     }
 
     .active-item {
-        color: #18a058;
+        color: v-bind(primaryColor);
 
     }
 }

@@ -43,3 +43,53 @@ export const PERMISSIONS = {
     /** 图片删除 */
     IMAGE_DELETE: 'content.image.delete',
 };
+
+export const THEME_LIST: Array<{
+    name: string;
+    hex: string;
+}> = [
+    {
+        name: '默认',
+        hex: '#006be6'
+    },
+    {
+        name: '紫罗兰',
+        hex: '#7166f0'
+    },
+    {
+        name: '樱花粉',
+        hex: '#e84a6c',
+    },
+    {
+        name: '柠檬黄',
+        hex: '#efbd48'
+    },
+    {
+        name: '天蓝色',
+        hex: '#4e69fd'
+    },
+    {
+        name: '浅绿色',
+        hex: '#0bd092'
+    },
+    {
+        name: '锌色灰',
+        hex: '#3f3f46'
+    },
+    {
+        name: '深绿色',
+        hex: '#0d9496'
+    },
+    {
+        name: '深蓝色',
+        hex: '#0960be'
+    },
+    {
+        name: '橙黄色',
+        hex: '#c1420b'
+    },
+    {
+        name: '玫瑰红',
+        hex: '#bb1b1b'
+    }
+];
