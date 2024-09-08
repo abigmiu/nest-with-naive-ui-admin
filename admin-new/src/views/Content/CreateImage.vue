@@ -44,6 +44,7 @@ import BasicForm, { type IBasicFormSchemas } from '@/components/form/BasicForm.v
 import { ref } from 'vue';
 import { reqFileRecord, reqFileUpload, type IReqFileRecordRequest } from '@/api/file';
 import { getBasicForm } from '@/hooks/basicComponent';
+import { message } from '@/utils/global';
 
 const formSchemas: IBasicFormSchemas[] = [
     { field: 'fileName', label: '文件名', type: 'input' },
@@ -82,6 +83,7 @@ const onSubmit = async () => {
     formData.tags = tags.value;
     try {
         await reqFileRecord(formData);
+        message.success('上传成功');
     } catch {
 
     }

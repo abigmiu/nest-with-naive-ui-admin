@@ -3,7 +3,7 @@ import { CreateFileRecordRequestDto,  UploadFileResponseDto } from './dto/create
 import * as sharp from 'sharp';
 import { PrismaService } from '@/app/depend/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
-import { QueryFileRequestDto } from './dto/query-file.dto';
+import { QueryFilePageRequestDto, QueryFileRecordResponseDto } from './dto/query-file.dto';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -64,19 +64,41 @@ export class FileService {
         });
     }
 
-    async getFilePageData(query: QueryFileRequestDto) {
-        return this.prismaService.getPageData(
-            this.prismaService.file,
+    async getFileRecordPage(query: QueryFilePageRequestDto) {
+        const where: Prisma.FileRecordWhereInput = {};
+        
+        
+        const data = await this.prismaService.getPageData(
+            this.prismaService.fileRecord,
             { page: query.page, pageSize: query.pageSize },
             {
-                where: {
-
-                },
+                where,
                 orderBy: {
                     id: 'desc'
+                },
+                select: {
+                    file: {
+                        select: {
+                            url: true,
+                            id: true,
+                            width: true,
+                            height: true,
+                            fileName: true,
+                        }
+                    },
+                    id: true,
+                    remark: true,
+                    tags: true,
+                    createdAt: true,
+                    updatedAt: true,
                 }
             }
         );
+        data.list.map(item => {
+            item.tags = item.tags ? JSON.parse(item.tags) : [];
+            return new QueryFileRecordResponseDto(item);
+        });
+        return data;
     }
 
 

@@ -53,7 +53,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
             pageSize,
             pageCount: totalPage,
             itemCount: total,
-            list: data,
+            list: data  as any[],
         };
     }
 }
