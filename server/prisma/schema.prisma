@@ -78,3 +78,28 @@ model Article {
 
   @@map("article")
 }
+
+model File {
+  id         Int         @id @default(autoincrement())
+  width      Int?
+  height     Int?
+  mimetype   String
+  fileName   String      @map("file_name")
+  location   String
+  url        String
+  FileRecord FileRecord?
+
+  @@map("file")
+}
+
+model FileRecord {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  remark    String?
+  tags      Json?
+  file      File     @relation(fields: [fileid], references: [id])
+  fileid    Int      @unique
+
+  @@map("file_record")
+}

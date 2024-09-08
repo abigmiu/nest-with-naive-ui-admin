@@ -10,6 +10,7 @@ import { AppModule } from '@/app/app.module';
 import { emptyFunc } from '@/app/utils/func';
 
 import { IAppConfig, IAppDevConfig } from '@/types/app/config';
+import { join } from 'path';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -17,6 +18,12 @@ async function bootstrap() {
 
     const notifyCompile = setupNotifyCompile(configService);
     setupSwagger(app, configService);
+
+    const staticFileUrl = configService.get<string>('fileStaticUrl');
+    const fileStoragePath = configService.get<string>('fileStoragePath');
+    app.useStaticAssets(join(process.cwd(), fileStoragePath), {
+        prefix: staticFileUrl,
+    });
 
     const { port, host, apiPrefix } = configService.get<IAppConfig['app']>('app');
     app.setGlobalPrefix(apiPrefix);

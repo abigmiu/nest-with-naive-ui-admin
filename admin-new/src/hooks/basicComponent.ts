@@ -1,3 +1,4 @@
+import type BasicForm from "@/components/form/BasicForm.vue";
 import type { IPageData } from "@/types/api/base";
 import type { IBasicPagination } from "@/types/common";
 import type { PaginationProps } from "naive-ui";
@@ -73,4 +74,13 @@ export function useBasicTable(
         handlePaginationChange,
         fetchData
     };
+}
+
+
+export function getBasicForm(ref: Ref<InstanceType<typeof BasicForm>  | null>) {
+    if (!ref.value) {
+        throw new Error("ref is null");
+    }
+
+    return ref.value;
 }

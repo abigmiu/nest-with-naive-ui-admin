@@ -1,0 +1,83 @@
+import { Injectable } from '@nestjs/common';
+import { CreateFileRecordRequestDto,  UploadFileResponseDto } from './dto/create-file.dto';
+import * as sharp from 'sharp';
+import { PrismaService } from '@/app/depend/prisma/prisma.service';
+import { Prisma } from '@prisma/client';
+import { QueryFileRequestDto } from './dto/query-file.dto';
+import { ConfigService } from '@nestjs/config';
+
+@Injectable()
+export class FileService {
+    constructor(
+        private readonly prismaService: PrismaService,
+        private readonly configService: ConfigService,
+    ) { }
+
+    async addRecord(body: CreateFileRecordRequestDto) {
+        const toSaveData: Prisma.FileRecordCreateInput = {
+            file: {
+                connect: {
+                    id: body.fileId
+                }
+            },
+        };
+     
+    
+        if (body.remark) {
+            toSaveData.remark = body.remark;
+        }
+        if (body.tags) {
+            toSaveData.tags = JSON.stringify(body.tags);
+        }
+
+        const savedData = await this.prismaService.fileRecord.create({
+            data: toSaveData
+        });
+        return savedData;
+    }
+
+    async upload(file: Express.Multer.File) {
+        const localPath = file.path.slice(file.destination.length + 1);
+        const urlDomain = this.configService.get<string>('fileStaticUrlDomain');
+        const urlPrefix = this.configService.get<string>('fileStaticUrl');
+        const url = urlDomain + urlPrefix + localPath;
+        const toSaveData: Prisma.FileCreateInput = {
+            location: localPath,
+            url: url,
+            fileName: file.originalname,
+            mimetype: file.mimetype,
+        };
+        // 图片宽高处理
+        if (file.mimetype.startsWith('image/')) {
+            const { width, height } = await sharp(file.path).metadata();
+            toSaveData.height = height;
+            toSaveData.width = width;
+        }
+
+        const savedData = await this.prismaService.file.create({
+            data: toSaveData
+        });
+
+        return new UploadFileResponseDto({
+            id: savedData.id,
+            url: savedData.url
+        });
+    }
+
+    async getFilePageData(query: QueryFileRequestDto) {
+        return this.prismaService.getPageData(
+            this.prismaService.file,
+            { page: query.page, pageSize: query.pageSize },
+            {
+                where: {
+
+                },
+                orderBy: {
+                    id: 'desc'
+                }
+            }
+        );
+    }
+
+
+}

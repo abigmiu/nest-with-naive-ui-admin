@@ -30,6 +30,9 @@ const config: IConfig = {
     hamcKey: process.env.hmacKey,
     incorrectRetryTimes: 5,
     incorrectRetryExpire: 5 * 60,
+    fileStaticUrl: '/static/',
+    fileStoragePath: 'upload',
+    fileStaticUrlDomain: 'http://localhost:3000',
 };
 
 export default config;

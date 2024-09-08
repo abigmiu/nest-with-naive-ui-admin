@@ -19,6 +19,10 @@ export const contentRouteConstant = {
     image: {
         path: 'image',
         name: 'content.image',
+    },
+    imageCreate: {
+        path: 'image-create',
+        name: 'content.imageCreate'
     }
 };
 
@@ -55,9 +59,9 @@ const contentRoute: RouteRecordRaw = {
             meta: {
                 tab: true,
                 title: '文章创建',
-                menu: false,
+                menu: true,
                 keepAlive: false,
-                permission: PERMISSIONS.ARTICLE_CREATE
+                // permission: PERMISSIONS.ARTICLE_CREATE
             }
         },
         {
@@ -72,6 +76,18 @@ const contentRoute: RouteRecordRaw = {
                 permission: PERMISSIONS.IMAGE
             },
         
+        },
+        {
+            name: contentRouteConstant.imageCreate.name,
+            path:  mergeRoutePath(contentRouteConstant.index.path, contentRouteConstant.imageCreate.path),
+            component: () => import('@/views/Content/CreateImage.vue'),
+            meta: {
+                tab: true,
+                title: '图片创建',
+                menu: true,
+                keepAlive: false,
+                // permission: PERMISSIONS.IMAGE_CREATE
+            }
         }
     ]
 };

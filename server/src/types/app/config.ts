@@ -45,4 +45,8 @@ export interface IAppConfig {
   hamcKey: string;
   incorrectRetryTimes: number;
   incorrectRetryExpire: number;
+
+  fileStoragePath: string;
+  fileStaticUrl: string;
+  fileStaticUrlDomain: string;
 }
