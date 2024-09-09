@@ -15,7 +15,10 @@
                     <NBadge dot color="#19be6b" v-if="!headerDark && menuDark" />
                 </div>
 
-                <div class="drawer-setting-item-style align-items-top" @click="setMenuDark(false); setHeaderDark(false)">
+                <div
+                    class="drawer-setting-item-style align-items-top"
+                    @click="setMenuDark(false); setHeaderDark(false)"
+                >
                     <NTooltip placement="top">
                         <template #trigger>
                             <img src="~@/assets/images/nav-theme-light.svg" alt="亮色侧边栏" />
@@ -52,17 +55,32 @@
                 </div>
 
             </div>
+
+            <NDivider title-placement="center">动画</NDivider>
+            <div class="drawer-setting-item">
+                <div class="drawer-setting-item-title"> 启用动画 </div>
+                <div class="drawer-setting-item-action">
+                    <NSwitch v-model:value="enableAnimation"></NSwitch>
+                </div>
+            </div>
+            <div class="drawer-setting-item">
+                <div class="drawer-setting-item-title"> 动画类型 </div>
+                <div class="drawer-setting-item-select">
+                    <NSelect v-model:value="animationName" :options="ANIMATIONS"></NSelect>
+                </div>
+            </div>
+
         </NDrawerContent>
     </NDrawer>
 </template>
 <script setup lang="ts">
 import { useSettingStore } from '@/stores/settingStore';
-import { NDrawer, NDrawerContent, NDivider, NTooltip, NBadge } from 'naive-ui';
+import { NDrawer, NDrawerContent, NDivider, NTooltip, NBadge, NSwitch, NSelect } from 'naive-ui';
 import { storeToRefs } from 'pinia';
-import { THEME_LIST } from '@/utils/constant';
+import { THEME_LIST, ANIMATIONS } from '@/utils/constant';
 
 const settingStore = useSettingStore();
-const { visible, menuDark, headerDark, themeColor } = storeToRefs(settingStore);
+const { visible, menuDark, headerDark, themeColor, enableAnimation, animationName } = storeToRefs(settingStore);
 const { setMenuDark, setHeaderDark } = settingStore;
 </script>
 
@@ -121,6 +139,7 @@ const { setMenuDark, setHeaderDark } = settingStore;
         column-gap: 10px;
         row-gap: 10px;
         grid-template-columns: repeat(4, 1fr);
+
         &-item {
             cursor: pointer;
             display: flex;

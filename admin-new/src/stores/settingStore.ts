@@ -11,6 +11,8 @@ interface IState {
         column: ISettingTableColumn;
     }>;
     themeColor: string;
+    enableAnimation: boolean;
+    animationName: string;
 }
 
 export const useSettingStore = defineStore(STORE_NAMES.SETTING, {
@@ -34,7 +36,9 @@ export const useSettingStore = defineStore(STORE_NAMES.SETTING, {
                     })
                 })
             },
-            themeColor: '#409EF0'
+            themeColor: '#409EF0',
+            enableAnimation: true,
+            animationName: 'fade'
         };
     },
     actions: {
