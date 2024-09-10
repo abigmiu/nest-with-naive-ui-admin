@@ -1,31 +1,34 @@
 <template>
-    <QueryTable
-        :form-rules="formRules"
-        :form-schemas="formSchemas"
-        :table-columns="tableColumns"
-        :fetch-fn="fetchData"
-        :pageable="true"
-        :table-key="companyRouteConstant.crew.name"
-    >
-        <AuthWrapper :auth="PERMISSIONS.CREW_CREATE">
-            <NButton type="primary" @click="setCreateVisible(true)">新增</NButton>
-        </AuthWrapper>
+    <div>
+        <QueryTable
+            :form-rules="formRules"
+            :form-schemas="formSchemas"
+            :table-columns="tableColumns"
+            :fetch-fn="fetchData"
+            :pageable="true"
+            :table-key="companyRouteConstant.crew.name"
+        >
+            <AuthWrapper :auth="PERMISSIONS.CREW_CREATE">
+                <NButton type="primary" @click="setCreateVisible(true)">新增</NButton>
+            </AuthWrapper>
         
 
-        <NDropdown trigger="hover" :options="importDropdownOptions" :on-select="importDropdownSelect" >
-            <NButton icon-placement="right" class="ml-2" :loading="importDropDownLoading">
-                <template #icon>
-                    <n-icon>
-                        <DownOutlined />
-                    </n-icon>
-                </template>
-                导入
-            </NButton>
-        </NDropdown>
+            <NDropdown trigger="hover" :options="importDropdownOptions" :on-select="importDropdownSelect" >
+                <NButton icon-placement="right" class="ml-2" :loading="importDropDownLoading">
+                    <template #icon>
+                        <n-icon>
+                            <DownOutlined />
+                        </n-icon>
+                    </template>
+                    导入
+                </NButton>
+            </NDropdown>
 
-    </QueryTable>
-    <CreateCrew v-model="createVisible"></CreateCrew>
-    <EditCrew :userId="editUserId"></EditCrew>
+        </QueryTable>
+        <CreateCrew v-model="createVisible"></CreateCrew>
+        <EditCrew :userId="editUserId"></EditCrew>
+    </div>
+    
 </template>
 <script setup lang="ts">
 import BasicForm, { type IBasicFormSchemas } from '@/components/form/BasicForm.vue';

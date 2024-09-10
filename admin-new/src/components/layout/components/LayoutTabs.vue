@@ -11,7 +11,7 @@
                     class="tabs-card-scroll-item"
                     v-for="item in tabs"
                     :key="item.name"
-                    @contextmenu="onItemContextMenu"
+                    @contextmenu="(e) => onTabsMenuShow(e, item)"
                     :class="{ 'active-item': activeRouteName === item.name }"
                     @click="onJumpRoute(item)"
                 >
@@ -28,14 +28,29 @@
             </NIcon>
         </span>
     </div>
+    <NDropdown 
+        :options="tabsMenuOptions"
+        :x="tabsMenuX"
+        :y="tabsMenuY"
+        :show="tabsMenusShow"
+        :on-clickoutside="onTabsMenuClickOutside"
+        @select="onTabsMenuSelect"
+        placement="bottom-start"
+        trigger="manual"
+    ></NDropdown>
 </template>
 <script setup lang="ts">
-import { NIcon, useThemeVars } from 'naive-ui';
-import { CloseOutlined, LeftOutlined, RightOutlined } from '@vicons/antd';
+import { NIcon, useThemeVars, type DropdownNodeProps, type DropdownOption, type DropdownProps, NDropdown } from 'naive-ui';
+import { CloseOutlined, ColumnWidthOutlined, LeftOutlined, MinusOutlined, RightOutlined } from '@vicons/antd';
 import { computed, nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useDebounceFn } from '@vueuse/core';
 import { useRoute, useRouter } from 'vue-router';
 import { useAliveStore } from '@/stores/aliveStore';
+import { message } from '@/utils/global';
+import { renderIcon } from '@/router/util';
+import { ReloadOutline } from '@vicons/ionicons5';
+
+
 
 const themeVars = useThemeVars();
 const primaryColor = computed(() => themeVars.value.primaryColor);
@@ -75,10 +90,6 @@ onUnmounted(() => {
 });
 
 
-// 标签页右键
-function onItemContextMenu(e: MouseEvent) {
-    e.preventDefault();
-}
 
 // 路由监听修改标签页
 const router = useRouter();
@@ -102,24 +113,125 @@ function handleRouteChange() {
 watch(() => route.fullPath, handleRouteChange, { immediate: true });
 
 // 标签页事件处理
-function closeTab(item: ITab) {
+function closeTab(item: ITab, jumpRoute = true) {
+    if (tabs.value.length === 1) {
+        return message.warning('这已经是最后一页，不能再关闭了！');
+    }
     const index = tabs.value.findIndex((tab) => tab.name === item.name);
     if (index === -1) return;
     setKeepCmp(tabs.value[index].name, false);
     tabs.value.splice(index, 1);
-    // 获取上一个路由
-    const lastRoute = tabs.value[tabs.value.length - 1] || tabs.value[0];
+    if (jumpRoute) {
+        jumpLastTab();
+    }
+    
+}
+
+const jumpLastTab = () => {
+// 获取上一个路由
+const lastRoute = tabs.value[tabs.value.length - 1] || tabs.value[0];
     if (!lastRoute) return;
     router.push({
         name: lastRoute.name
     });
-}
+};
+
 function onJumpRoute(item: ITab) {
     if (activeRouteName.value === item.name) return;
     router.push({
         name: item.name
     });
 }
+
+
+// 标签右键
+
+const tabsMenusShow = ref(false);
+const tabsMenuX = ref(0);
+const tabsMenuY = ref(0);
+let currentCloseTab: ITab;
+function onTabsMenuShow(e: MouseEvent, tab: ITab) {
+    e.preventDefault();
+    currentCloseTab = tab;
+    tabsMenusShow.value = true;
+    tabsMenuX.value = e.clientX;
+    tabsMenuY.value = e.clientY;
+}
+function onTabsMenuClickOutside() {
+    tabsMenusShow.value = false;
+}
+
+const refreshCurrent = () => {
+    setKeepCmp(currentCloseTab.name, false);
+    router.replace({
+        name: currentCloseTab.name,
+        query: {
+            refreshCurrentPage: Math.random().toString(),
+        }
+    });
+};
+const closeCurrent = () => {
+    closeTab(currentCloseTab, true);
+};
+const closeOther = () => {
+    const closeableTabs = tabs.value.filter((item) => item.closeAble);
+    closeableTabs.forEach((item) => {
+        if (item.name !== currentCloseTab.name) {
+            closeTab(item, false);
+        }
+    });
+    jumpLastTab();
+};
+const closeAll= () => {
+    const closeableTabs = tabs.value.filter((item) => item.closeAble);
+    closeableTabs.forEach((item) => {
+        closeTab(item, false);
+    });
+    jumpLastTab();
+};
+
+const onTabsMenuSelect: DropdownProps['onSelect'] = (key, option) => {
+    const actionDict: Record<string, () => void> = {
+        1: refreshCurrent,
+        2: closeCurrent,
+        3: closeOther,
+        4: closeAll,
+    };
+    const action = actionDict[key];
+    if (action) {
+        tabsMenusShow.value = false;
+        action();
+    }
+};
+
+const tabsMenuOptions = computed((): DropdownProps['options'] => {
+    const isDisable = tabs.value.length === 1;
+    return [
+        {
+            label: '刷新当前',
+            key: '1',
+            icon: renderIcon(ReloadOutline)
+        },
+        {
+            label: '关闭当前',
+            key: '2',
+            disabled: isDisable,
+            icon: renderIcon(CloseOutlined)
+        },
+        {
+            label: '关闭其他',
+            key: '3',
+            disabled: isDisable,
+            icon: renderIcon(ColumnWidthOutlined)
+        },
+        {
+            label: '关闭全部',
+            key: '4',
+            disabled : isDisable,
+            icon: renderIcon(MinusOutlined)
+        }
+    ];
+});
 
 </script>
 <style lang="scss">

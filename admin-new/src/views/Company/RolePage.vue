@@ -1,16 +1,19 @@
 <template>
-    <QueryTable
-        :form-rules="formRules"
-        :form-schemas="formSchemas"
-        :pageable="false"
-        :fetch-fn="fetchTableData"
-        :table-columns="tableColumns"
-        :table-key="companyRouteConstant.role.name"
-    >
-        <NButton @click="setCreateVisible(true)" type="primary">新增</NButton>
-    </QueryTable>
-    <CreateRole v-model="createVisible"></CreateRole>
-    <EditRole v-model="editVisible" :role-id="editRoleId"></EditRole>
+    <div>
+        <QueryTable
+            :form-rules="formRules"
+            :form-schemas="formSchemas"
+            :pageable="false"
+            :fetch-fn="fetchTableData"
+            :table-columns="tableColumns"
+            :table-key="companyRouteConstant.role.name"
+        >
+            <NButton @click="setCreateVisible(true)" type="primary">新增</NButton>
+        </QueryTable>
+        <CreateRole v-model="createVisible"></CreateRole>
+        <EditRole v-model="editVisible" :role-id="editRoleId"></EditRole>
+    </div>
+    
 </template>
 <script setup lang="ts">
 import { reqRoleList } from '@/api/role';
