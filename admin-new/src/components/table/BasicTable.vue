@@ -8,10 +8,7 @@
             <NTooltip trigger="hover">
                 <template #trigger>
                     <div class="mr-2 table-toolbar-right-icon">
-                        <NSwitch
-                            v-model:value="striped"
-                            @update:value="setStriped"
-                        />
+                        <NSwitch v-model:value="striped" @update:value="setStriped" />
                     </div>
                 </template>
                 <span>表格斑马纹</span>
@@ -22,10 +19,7 @@
             <NTooltip trigger="hover">
                 <template #trigger>
                     <div class="table-toolbar-right-icon">
-                        <NIcon
-                            size="18"
-                            @click="refresh"
-                        >
+                        <NIcon size="18" @click="refresh">
                             <ReloadOutlined />
                         </NIcon>
                     </div>
@@ -55,11 +49,8 @@
 
             <!-- 列设置 -->
             <div class="table-toolbar-right-icon">
-                <ColumnSetting
-                    :table-key="tableKey"
-                    :columns="tableColumns"
-                    @update-column="onUpdateColumnSetting"
-                ></ColumnSetting>
+                <ColumnSetting :table-key="tableKey" :columns="tableColumns" @update-column="onUpdateColumnSetting">
+                </ColumnSetting>
             </div>
         </div>
     </div>
@@ -86,7 +77,7 @@ import { clone } from 'radash';
 import { useState } from '@/hooks/common';
 import { useBasicTable } from '@/hooks/basicComponent';
 import type { IPageData } from '@/types/api/base';
-import type { IBasicPagination } from '@/types/common';
+import { cloneDeep } from 'es-toolkit';
 
 
 interface IProps {
@@ -99,7 +90,7 @@ const props = defineProps<IProps>();
 const innerTableColumns = ref<DataTableColumns>([]);
 
 // 数据
-const { loading, pagination, handlePaginationChange, refresh, tableData, fetchData } = useBasicTable(
+const { loading, pagination, handlePaginationChange, refresh, tableData, fetchData, updateRealtime } = useBasicTable(
     props.fetchFn,
     props.pageable,
 );
@@ -107,7 +98,6 @@ const { loading, pagination, handlePaginationChange, refresh, tableData, fetchDa
 // 表格样式设置
 const [striped, setStriped] = useState<boolean>(false);
 const bordered = ref(false);
-
 
 const densityOptions = [
     {
@@ -129,10 +119,13 @@ const densityOptions = [
 const [density, setDensity] = useState<TableProps['size']>('medium');
 
 // 列设置修改
+let oldTableSettingInfo: ITableSettingInfo;
 function onUpdateColumnSetting(columns: ITableSettingColumn[], info: ITableSettingInfo) {
+    console.log('onUpdateColumnSetting');
     const cacheColumns = props.tableColumns;
     const newColumns: DataTableColumns = [];
-    const { selection, border, resizable } = info;
+    const { selection, border, resizable, realtime } = info;
+    updateRealtime(realtime);
     bordered.value = border;
     if (selection) {
         newColumns.push({
@@ -151,6 +144,19 @@ function onUpdateColumnSetting(columns: ITableSettingColumn[], info: ITableSetti
     });
 
     innerTableColumns.value = newColumns;
+
+    // if (oldTableSettingInfo) {
+    //     // 当实时数据切换成非实时数据时，需要将分页设置为第一页
+    //     if (
+    //         realtime !== oldTableSettingInfo.realtime
+    //         && realtime 
+    //         && pagination.value 
+    //         && pagination.value.page !== 1
+    //     ) {
+            
+    //     }
+    // }
+    oldTableSettingInfo = cloneDeep(info);
 }
 
 

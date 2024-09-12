@@ -1,13 +1,24 @@
 import { Type } from "class-transformer";
-import { IsInt, IsOptional } from "class-validator";
+import { IsBoolean, IsInt, IsOptional } from "class-validator";
 
 export class IPagerParams {
   @IsInt()
   @Type(() => Number)
   @IsOptional()
-  page?: number;
+  page: number = 1;
+
   @IsInt()
   @Type(() => Number)
   @IsOptional()
-  pageSize?: number;
+  pageSize: number = 20;
+
+  @IsInt()
+  @Type(() => Number)
+  @IsOptional()
+  firstId?: number;
+
+  @IsBoolean()
+  @Type(() => Boolean)
+  @IsOptional()
+  realtime?: boolean;
 }

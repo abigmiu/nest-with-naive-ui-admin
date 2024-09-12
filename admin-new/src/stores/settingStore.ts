@@ -24,7 +24,6 @@ export const useSettingStore = defineStore(STORE_NAMES.SETTING, {
             headerDark: false,
             tableSetting: {
                 default: Object.freeze({
-
                     style: Object.freeze({
                         striped: false,
                         density: 'medium'
@@ -32,7 +31,8 @@ export const useSettingStore = defineStore(STORE_NAMES.SETTING, {
                     column: Object.freeze({
                         selection: false,
                         border: false,
-                        resizable: false
+                        resizable: false,
+                        realtime: true,
                     })
                 })
             },

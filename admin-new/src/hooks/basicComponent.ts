@@ -8,6 +8,7 @@ interface IUseBasicTable {
     loading: Ref<boolean>;
     tableData: Ref<any[]>;
     pagination: Ref<false | IBasicPagination>;
+    updateRealtime: (status: boolean) => void;
     refresh: () => Promise<void>;
     handlePaginationChange: (page?: number, pageSize?: number) => Promise<void>;
     fetchData: (args?: Record<string, any>) => Promise<void>;
@@ -19,7 +20,20 @@ export function useBasicTable(
 ): IUseBasicTable {
     const tableData = ref<any[]>([]);
     const loading = ref(false);
-    const pagination: IUseBasicTable['pagination'] = ref(false);
+
+    let firstPageFirstId: number;
+    let realtime: boolean;
+
+    const pagination: IUseBasicTable['pagination'] = pageable 
+        ? ref({
+            page: 1,
+            pageSize: 20,
+            itemCount: 0,
+            pageCount: 0,
+            showSizePicker: true,
+            pageSizes: [10, 20, 50, 100]
+        }) 
+        :ref(false);
 
 
     const _pageSearchParams = pageable ? { page: 1, pageSize: 20 } : {};
@@ -28,19 +42,30 @@ export function useBasicTable(
         loading.value = true;
 
         try {
-            const _searchParams = { ..._pageSearchParams, ...searchParams };
+            const _searchParams: Record<string, any> = { ..._pageSearchParams, ...searchParams };
+            if (realtime) {
+                _searchParams.realtime = true;
+                _searchParams.firstId = firstPageFirstId;
+            }
             const data = await fetchFn(_searchParams, ...args);
             if (Array.isArray(data)) {
                 tableData.value = data;
                 pagination.value = false;
             } else {
                 tableData.value = data.list;
-                pagination.value = {
-                    page: data.page,
-                    pageSize: data.pageSize,
-                    itemCount: data.itemCount,
-                    pageCount: data.pageCount
-                };
+                
+                if (pageable) {
+                    const paginationData = pagination.value as IBasicPagination;
+                    paginationData.page = data.page;
+                    paginationData.pageSize = data.pageSize;
+                    paginationData.itemCount = data.itemCount;
+                    paginationData.pageCount = data.pageCount;
+                }
+                
+                if (data.page === 1) {
+                    firstPageFirstId = data.list[0].id;
+                }
+                
             }
 
         } finally {
@@ -57,11 +82,17 @@ export function useBasicTable(
             _pageSearchParams!.page = page;
         }
         if (pageSize) {
+            _pageSearchParams!.page = 1;
             _pageSearchParams!.pageSize = pageSize;
         }
 
 
         await fetchData();
+    }
+
+
+    function updateRealtime(status: boolean) {
+        realtime = status;
     }
 
     onMounted(fetchData);
@@ -72,7 +103,8 @@ export function useBasicTable(
         pagination,
         refresh,
         handlePaginationChange,
-        fetchData
+        fetchData,
+        updateRealtime
     };
 }
 

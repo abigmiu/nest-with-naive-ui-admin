@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { CreateArticleRequestDto } from './dto/create-article.dto';
 import { UpdateArticleRequestDto } from './dto/update-article.dto';
@@ -9,7 +9,8 @@ export class ArticleController {
     constructor(private readonly articleService: ArticleService) {}
 
     @Get('page')
-    getPageData(@Body() query: QueryArticleRequestDto) {
+    getPageData(@Query() query: QueryArticleRequestDto) {
+        console.log("🚀 ~ ArticleController ~ getPageData ~ query:", query);
         return this.articleService.getPageData(query);
     }
 

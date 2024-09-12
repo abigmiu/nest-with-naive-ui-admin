@@ -12,4 +12,6 @@ export interface ISettingTableColumn {
     border: boolean;
     /** 宽度可调整 */
     resizable: boolean;
+    /** 实时数据 */
+    realtime: boolean;
 }

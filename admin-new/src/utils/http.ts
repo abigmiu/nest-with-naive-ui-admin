@@ -25,6 +25,10 @@ class VAxios {
                 config.headers['Authorization'] = `Bearer ${token}`;
             }
 
+            if (config.method?.toUpperCase() === 'GET') {
+                config.params['_t'] = new Date().getTime();
+            }
+
             return config;
         });
 

@@ -65,12 +65,18 @@ export class FileService {
     }
 
     async getFileRecordPage(query: QueryFilePageRequestDto) {
-        const where: Prisma.FileRecordWhereInput = {};
+        const where: Prisma.FileRecordWhereInput = {
+        };
+        if (query.realtime && query.firstId) {
+            where.id = {
+                lt: query.firstId
+            };
+        }
         
         
         const data = await this.prismaService.getPageData(
             this.prismaService.fileRecord,
-            { page: query.page, pageSize: query.pageSize },
+            query,
             {
                 where,
                 orderBy: {

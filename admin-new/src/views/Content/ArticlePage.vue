@@ -16,7 +16,12 @@ import QueryTable from '@/components/queryTable/queryTable.vue';
 import { contentRouteConstant } from '@/router/modules/content';
 import { reqArticlePageRequest } from '@/types/api/article';
 import { NButton, type DataTableBaseColumn, type FormRules } from 'naive-ui';
+import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+
+onMounted(() => {
+    console.log('文章页面加载');
+});
 
 defineOptions({
     name: contentRouteConstant.article.name,

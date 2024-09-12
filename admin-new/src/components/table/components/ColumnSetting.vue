@@ -1,41 +1,39 @@
 <template>
-    <NTooltip
-        trigger="hover"
-        placement="top"
-    >
+    <NTooltip trigger="hover" placement="top">
         <template #trigger>
-            <NPopover
-                trigger="click"
-                placement="bottom-end"
-                @update-show="onPopoverShowUpdate"
-            >
+            <NPopover trigger="click" placement="bottom-end" @update-show="onPopoverShowUpdate">
                 <template #trigger>
                     <NIcon size="18">
                         <SettingOutlined />
                     </NIcon>
                 </template>
                 <template #header>
-                    <NSpace>
-                        <NButton
-                            text
-                            type="primary"
-                            @click="onReset"
-                        >重置</NButton>
-                        <NCheckbox v-model:checked="setting.selection">
+
+                    <NButton text type="primary" @click="onReset">重置</NButton>
+                    <div class="flex mt-2">
+                        <NCheckbox v-model:checked="setting.selection" class="flex-1">
                             勾选列
                         </NCheckbox>
-                        <NCheckbox v-model:checked="setting.border">
+                        <NCheckbox v-model:checked="setting.border" class="flex-1">
                             表格边框
                         </NCheckbox>
-                        <NCheckbox v-model:checked="setting.resizable">
+                    </div>
+                    <div class="flex mt-2">
+                        <NCheckbox v-model:checked="setting.resizable" class="flex-1">
                             宽度调整
                         </NCheckbox>
-                    </NSpace>
+                        <NCheckbox v-model:checked="setting.realtime" class="flex-1">
+                            <n-tooltip placement="bottom" trigger="hover">
+                                <template #trigger>实时数据</template>
+                                <span>勾选后每页数据将查询最新数据，不勾选每页数据根据第一页数据进行查询</span>
+                            </n-tooltip>
+                        </NCheckbox>
+                    </div>
+                        
+                    
+                  
                 </template>
-                <NCheckboxGroup
-                    v-model:value="columnChecked"
-                    :on-update:value="handleColumnCheck"
-                >
+                <NCheckboxGroup v-model:value="columnChecked" :on-update:value="handleColumnCheck">
 
                     <Draggerable
                         v-model="columnsSettingList"
@@ -51,21 +49,12 @@
                                     'no-draggable': element.draggable === false,
                                 }"
                             >
-                                <NIcon
-                                    size="18"
-                                    class="drag-icon mr-2"
-                                >
+                                <NIcon size="18" class="drag-icon mr-2">
                                     <DragOutlined></DragOutlined>
                                 </NIcon>
-                                <NCheckbox
-                                    :label="element.title"
-                                    :value="element.key"
-                                ></NCheckbox>
+                                <NCheckbox :label="element.title" :value="element.key"></NCheckbox>
                                 <div class="flex items-center ml-auto">
-                                    <NTooltip
-                                        trigger="hover"
-                                        placement="bottom"
-                                    >
+                                    <NTooltip trigger="hover" placement="bottom">
                                         <template #trigger>
                                             <NIcon size="18">
                                                 <VerticalRightOutlined />
@@ -74,10 +63,7 @@
                                         <span>固定到左侧</span>
                                     </NTooltip>
                                     <NDivider vertical></NDivider>
-                                    <NTooltip
-                                        trigger="hover"
-                                        placement="bottom"
-                                    >
+                                    <NTooltip trigger="hover" placement="bottom">
                                         <template #trigger>
                                             <NIcon size="18">
                                                 <VerticalLeftOutlined />
@@ -130,6 +116,7 @@ export interface ITableSettingInfo {
     selection: boolean;
     border: boolean;
     resizable: boolean;
+    realtime: boolean;
 }
 const setting = tableSetting.value[props.tableKey].column;
 
@@ -194,7 +181,7 @@ const handleColumnCheck: CheckboxGroupProps['onUpdate:value'] = (checkedValue, m
 // 重置设置
 
 const onReset = () => {
-    Object.assign(setting, tableSetting.value.default.column);    
+    Object.assign(setting, tableSetting.value.default.column);
 };
 </script>
 

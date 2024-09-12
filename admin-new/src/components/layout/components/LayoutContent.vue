@@ -2,7 +2,7 @@
     <RouterView v-slot="{ Component, route }">
         <KeepAlive :include="keepAliveCmps">
             <Transition :name="getAnimation" mode="out-in" appear>
-                <component :is="Component" :key="route.fullPath"></component>
+                <component :is="Component" :key="route.name"></component>
             </Transition>
         </KeepAlive>
     </RouterView>
