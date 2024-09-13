@@ -6,10 +6,17 @@ module.exports = {
   'extends': [
     'plugin:vue/vue3-essential',
     'eslint:recommended',
-    '@vue/eslint-config-typescript'
+    '@vue/eslint-config-typescript',
+    // "plugin:import/recommended",
+    // "plugin:import/typescript",
   ],
   parserOptions: {
     ecmaVersion: 'latest'
+  },
+  settings: {
+    "import/resolver": {
+      "typescript": true,
+    }
   },
   rules: {
     'vue/max-attributes-per-line': ['error', {

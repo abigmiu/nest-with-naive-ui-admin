@@ -1,13 +1,16 @@
+import axios from "axios";
+
 import type { IBaseResponse } from "@/types/api/base";
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CreateAxiosDefaults } from "axios";
-import axios from "axios";
+
 import { IgnoreLastRequestError } from "./errors";
 import { download, getHttpHeaderFilename } from "./file";
 import { message } from "./global";
+import { httpArticleCreateReq } from "@/api/article";
+import { reqLogin } from "@/api/auth";
 
 class VAxios {
     private axiosInstance: AxiosInstance;
-    private options: CreateAxiosDefaults;
 
     constructor(options: CreateAxiosDefaults) {
         this.axiosInstance = axios.create(options);
@@ -26,6 +29,7 @@ class VAxios {
             }
 
             if (config.method?.toUpperCase() === 'GET') {
+                config.params = config.params ?? {};
                 config.params['_t'] = new Date().getTime();
             }
 
@@ -54,13 +58,13 @@ export const http = new VAxios({});
 
 /**
  * 忽略上一次请求，只获取最新的请求结果
- * @param fn 
+ * @param fn 请求函数
  * @returns 
  */
-export function useNewestRequest<T extends any[]>(fn: (...args: T) => Promise<unknown>) {
+export function useNewestRequest<T extends any[], R extends any>(fn: (...args: T) => Promise<R>) {
     let id = 0;
 
-    return async (...args: T) => {
+    return async (...args: T): Promise<R> => {
         id = id + 1;
         const currentRequestId = id;
         return new Promise((resolve, reject) => {
@@ -81,5 +85,7 @@ export function useNewestRequest<T extends any[]>(fn: (...args: T) => Promise<un
                 });
         });
     };
-
 }
+
+
+const a = useNewestRequest(reqLogin);

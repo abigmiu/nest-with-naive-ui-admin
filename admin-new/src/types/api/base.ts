@@ -1,9 +1,11 @@
+/** 接口响应 */
 export interface IBaseResponse<T = any> {
     result: T;
     code: number;
     message: string;
 }
 
+/** 接口分页数据 */
 export interface IPageData<T = any> {
     list: T[];
     page: number;
@@ -12,7 +14,11 @@ export interface IPageData<T = any> {
     itemCount: number;
 }
 
-export interface IPaginationQuery {
+/** 分页查询 */
+export interface IPageQuery {
     page: number;
     pageSize: number;
+    realtime?: boolean;
+    /** 游标 */
+    cursorId?: number;
 }

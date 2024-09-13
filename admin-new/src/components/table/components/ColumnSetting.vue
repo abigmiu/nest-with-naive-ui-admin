@@ -1,27 +1,20 @@
 <template>
     <NTooltip trigger="hover" placement="top">
         <template #trigger>
-            <NPopover trigger="click" placement="bottom-end" @update-show="onPopoverShowUpdate">
+            <NPopover trigger="click" placement="bottom-end">
                 <template #trigger>
                     <NIcon size="18">
                         <SettingOutlined />
                     </NIcon>
                 </template>
                 <template #header>
-
                     <NButton text type="primary" @click="onReset">重置</NButton>
                     <div class="flex mt-2">
-                        <NCheckbox v-model:checked="setting.selection" class="flex-1">
-                            勾选列
-                        </NCheckbox>
-                        <NCheckbox v-model:checked="setting.border" class="flex-1">
-                            表格边框
-                        </NCheckbox>
+                        <NCheckbox v-model:checked="setting.selection" class="flex-1">勾选列</NCheckbox>
+                        <NCheckbox v-model:checked="setting.border" class="flex-1">表格边框</NCheckbox>
                     </div>
                     <div class="flex mt-2">
-                        <NCheckbox v-model:checked="setting.resizable" class="flex-1">
-                            宽度调整
-                        </NCheckbox>
+                        <NCheckbox v-model:checked="setting.resizable" class="flex-1">宽度调整</NCheckbox>
                         <NCheckbox v-model:checked="setting.realtime" class="flex-1">
                             <n-tooltip placement="bottom" trigger="hover">
                                 <template #trigger>实时数据</template>
@@ -29,18 +22,15 @@
                             </n-tooltip>
                         </NCheckbox>
                     </div>
-                        
-                    
-                  
                 </template>
                 <NCheckboxGroup v-model:value="columnChecked" :on-update:value="handleColumnCheck">
-
                     <Draggerable
-                        v-model="columnsSettingList"
+                        v-model="dragList"
                         animation="300"
-                        item-key="key"
+                        item-key="field"
                         filter=".no-draggable"
-                        :move="onMove"
+                        :move="onDragMove"
+                        @end="onDragEnd"
                     >
                         <template #item="{ element }">
                             <div
@@ -52,35 +42,29 @@
                                 <NIcon size="18" class="drag-icon mr-2">
                                     <DragOutlined></DragOutlined>
                                 </NIcon>
-                                <NCheckbox :label="element.title" :value="element.key"></NCheckbox>
+                                <NCheckbox :label="element.title" :value="element.field"></NCheckbox>
                                 <div class="flex items-center ml-auto">
-                                    <NTooltip trigger="hover" placement="bottom">
+                                    <NTooltip trigger="hover" placement="bottom-end">
                                         <template #trigger>
-                                            <NIcon size="18">
+                                            <NIcon size="18"  @click="setColumnFixed(element.field, 'left')">
                                                 <VerticalRightOutlined />
                                             </NIcon>
                                         </template>
-                                        <span>固定到左侧</span>
+                                        <span>{{ element.fixed === 'left' ? '取消' : '' }}固定到左侧</span>
                                     </NTooltip>
                                     <NDivider vertical></NDivider>
-                                    <NTooltip trigger="hover" placement="bottom">
+                                    <NTooltip trigger="hover" placement="bottom-end">
                                         <template #trigger>
-                                            <NIcon size="18">
+                                            <NIcon size="18" @click="setColumnFixed(element.field, 'right')">
                                                 <VerticalLeftOutlined />
                                             </NIcon>
                                         </template>
-                                        <span>固定到右侧</span>
+                                        <span>{{ element.fixed === 'right' ? '取消' : '' }}固定到右侧</span>
                                     </NTooltip>
                                 </div>
                             </div>
                         </template>
-
-
                     </Draggerable>
-
-
-
-
                 </NCheckboxGroup>
             </NPopover>
         </template>
@@ -88,100 +72,82 @@
     </NTooltip>
 </template>
 <script setup lang="ts">
-import { NTooltip, NPopover, NIcon, NSpace, NSwitch, NButton, NCheckbox, NCheckboxGroup, type DataTableColumns, NFlex, NDivider, type DataTableBaseColumn, type CheckboxGroupProps } from 'naive-ui';
+import { NTooltip, NPopover, NIcon, NButton, NCheckbox, NCheckboxGroup, NDivider, type DataTableBaseColumn, type CheckboxGroupProps } from 'naive-ui';
 import { DragOutlined, SettingOutlined, VerticalLeftOutlined, VerticalRightOutlined } from '@vicons/antd';
-import { reactive, ref, toRaw, unref, watch } from 'vue';
+import { ref, toRaw, toRef, unref } from 'vue';
 import Draggerable from 'vuedraggable';
 import { useSettingStore } from '@/stores/settingStore';
 import { storeToRefs } from 'pinia';
-import type { ISettingTableColumn } from '@/types/setting';
-import { clone } from 'radash';
+import { cloneDeep } from 'es-toolkit';
+
+// props 定义
 interface IProps {
     columns: DataTableBaseColumn[];
     tableKey: string;
 }
 const props = defineProps<IProps>();
 
-const emits = defineEmits<{
-    updateColumn: [columns: ITableSettingColumn[], info: ITableSettingInfo]
-}>();
-
+// 设置数据以及数据初始化
 const settingStore = useSettingStore();
-const { tableSetting } = storeToRefs(settingStore);
-if (!tableSetting.value[props.tableKey]) {
-    tableSetting.value[props.tableKey] = JSON.parse(JSON.stringify(tableSetting.value.default));
-}
+const { resetTableSetting, getTableSetting } = settingStore;
+const currentTableSetting = getTableSetting(props.tableKey);
+const setting = currentTableSetting.table;
+const columnSetting = currentTableSetting.column;
+const columnChecked = ref<string[]>([]);
 
-export interface ITableSettingInfo {
-    selection: boolean;
-    border: boolean;
-    resizable: boolean;
-    realtime: boolean;
-}
-const setting = tableSetting.value[props.tableKey].column;
-
-export interface ITableSettingColumn {
-    title: string;
-    key: string;
-    isLeftFix: boolean;
-    isRightFix: boolean;
-    check: boolean;
-}
-const columnChecked = ref<string[] | null>(null);
-const columnsSettingList = ref<ITableSettingColumn[]>([]);
-
-function init() {
-    if (!columnChecked.value) {
-        columnChecked.value = [];
+const initColumn = () => {
+    if (!columnSetting.length) {
+        props.columns.forEach((item) => {
+            columnSetting.push({
+                field: item.key as string,
+                title: item.title as string,
+                show: true,
+                fixed: item.fixed,
+            });
+        });
     }
-    props.columns.forEach((column) => {
-        const settingItem: ITableSettingColumn = {
-            title: column.title as string,
-            key: column.key.toString(),
-            isLeftFix: false,
-            isRightFix: false,
-            check: true,
-        };
-        columnsSettingList.value.push(settingItem);
-        columnChecked.value!.push(column.key.toString());
-    });
-    updateSetting();
-}
-init();
+
+    columnChecked.value = columnSetting.filter((item) => item.show).map((item) => item.field);
+};
+initColumn();
+
+const dragList = toRef(columnSetting);
+
+const onReset = () => {
+    resetTableSetting(props.tableKey);
+    initColumn();
+    dragList.value = cloneDeep(columnSetting);
+};
 
 // 拖动排序
-function onMove(e) {
-    if (e.draggedContext.element.draggable === false) return false;
-    return true;
-}
-function onDragEnd() {
-    const newColumns = toRaw(unref(columnsSettingList));
-    emits('updateColumn', newColumns, setting);
-}
-
-function onPopoverShowUpdate(visible: boolean) {
-    if (!visible) {
-        updateSetting();
+const onDragMove = (e: any) => {
+    if (e.draggedContext.element.draggable === false) {
+        return false;
     }
-}
+    return true;
+};
+const onDragEnd = () => {
+    currentTableSetting.column = toRaw(unref(dragList));
+};
 
-function updateSetting() {
-    const newColumns = toRaw(unref(columnsSettingList));
-    emits('updateColumn', newColumns, setting);
-}
 
+// 设置列是否可见
 const handleColumnCheck: CheckboxGroupProps['onUpdate:value'] = (checkedValue, meta) => {
     const { actionType, value } = meta;
 
-    const columnSetting = columnsSettingList.value.find((column) => column.key === value)!;
-    columnSetting.check = actionType === 'check';
+    const column = columnSetting.find((item) => item.field === value)!;
+    column.show = actionType === 'check';
     columnChecked.value = checkedValue as string[];
 };
 
-// 重置设置
-
-const onReset = () => {
-    Object.assign(setting, tableSetting.value.default.column);
+// 设置列的固定
+const setColumnFixed = (field: string, fixed: 'left' | 'right') => {
+    const column = columnSetting.find((item) => item.field === field)!;
+    if (column.fixed === fixed) {
+        column.fixed = undefined;
+        return;
+    }
+    column.fixed = fixed;  
 };
 </script>
 
@@ -192,6 +158,7 @@ const onReset = () => {
             padding: 10px 14px;
             display: flex;
             align-items: center;
+            min-width: 220px;
 
             &:hover {
                 background: #e6f7ff;
@@ -199,5 +166,9 @@ const onReset = () => {
         }
     }
 
+    .fix-disabled {
+        color: #ccc;
+        cursor: not-allowed;
+    }
 }
 </style>

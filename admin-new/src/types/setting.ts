@@ -1,11 +1,11 @@
-export interface ISettingTableStyle {
+import type { DataTableBaseColumn, TableProps } from "naive-ui";
+
+/** 表格总体设置 */
+export interface ISettingTable {
     /** 表格斑马纹 */
     striped: boolean;
     /** 密度 */
-    density: string;
-}
-
-export interface ISettingTableColumn {
+    density: TableProps['size'];
     /** 勾选列 */
     selection: boolean;
     /** 表格边框 */
@@ -15,3 +15,14 @@ export interface ISettingTableColumn {
     /** 实时数据 */
     realtime: boolean;
 }
+
+/** 表格列设置 */
+export type ISettingTableColumn = {
+    field: string;
+    width?: number;
+    fixed?: DataTableBaseColumn['fixed'];
+    /** 是否展示 */
+    show: boolean;
+    /** 列标题 */
+    title: string;
+}[];

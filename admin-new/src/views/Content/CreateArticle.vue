@@ -1,12 +1,12 @@
 <template>
     <NCard>
-        <NForm :model="formData" :rule="formRules" ref="formRef">
+        <NForm :model="formData" :rules="formRules" ref="formRef">
             <NFormItem label="文章标题" path="title">
                 <NInput v-model:value="formData.title"></NInput>
             </NFormItem>
             <NFormItem label="文章内容" path="content">
                 <div class="w-full">
-                    <div id="editor" style="height: 600px;"></div>
+                    <QuillEditor ref="editorRef"></QuillEditor>
                 </div>
             </NFormItem>
             <NFormItem>
@@ -16,12 +16,13 @@
     </NCard>
 </template>
 <script setup lang="ts">
-import { reqArticleRequest } from '@/api/article';
+import { httpArticleCreateReq } from '@/api/article';
+import QuillEditor from '@/components/common/QuillEditor.vue';
 import { contentRouteConstant } from '@/router/modules/content';
+
 import { NButton, NCard, NForm, NFormItem, NInput, type FormRules } from 'naive-ui';
-import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
-import { onMounted, reactive, ref } from 'vue';
+import { reactive, ref } from 'vue';
 
 defineOptions({
     name: contentRouteConstant.articleCreate.name
@@ -36,25 +37,26 @@ const formRules: FormRules = {
     title: [
         { required: true, message: '请输入文章标题' }
     ],
-    content: {
-        required: true, message: '请输入文章内容'
-    }
+    content: [
+        {
+            required: true, message: '请输入文章内容', validator() {
+                return editorRef.value!.getQuill().getText().trim().length > 0;
+            }
+        }
+    ]
+
 };
 
-let quill: Quill;
-onMounted(() => {
-    quill = new Quill('#editor', {
-        theme: 'snow'
-    });
-});
+
 
 const formRef = ref<InstanceType<typeof NForm> | null>(null);
+const editorRef = ref<InstanceType<typeof QuillEditor> | null>(null);
 
 async function onSubmit() {
-    const content = quill.getText();
+    const content = editorRef.value!.getQuill().getText();
     formData.content = content;
     await formRef.value!.validate();
-    await reqArticleRequest(formData);
+    await httpArticleCreateReq(formData);
 }
 
 </script>

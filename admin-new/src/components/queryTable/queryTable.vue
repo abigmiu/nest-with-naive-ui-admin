@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import BasicForm, { type IBasicFormSchemas } from '@/components/form/BasicForm.vue';
 import { NButton, NCard, NCollapse, NCollapseItem, type DataTableBaseColumn, type DataTableColumns, type FormRules, type PaginationProps } from 'naive-ui';
-import { clone } from 'radash';
+import { cloneDeep } from 'es-toolkit';
 import { onMounted, ref } from 'vue';
 import BasicTable from '../table/BasicTable.vue';
 import type { IPageData } from '@/types/api/base';
@@ -51,7 +51,7 @@ const basicTableRef = ref<null | InstanceType<typeof BasicTable>>(null);
 async function onQuery(reset = false) {
     const formEl = basicFormRef.value!;
     await formEl.validateForm();
-    const queryData = clone(formEl.formData);
+    const queryData = cloneDeep(formEl.formData);
     if (reset) {
         queryData.page = 1;
     }

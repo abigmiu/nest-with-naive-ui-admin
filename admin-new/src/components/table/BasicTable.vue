@@ -8,14 +8,13 @@
             <NTooltip trigger="hover">
                 <template #trigger>
                     <div class="mr-2 table-toolbar-right-icon">
-                        <NSwitch v-model:value="striped" @update:value="setStriped" />
+                        <NSwitch v-model:value="tableSetting.striped" />
                     </div>
                 </template>
                 <span>表格斑马纹</span>
             </NTooltip>
             <NDivider vertical />
             <!-- 刷新数据 -->
-
             <NTooltip trigger="hover">
                 <template #trigger>
                     <div class="table-toolbar-right-icon">
@@ -26,58 +25,60 @@
                 </template>
                 <span>刷新</span>
             </NTooltip>
-
             <!--密度-->
             <NTooltip trigger="hover">
                 <template #trigger>
-                    <NDropdown
-                        @select="setDensity"
-                        trigger="click"
-                        :options="densityOptions"
-                        v-model:value="density"
-                    >
-                        <div class="table-toolbar-right-icon">
+                    <div class="table-toolbar-right-icon">
+                        <NDropdown
+                            @select="setDensity"
+                            trigger="click"
+                            :options="densityOptions"
+                            v-model:value="tableSetting.density"
+                        >
+
                             <NIcon size="18">
                                 <ColumnHeightOutlined />
                             </NIcon>
-                        </div>
-                    </NDropdown>
+
+                        </NDropdown>
+                    </div>
                 </template>
                 <span>密度</span>
             </NTooltip>
 
-
             <!-- 列设置 -->
             <div class="table-toolbar-right-icon">
-                <ColumnSetting :table-key="tableKey" :columns="tableColumns" @update-column="onUpdateColumnSetting">
+                <ColumnSetting :table-key="tableKey" :columns="tableColumns">
                 </ColumnSetting>
             </div>
         </div>
     </div>
     <div>
         <NDataTable
+            :row-key="tableRowKey"
             :columns="innerTableColumns"
             :data="tableData"
             :pagination="pagination"
-            :striped="striped"
-            :size="density"
-            :bordered="bordered"
+            :striped="tableSetting.striped"
+            :size="tableSetting.density"
+            :bordered="tableSetting.border"
             :on-update:page="onPageChange"
             :on-update:page-size="onPageSizeChange"
             :loading="loading"
-        ></NDataTable>
+            :scroll-x="1090"
+        >
+        </NDataTable>
     </div>
 </template>
 <script setup lang="ts">
-import { NDataTable, NTooltip, NSwitch, NDivider, NIcon, type DataTableColumns, type PaginationProps, NDropdown, type TableProps, NButton, type DataTableColumn, type DataTableBaseColumn } from 'naive-ui';
-import ColumnSetting, { type ITableSettingColumn, type ITableSettingInfo } from './components/ColumnSetting.vue';
-import { ref } from 'vue';
+import { NDataTable, NTooltip, NSwitch, NDivider, NIcon, type DataTableColumns, NDropdown, type TableProps, NButton, type DataTableColumn, type DataTableBaseColumn } from 'naive-ui';
+import ColumnSetting from './components/ColumnSetting.vue';
+import { computed, ref } from 'vue';
 import { ColumnHeightOutlined, ReloadOutlined } from '@vicons/antd';
-import { clone } from 'radash';
-import { useState } from '@/hooks/common';
 import { useBasicTable } from '@/hooks/basicComponent';
 import type { IPageData } from '@/types/api/base';
 import { cloneDeep } from 'es-toolkit';
+import { useSettingStore } from '@/stores/settingStore';
 
 
 interface IProps {
@@ -87,7 +88,50 @@ interface IProps {
     tableKey: string;
 }
 const props = defineProps<IProps>();
-const innerTableColumns = ref<DataTableColumns>([]);
+
+
+// store 共享数据
+const settingStore = useSettingStore();
+const { getTableSetting } = settingStore;
+const currentTableSetting = getTableSetting(props.tableKey);
+const columnSetting = currentTableSetting.column;
+const tableSetting = currentTableSetting.table;
+
+// 表格列
+const innerTableColumns = computed((): DataTableColumns => {
+    console.log('columnSetting', columnSetting);
+    const clonedColumn = cloneDeep(props.tableColumns);
+    if (!columnSetting.length) {
+        return clonedColumn;
+    }
+
+    const newColumns: DataTableColumns = [];
+    columnSetting.forEach((setting) => {
+        if (!setting.show) {
+            return;
+        }
+
+        const column = clonedColumn.find((col) => col.key === setting.field);
+        if (!column) {
+            return;
+        }
+        newColumns.push(column);
+        if (tableSetting.resizable) {
+            column.resizable = true;
+        }
+        if (setting.width) {
+            column.width = setting.width;
+        }
+    });
+    if (tableSetting.selection) {
+        newColumns.unshift({
+            type: 'selection',
+        });
+    }
+    return newColumns;
+});
+
+const tableRowKey = (rowData: any) => rowData.id;
 
 // 数据
 const { loading, pagination, handlePaginationChange, refresh, tableData, fetchData, updateRealtime } = useBasicTable(
@@ -96,9 +140,6 @@ const { loading, pagination, handlePaginationChange, refresh, tableData, fetchDa
 );
 
 // 表格样式设置
-const [striped, setStriped] = useState<boolean>(false);
-const bordered = ref(false);
-
 const densityOptions = [
     {
         type: 'menu',
@@ -116,49 +157,9 @@ const densityOptions = [
         key: 'large',
     },
 ];
-const [density, setDensity] = useState<TableProps['size']>('medium');
-
-// 列设置修改
-let oldTableSettingInfo: ITableSettingInfo;
-function onUpdateColumnSetting(columns: ITableSettingColumn[], info: ITableSettingInfo) {
-    console.log('onUpdateColumnSetting');
-    const cacheColumns = props.tableColumns;
-    const newColumns: DataTableColumns = [];
-    const { selection, border, resizable, realtime } = info;
-    updateRealtime(realtime);
-    bordered.value = border;
-    if (selection) {
-        newColumns.push({
-            type: 'selection',
-        });
-    }
-
-    columns.forEach((column) => {
-        if (!column.check) {
-            return;
-        }
-        const cacheColumn = cacheColumns.find((cacheColumn) => cacheColumn.key === column.key)!;
-        const newColumn = clone(cacheColumn);
-        newColumn.resizable = resizable;
-        newColumns.push(newColumn);
-    });
-
-    innerTableColumns.value = newColumns;
-
-    // if (oldTableSettingInfo) {
-    //     // 当实时数据切换成非实时数据时，需要将分页设置为第一页
-    //     if (
-    //         realtime !== oldTableSettingInfo.realtime
-    //         && realtime 
-    //         && pagination.value 
-    //         && pagination.value.page !== 1
-    //     ) {
-            
-    //     }
-    // }
-    oldTableSettingInfo = cloneDeep(info);
-}
-
+const setDensity = (value: TableProps['size']) => {
+    tableSetting.density = value;
+};
 
 // 分页处理
 function onPageChange(page: number) {

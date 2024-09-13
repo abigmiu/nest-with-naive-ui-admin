@@ -1,7 +1,9 @@
 import type BasicForm from "@/components/form/BasicForm.vue";
+import TableActionMore from "@/components/table/components/TableActionMore.vue";
 import type { IPageData } from "@/types/api/base";
 import type { IBasicPagination } from "@/types/common";
-import type { PaginationProps } from "naive-ui";
+import { NButton, type ButtonProps, type PaginationProps } from "naive-ui";
+import { h } from "vue";
 import { onMounted, ref, type Ref } from "vue";
 
 interface IUseBasicTable {
@@ -14,6 +16,15 @@ interface IUseBasicTable {
     fetchData: (args?: Record<string, any>) => Promise<void>;
 }
 
+export interface IBasicTableActionColumnRender {
+    title: string;
+    props: ButtonProps;
+}
+
+export interface IBasicTableActionMoreColumnRender {
+    type: 'more';
+    props: InstanceType<typeof TableActionMore>['$props'];
+}
 export function useBasicTable(
     fetchFn: (query: Record<string, any>, ...args: any[]) => Promise<IPageData<any> | any[]>,
     pageable: boolean,
@@ -108,6 +119,20 @@ export function useBasicTable(
     };
 }
 
+/** 表格操作列 */
+export function renderBasicTableActionColumn(columns: Array<IBasicTableActionColumnRender | IBasicTableActionMoreColumnRender>) {
+    return columns.map((column) => {
+       if ('type' in column) {
+            return h(TableActionMore, column.props);
+       } else {
+        return h(NButton, {
+            size: 'small',
+            class: "ml-2",
+            ...column.props,
+        }, () => column.title);
+       }
+    });
+}
 
 export function getBasicForm(ref: Ref<InstanceType<typeof BasicForm>  | null>) {
     if (!ref.value) {

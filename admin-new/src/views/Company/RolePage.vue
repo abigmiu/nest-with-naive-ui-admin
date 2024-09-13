@@ -49,12 +49,12 @@ const tableRowActionRender = (row: IRoleListResponse) => {
 };
 
 const tableColumns: DataTableBaseColumn<IRoleListResponse>[] = [
-    { title: 'ID', key: 'id' },
-    { title: '角色名称', key: 'name' },
-    { title: '备注', key: 'remark' },
-    { title: '创建时间', key: 'createdAt' },
-    { title: '更新时间', key: 'updatedAt' },
-    { title: '操作', key: 'actions', render: tableRowActionRender },
+    { title: 'ID', key: 'id', width: 400 },
+    { title: '角色名称', key: 'name', width: 400 },
+    { title: '备注', key: 'remark', width: 400 },
+    { title: '创建时间', key: 'createdAt', width: 400 },
+    { title: '更新时间', key: 'updatedAt', fixed: 'right', width: 200 },
+    { title: '操作', key: 'actions', render: tableRowActionRender, fixed: 'right',  width: 200 },
 ];
 
 

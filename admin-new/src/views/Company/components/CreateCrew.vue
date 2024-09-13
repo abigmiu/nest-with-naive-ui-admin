@@ -32,7 +32,7 @@ import { reqUserCreate } from '@/api/user';
 import BasicForm, { type IBasicFormSchemas } from '@/components/form/BasicForm.vue';
 import type { IUserCreateRequest } from '@/types/api/user';
 import { NButton, NModal, useMessage, type FormRules, type SelectOption, type SelectProps } from 'naive-ui';
-import { clone } from 'radash';
+import { cloneDeep } from 'es-toolkit';
 import { watch, ref, onMounted, reactive } from 'vue';
 
 const message = useMessage();
@@ -121,7 +121,7 @@ async function onSubmit() {
     submitLoading.value = true;
     try {
         await formRef.value!.validateForm();
-        const formData = clone(formRef.value!.formData);
+        const formData = cloneDeep(formRef.value!.formData);
         await reqUserCreate(formData as IUserCreateRequest);
         modelVisible.value = false;
         onModelVisibleChange(false);

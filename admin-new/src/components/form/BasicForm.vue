@@ -35,9 +35,8 @@
 </template>
 <script setup lang="ts">
 import { NForm, NFormItem, type FormInst, type FormRules, NGrid, NFormItemGi, NInput, NSelect, type FormItemRule, type InputProps, type SelectProps } from 'naive-ui';
-import { computed, ref } from 'vue';
-import { clone } from 'radash';
-import { watch } from 'vue';
+import { computed, ref , watch } from 'vue';
+import { cloneDeep } from 'es-toolkit';
 
 type ISchemaTypes = 'input' | 'select' | 'slot';
 type IBasicFormSchemasBase<T extends ISchemaTypes> = {
@@ -64,7 +63,7 @@ const props = defineProps<IProps>();
 
 watch(() => props.data, (data) => {
     if (data) {
-        formData.value = clone(data);
+        formData.value = cloneDeep(data);
     }
 });
 
@@ -77,7 +76,7 @@ const formRules = computed(() => {
     if (!props.rules) {
         return {};
     }
-    const rules: FormRules = clone(props.rules);
+    const rules: FormRules = cloneDeep(props.rules);
 
     Object.keys(rules)
         .forEach((key) => {

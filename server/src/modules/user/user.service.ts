@@ -68,7 +68,7 @@ export class UserService {
     async getUserPageData() {
         const res = await this.prismaService.getPageData(
             this.prismaService.user,
-            {},
+            { page: 1, pageSize: 10 },
             {
                 select: {
                     role: {

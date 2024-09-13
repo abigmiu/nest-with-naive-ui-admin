@@ -1,5 +1,5 @@
 import type { dateStr } from "@/util";
-import type { IPaginationQuery } from "./base";
+import type { IPageQuery } from "./base";
 import type { IRole } from "./role";
 
 export interface ILoginRequest {
@@ -16,7 +16,7 @@ export interface ILoginResponse {
 	token: string;
 }
 
-export interface IUserPageRequest extends IPaginationQuery {
+export interface IUserPageRequest extends IPageQuery {
 	username: string;
 }
 

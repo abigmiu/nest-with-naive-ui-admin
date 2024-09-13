@@ -11,17 +11,15 @@
     </QueryTable>
 </template>
 <script setup lang="ts">
+import { httpArticlePageQueryReq } from '@/api/article';
 import type { IBasicFormSchemas } from '@/components/form/BasicForm.vue';
 import QueryTable from '@/components/queryTable/queryTable.vue';
 import { contentRouteConstant } from '@/router/modules/content';
-import { reqArticlePageRequest } from '@/types/api/article';
 import { NButton, type DataTableBaseColumn, type FormRules } from 'naive-ui';
-import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import  { h } from 'vue';
+import { renderBasicTableActionColumn } from '@/hooks/basicComponent';
 
-onMounted(() => {
-    console.log('文章页面加载');
-});
 
 defineOptions({
     name: contentRouteConstant.article.name,
@@ -36,16 +34,37 @@ const formSchemas: IBasicFormSchemas[] = [
 const formRules: FormRules = {};
 
 // 表格配置
+const tableRowActionRender = (row: any) => {
+    return renderBasicTableActionColumn([
+        { title: '编辑', props: {} },
+        { title: '删除', props: {} },
+        { type: 'more', props: {
+            onSelect(key, rowData) {
+                console.log("🚀 ~ onSelect ~ rowData:", rowData);
+                console.log("🚀 ~ onSelect ~ key:", key);
+                
+            },
+            rowData: row,
+            options: [
+                { label: '发布', key: 'publish' },
+                { label: '取消发布', key: 'cancelPublish' }
+            ]
+        } }
+    ]);
+};
 const tableColumns: DataTableBaseColumn[] = [
-    {title: 'id', key: 'id'},
-    { title: '文章名称', key: 'title' },
-    { title: '创建时间', key: 'createdAt' },
-    { title: '更新时间', key: 'updatedAt' },
+    {title: 'id', key: 'id', width: 200, fixed: 'left'},
+    { title: '文章名称', key: 'title', width: 200, },
+    { title: '创建时间', key: 'createdAt', width: 400, fixed: 'left' },
+    { title: '更新时间', key: 'updatedAt', width: 400, },
+    { title: '操作', key: 'actions', render: tableRowActionRender, fixed: 'right' },
 ];
+
+
 
 // 表格数据请求
 const fetchTableData = (query: any) => {
-    const data = reqArticlePageRequest(query);
+    const data = httpArticlePageQueryReq(query);
     return data;
 };
 
