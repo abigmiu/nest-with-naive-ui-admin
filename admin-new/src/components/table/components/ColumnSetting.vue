@@ -46,7 +46,11 @@
                                 <div class="flex items-center ml-auto">
                                     <NTooltip trigger="hover" placement="bottom-end">
                                         <template #trigger>
-                                            <NIcon size="18"  @click="setColumnFixed(element.field, 'left')">
+                                            <NIcon
+                                                size="18"
+                                                @click="setColumnFixed(element.field, 'left')"
+                                                :color="element.fixed === 'left' ? primaryColor : ''"
+                                            >
                                                 <VerticalRightOutlined />
                                             </NIcon>
                                         </template>
@@ -55,7 +59,11 @@
                                     <NDivider vertical></NDivider>
                                     <NTooltip trigger="hover" placement="bottom-end">
                                         <template #trigger>
-                                            <NIcon size="18" @click="setColumnFixed(element.field, 'right')">
+                                            <NIcon
+                                                size="18"
+                                                @click="setColumnFixed(element.field, 'right')"
+                                                :color="element.fixed === 'right' ? primaryColor : ''"
+                                            >
                                                 <VerticalLeftOutlined />
                                             </NIcon>
                                         </template>
@@ -72,12 +80,11 @@
     </NTooltip>
 </template>
 <script setup lang="ts">
-import { NTooltip, NPopover, NIcon, NButton, NCheckbox, NCheckboxGroup, NDivider, type DataTableBaseColumn, type CheckboxGroupProps } from 'naive-ui';
+import { NTooltip, NPopover, NIcon, NButton, NCheckbox, NCheckboxGroup, NDivider, type DataTableBaseColumn, type CheckboxGroupProps, useThemeVars } from 'naive-ui';
 import { DragOutlined, SettingOutlined, VerticalLeftOutlined, VerticalRightOutlined } from '@vicons/antd';
-import { ref, toRaw, toRef, unref } from 'vue';
+import { computed, ref, toRaw, toRef, unref, watch } from 'vue';
 import Draggerable from 'vuedraggable';
 import { useSettingStore } from '@/stores/settingStore';
-import { storeToRefs } from 'pinia';
 import { cloneDeep } from 'es-toolkit';
 
 // props 定义
@@ -92,13 +99,13 @@ const settingStore = useSettingStore();
 const { resetTableSetting, getTableSetting } = settingStore;
 const currentTableSetting = getTableSetting(props.tableKey);
 const setting = currentTableSetting.table;
-const columnSetting = currentTableSetting.column;
+const columnSetting = computed(() => currentTableSetting.column);
 const columnChecked = ref<string[]>([]);
 
 const initColumn = () => {
-    if (!columnSetting.length) {
+    if (!columnSetting.value.length) {
         props.columns.forEach((item) => {
-            columnSetting.push({
+            columnSetting.value.push({
                 field: item.key as string,
                 title: item.title as string,
                 show: true,
@@ -107,16 +114,16 @@ const initColumn = () => {
         });
     }
 
-    columnChecked.value = columnSetting.filter((item) => item.show).map((item) => item.field);
+    columnChecked.value = columnSetting.value.filter((item) => item.show).map((item) => item.field);
 };
 initColumn();
 
-const dragList = toRef(columnSetting);
+const dragList = toRef(columnSetting.value);
 
 const onReset = () => {
     resetTableSetting(props.tableKey);
     initColumn();
-    dragList.value = cloneDeep(columnSetting);
+    dragList.value = cloneDeep(columnSetting.value);
 };
 
 // 拖动排序
@@ -130,25 +137,36 @@ const onDragEnd = () => {
     currentTableSetting.column = toRaw(unref(dragList));
 };
 
-
 // 设置列是否可见
 const handleColumnCheck: CheckboxGroupProps['onUpdate:value'] = (checkedValue, meta) => {
     const { actionType, value } = meta;
 
-    const column = columnSetting.find((item) => item.field === value)!;
+    const column = columnSetting.value.find((item) => item.field === value)!;
     column.show = actionType === 'check';
     columnChecked.value = checkedValue as string[];
 };
 
 // 设置列的固定
 const setColumnFixed = (field: string, fixed: 'left' | 'right') => {
-    const column = columnSetting.find((item) => item.field === field)!;
+    const column = columnSetting.value.find((item) => item.field === field)!;
     if (column.fixed === fixed) {
         column.fixed = undefined;
         return;
     }
-    column.fixed = fixed;  
+    column.fixed = fixed;
+
+    // const index = columnSetting.value.findIndex((item) => item.field === field)!;
+    // if (fixed === 'left') {
+    //     columnSetting.value.splice(index, 1);
+    //     columnSetting.value.unshift(column);
+    // } else if (fixed === 'right') {
+    //     columnSetting.value.splice(index, 1);
+    //     columnSetting.value.push(column);
+    // }
 };
+
+const themeVars = useThemeVars();
+const primaryColor = computed(() => themeVars.value.primaryColor);
 </script>
 
 <style lang="scss">
@@ -166,9 +184,10 @@ const setColumnFixed = (field: string, fixed: 'left' | 'right') => {
         }
     }
 
-    .fix-disabled {
-        color: #ccc;
-        cursor: not-allowed;
+    .drag-icon {
+        cursor: move
     }
+
+
 }
 </style>

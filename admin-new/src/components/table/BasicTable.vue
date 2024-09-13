@@ -94,19 +94,19 @@ const props = defineProps<IProps>();
 const settingStore = useSettingStore();
 const { getTableSetting } = settingStore;
 const currentTableSetting = getTableSetting(props.tableKey);
-const columnSetting = currentTableSetting.column;
+const columnSetting = computed(() => currentTableSetting.column);
 const tableSetting = currentTableSetting.table;
 
 // 表格列
 const innerTableColumns = computed((): DataTableColumns => {
     console.log('columnSetting', columnSetting);
     const clonedColumn = cloneDeep(props.tableColumns);
-    if (!columnSetting.length) {
+    if (!columnSetting.value.length) {
         return clonedColumn;
     }
 
     const newColumns: DataTableColumns = [];
-    columnSetting.forEach((setting) => {
+    columnSetting.value.forEach((setting) => {
         if (!setting.show) {
             return;
         }
@@ -116,12 +116,10 @@ const innerTableColumns = computed((): DataTableColumns => {
             return;
         }
         newColumns.push(column);
-        if (tableSetting.resizable) {
-            column.resizable = true;
-        }
-        if (setting.width) {
-            column.width = setting.width;
-        }
+
+        column.resizable = tableSetting.resizable;
+        column.width = setting.width;
+        column.fixed = setting.fixed;
     });
     if (tableSetting.selection) {
         newColumns.unshift({
