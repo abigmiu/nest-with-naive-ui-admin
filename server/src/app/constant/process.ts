@@ -1,0 +1,1 @@
+export const __IS_DEV__ = process.env.node_env === 'development';

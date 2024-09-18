@@ -6,6 +6,7 @@ import { computed, ref } from 'vue';
 import { useSettingStore } from './stores/settingStore';
 import { storeToRefs } from 'pinia';
 import { lighten } from './utils/common';
+import { useTestStore } from './stores/testStore';
 const settingStore = useSettingStore();
 const { themeColor } = storeToRefs(settingStore);
 
@@ -13,6 +14,9 @@ const a = ref(1);
 setInterval(() => {
   a.value++;
 }, 1000);
+
+useTestStore();
+useTestStore();
 
 const themeOverrides = computed<GlobalThemeOverrides>(() => {
   const lightenStr = lighten(themeColor.value, 6);
