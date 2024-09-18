@@ -3,7 +3,9 @@ import { ArticleService } from './article.service';
 import { CreateArticleRequestDto } from './dto/create-article.dto';
 import { UpdateArticleRequestDto } from './dto/update-article.dto';
 import { QueryArticleRequestDto } from './dto/query-article.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('文章')
 @Controller('article')
 export class ArticleController {
     constructor(private readonly articleService: ArticleService) {}

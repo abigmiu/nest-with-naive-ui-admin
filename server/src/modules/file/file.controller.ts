@@ -3,7 +3,9 @@ import { FileService } from './file.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateFileRecordRequestDto } from './dto/create-file.dto';
 import { QueryFilePageRequestDto } from './dto/query-file.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('文件')
 @Controller('file')
 export class FileController {
     constructor(private readonly fileService: FileService) { }

@@ -7,7 +7,9 @@ import { Response } from 'express';
 import { createReadStream } from 'fs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserBaseQueryResponseDto } from './dto/query-user.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('用户')
 @Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService,

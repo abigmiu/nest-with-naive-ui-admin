@@ -3,7 +3,9 @@ import { PermissionService } from './permission.service';
 import { CreatePermissionRequestDto } from './dto/create-permission.dto';
 import { Public } from '@/decorator/public.decorator';
 import { UpdatePermissionRequestDto } from './dto/update-permission.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('权限')
 @Controller('permission')
 export class PermissionController {
     constructor(private readonly permissionService: PermissionService) { }
