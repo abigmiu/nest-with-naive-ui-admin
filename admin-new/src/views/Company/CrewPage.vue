@@ -44,9 +44,10 @@ import { useState } from '@/hooks/common';
 import TableActionMore from '../../components/table/components/TableActionMore.vue';
 import { rowDark } from 'naive-ui/es/legacy-grid/styles';
 import { DownOutlined } from '@vicons/antd';
-import { companyRouteConstant } from '@/router/modules/company';
+
 import AuthWrapper from '@/components/common/AuthWrapper.vue';
 import { PERMISSIONS } from '@/utils/constant';
+import { companyRouteConstant } from '@/router/constant';
 
 defineOptions({
     name: companyRouteConstant.crew.name

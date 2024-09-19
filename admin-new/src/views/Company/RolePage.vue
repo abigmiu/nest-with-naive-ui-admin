@@ -25,7 +25,7 @@ import { NButton, type DataTableBaseColumn, type FormRules } from 'naive-ui';
 import CreateRole from './components/CreateRole.vue';
 import EditRole from './components/EditRole.vue';
 import { h, ref } from 'vue';
-import { companyRouteConstant } from '@/router/modules/company';
+import { companyRouteConstant } from '@/router/constant';
 
 defineOptions({
     name: companyRouteConstant.role.name

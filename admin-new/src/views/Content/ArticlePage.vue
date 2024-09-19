@@ -14,11 +14,12 @@
 import { httpArticlePageQueryReq } from '@/api/article';
 import type { IBasicFormSchemas } from '@/components/form/BasicForm.vue';
 import QueryTable from '@/components/queryTable/queryTable.vue';
-import { contentRouteConstant } from '@/router/modules/content';
+
 import { NButton, type DataTableBaseColumn, type FormRules } from 'naive-ui';
 import { useRouter } from 'vue-router';
 import  { h } from 'vue';
 import { renderBasicTableActionColumn } from '@/hooks/basicComponent';
+import { contentRouteConstant } from '@/router/constant';
 
 
 defineOptions({

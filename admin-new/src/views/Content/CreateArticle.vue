@@ -18,7 +18,8 @@
 <script setup lang="ts">
 import { httpArticleCreateReq } from '@/api/article';
 import QuillEditor from '@/components/common/QuillEditor.vue';
-import { contentRouteConstant } from '@/router/modules/content';
+import { contentRouteConstant } from '@/router/constant';
+
 
 import { NButton, NCard, NForm, NFormItem, NInput, type FormRules } from 'naive-ui';
 import 'quill/dist/quill.snow.css';

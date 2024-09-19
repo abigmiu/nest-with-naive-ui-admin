@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { dashboardRouteConstant } from '@/router/modules/dashboard';
+import { dashboardRouteConstant } from '@/router/constant';
 import { useUserStore } from '@/stores/userStore';
 import { NCard, NGrid, NGi, NAvatar } from 'naive-ui';
 

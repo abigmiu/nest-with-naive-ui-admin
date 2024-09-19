@@ -1,60 +1,30 @@
-import { mergeRoutePath, renderIcon } from "../util";
-import { VLayout } from "../lazyRoute";
 import type { RouteRecordRaw } from "vue-router";
 import { PERMISSIONS } from "@/utils/constant";
-import {  ManageAccountsOutlined} from '@vicons/material';
-export const companyRouteConstant = {
-    index: {
-        path: '/company',
-        name: 'company',
-    },
-    role: {
-        path: 'role',
-        name: 'company.role'
-    },
-    crew: {
-        path: 'crew',
-        name: 'company.crew'
+import { companyRouteConstant } from "../constant";
+
+
+/** 公司管理 - 角色管理路由 */
+export const companyRoleRoute: RouteRecordRaw = {
+    path: companyRouteConstant.role.path,
+    name: companyRouteConstant.role.name,
+    component: () => import('@/views/Company/RolePage.vue'),
+    meta: {
+        tab: true,
+        title: '角色管理',
+        permission: PERMISSIONS.ROLE,
+        keepAlive: true,
     }
 };
 
-const companyRoute: RouteRecordRaw = {
-    name: companyRouteConstant.index.name,
-    path: companyRouteConstant.index.path,
-    component: VLayout,
+/** 公司管理 - 职工管理路由 */
+export const companyCrewRoute: RouteRecordRaw = {
+    path: companyRouteConstant.crew.path,
+    name: companyRouteConstant.crew.name,
+    component: () => import('@/views/Company/CrewPage.vue'),
     meta: {
-        title: '公司管理',
-        super: true,
-        menu: true,
-        order: 3,
-        keepAlive: false,
-        permission: PERMISSIONS.COMPANY,
-        icon: renderIcon(ManageAccountsOutlined)
-    },
-    children: [
-        {
-            path: mergeRoutePath(companyRouteConstant.index.path, companyRouteConstant.role.path),
-            name: companyRouteConstant.role.name,
-            component: () => import('@/views/Company/RolePage.vue'),
-            meta: {
-                tab: true,
-                title: '角色管理',
-                permission: PERMISSIONS.ROLE,
-                keepAlive: true,
-            }
-        },
-        {
-            path: mergeRoutePath(companyRouteConstant.index.path, companyRouteConstant.crew.path),
-            name: companyRouteConstant.crew.name,
-            component: () => import('@/views/Company/CrewPage.vue'),
-            meta: {
-                tab: true,
-                title: '用户管理',
-                keepAlive: true,
-                permission: PERMISSIONS.CREW
-            }
-        }
-    ]
+        tab: true,
+        title: '职工管理',
+        keepAlive: true,
+        permission: PERMISSIONS.CREW
+    }
 };
-
-export default companyRoute;

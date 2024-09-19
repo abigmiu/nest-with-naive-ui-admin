@@ -1,13 +1,9 @@
 import type { RouteRecordRaw } from "vue-router";
+import { loginRouteConstant } from "./constant";
 
-export const loginRouteConstant = {
-    index: {
-        path: '/login',
-        name: 'login',
-    }
-};
 
-const loginRoute: RouteRecordRaw = {
+
+export const loginRoute: RouteRecordRaw = {
     name: loginRouteConstant.index.name,
     path: loginRouteConstant.index.path,
     component: () => import("@/views/Login/LoginPage.vue"),
@@ -18,5 +14,3 @@ const loginRoute: RouteRecordRaw = {
         keepAlive: false
     }
 };
-
-export default loginRoute;

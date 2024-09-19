@@ -21,7 +21,7 @@
 </template>
 <script setup lang="ts">
 import { reqFileRecordPage, type IReqFileRecordPageResponse } from '@/api/file';
-import { contentRouteConstant } from '@/router/modules/content';
+import { contentRouteConstant } from '@/router/constant';
 import { NCard, NGrid, NImage, NTag, NGi } from 'naive-ui';
 import { onMounted, ref } from 'vue';
 
