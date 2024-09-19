@@ -22,6 +22,7 @@ export class AuthService {
     async login(data: LoginRequestDto, ip: string) {
         await this.banByIncorrectTimes(ip);
         const signedPassword = this.commonService.signPassword(data.password);
+        console.log("🚀 ~ AuthService ~ login ~ signedPassword:", signedPassword);
         const foundData = await this.prismaService.user.findFirst({
             where: {
                 account: data.account,

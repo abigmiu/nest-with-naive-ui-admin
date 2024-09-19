@@ -18,7 +18,7 @@
                         </div>
                         <div>
                             <p class="px-4 text-xl">早安，{{ username }}，开始您一天的工作吧！</p>
-                            <p class="px-4 text-gray-400">今日阴转大雨，15℃ - 25℃，出门记得带伞哦。</p>
+                            <p class="px-4 text-gray-400">您已使用系统 {{ usedDays }} 天</p>
                         </div>
                     </div>
                 </NGi>
@@ -33,6 +33,7 @@
 <script setup lang="ts">
 import { dashboardRouteConstant } from '@/router/constant';
 import { useUserStore } from '@/stores/userStore';
+import dayjs from 'dayjs';
 import { NCard, NGrid, NGi, NAvatar } from 'naive-ui';
 
 defineOptions({
@@ -41,5 +42,6 @@ defineOptions({
 
 const userStore = useUserStore();
 
-const { username } = userStore.userInfo || {};
+const { username, createdAt } = userStore.userInfo!;
+const usedDays = dayjs().diff(dayjs(createdAt), 'day');
 </script>

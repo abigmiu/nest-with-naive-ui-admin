@@ -65,7 +65,7 @@ function setupSwagger(
         .build();
     const document = SwaggerModule.createDocument(app, documentBuilder);
     SwaggerModule.setup(url, app, document);
-    const swaggerUrl = `appUrl + '/' + url`;
+    const swaggerUrl = `${appUrl}/${url}`;
 
     console.log(`swagger: run in ${blue(underline(swaggerUrl))}`);
     console.log(`swagger json run in ${blue(underline(swaggerUrl + '-json'))}`);

@@ -1,18 +1,13 @@
-import { PERMISSIONS, STORE_NAMES } from "@/utils/constant";
+import { STORE_NAMES } from "@/utils/constant";
 import { defineStore } from "pinia";
 import store from "./sotre";
+import type { ILoginResponse } from "@/types/api/user";
 
 export function useUserStoreWithout() {
     return useUserStore(store);
 }
 
-interface IUserInfo {
-    username: string;
-    token: string;
-    menuPermissions: string[];
-    actionPermissions: string[];
-}
-
+type IUserInfo = ILoginResponse;
 interface IUserStoreState {
     userInfo: IUserInfo | null;
 }

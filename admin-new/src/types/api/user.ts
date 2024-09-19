@@ -8,11 +8,10 @@ export interface ILoginRequest {
 }
 
 export interface ILoginResponse {
-	id: number;
-	createdAt: string;
-	updatedAt: string;
+	menuPermissions: string[];
+	createdAt: dateStr;
 	username: string;
-	roleId: number;
+	actionPermissions: string[];
 	token: string;
 }
 
