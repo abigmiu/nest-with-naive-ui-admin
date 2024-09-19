@@ -21,15 +21,14 @@ export class AuthService {
     /** 登录 */
     async login(data: LoginRequestDto, ip: string) {
         await this.banByIncorrectTimes(ip);
+
         const signedPassword = this.commonService.signPassword(data.password);
-        console.log("🚀 ~ AuthService ~ login ~ signedPassword:", signedPassword);
         const foundData = await this.prismaService.user.findFirst({
             where: {
                 account: data.account,
                 password: signedPassword,
             },
         });
-
         if (!foundData) {
             const times = await this.setIncorrectTimes(ip);
             await this.banByIncorrectTimes(ip, times);

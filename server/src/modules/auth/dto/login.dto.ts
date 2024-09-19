@@ -19,19 +19,24 @@ export class LoginResponseDto implements Partial<User> {
         Object.assign(this, data);
     }
 
+    @ApiProperty({ title: '用户名' })
     @Expose()
     username: string;
 
+    @ApiProperty({ title: 'token' })
     @Expose()
     token: string;
 
     /** 权限列表 */
+    @ApiProperty({ title: '页面权限列表' })
     @Expose()
     menuPermissions: string[];
 
     @Expose()
+    @ApiProperty({ title: '按钮权限列表' })
     actionPermissions: string[];
-
+    
+    @ApiProperty({ title: '创建时间' })
     @Expose()
     createdAt?: Date;
 }
