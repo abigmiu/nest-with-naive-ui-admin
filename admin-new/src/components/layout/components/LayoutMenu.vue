@@ -8,6 +8,7 @@
         :collapsed="collapsed"
     >
         <NMenu
+            ref="menuRef"
             :options="menuOptions"
             :inverted="menuDark"
             :on-update:value="onMenuItemClick"
@@ -28,8 +29,8 @@ import { useUserStore } from '@/stores/userStore';
 import { layoutMenus, type IMenuMeta } from '@/utils/menus';
 import { NMenu, type MenuOption, NLayoutSider, type MenuProps } from 'naive-ui';
 import { storeToRefs } from 'pinia';
-import { ref, watch } from 'vue';
-import { useRoute, useRouter, type RouteRecordNormalized, type RouteRecordRaw } from 'vue-router';
+import { nextTick, ref, watch } from 'vue';
+import { useRoute, useRouter, } from 'vue-router';
 
 const menuStore = useMenuStore();
 const settingStore = useSettingStore();
@@ -43,8 +44,10 @@ const userStore = useUserStore();
 
 const menuOptions = layoutMenus;
 
-// start 菜单处理
 
+
+// start 菜单处理
+const menuRef = ref<InstanceType<typeof NMenu> | null>(null);
 const selectMenuKey = ref('');
 const expandedKeys = ref<string[]>([]);
 const onExpandedKeysUpdate = (keys: string[]) => {
@@ -64,40 +67,17 @@ const onMenuItemClick: MenuProps['onUpdate:value'] = async (key: string, option)
 };
 // # end 菜单处理
 
-const expandParentMenu = () => {
-    let chainMenuKeys: string[] = [];
-
-    function recursion(options: MenuOption[]): boolean {
-        for (const option of options) {
-            chainMenuKeys.push(option.key as string);
-            if (option.key === selectMenuKey.value) {
-                chainMenuKeys.pop();
-                return true;
-            }
-            if (option.children) {
-                if (recursion(option.children)) {
-                    return true;
-                }
-            }
-            chainMenuKeys.pop();
-        }
-        return false;
-    }
-
-
-    recursion(menuOptions);
-    chainMenuKeys.forEach((item) => {
-        const index = expandedKeys.value.indexOf(item);
-        if (index === -1) {
-            expandedKeys.value.push(item);
-        }
-    });
+/** 展开当前菜单的父菜单 */
+const expandParentMenu = async () => {
+    await nextTick();
+    console.log('expandParentMenu', selectMenuKey.value);
+    menuRef.value!.showOption(selectMenuKey.value);
 };
 
 watch(() => route.name, (routeName) => {
-    if (routeName) {
+    if (routeName) { 
         selectMenuKey.value = routeName as string;
         expandParentMenu();
     }
-});
+}, { immediate: true });
 </script>

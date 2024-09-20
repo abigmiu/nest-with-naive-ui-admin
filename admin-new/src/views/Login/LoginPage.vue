@@ -15,17 +15,12 @@
                     size="large"
                     :model="formInline"
                     :rules="rules"
+                    @submit="handleSubmit"
                 >
                     <n-form-item path="account">
-                        <n-input
-                            v-model:value="formInline.account"
-                            placeholder="请输入用户账号"
-                        >
+                        <n-input v-model:value="formInline.account" placeholder="请输入用户账号">
                             <template #prefix>
-                                <n-icon
-                                    size="18"
-                                    color="#808695"
-                                >
+                                <n-icon size="18" color="#808695">
                                     <PersonOutline />
                                 </n-icon>
                             </template>
@@ -39,10 +34,7 @@
                             placeholder="请输入密码"
                         >
                             <template #prefix>
-                                <n-icon
-                                    size="18"
-                                    color="#808695"
-                                >
+                                <n-icon size="18" color="#808695">
                                     <LockClosedOutline />
                                 </n-icon>
                             </template>
@@ -57,8 +49,8 @@
                     </n-form-item>
                     <n-form-item>
                         <n-button
+                            attr-type="submit"
                             type="primary"
-                            @click="handleSubmit"
                             size="large"
                             :loading="loading"
                             block
@@ -82,6 +74,7 @@ import type { ILoginRequest } from '@/types/api/user';
 import { reqLogin } from '@/api/auth';
 import { useUserStore } from '@/stores/userStore';
 import { MD5 } from 'crypto-js';
+import { dashboardRouteConstant } from '@/router/constant';
 
 
 const formRef = ref<FormInst>();
@@ -116,11 +109,13 @@ const handleLogin = async () => {
     if (redirect && typeof redirect === 'string') {
         router.replace(decodeURIComponent(redirect));
     } else {
-        router.replace('/');
+        router.replace({
+            name: dashboardRouteConstant.workspace.name
+        });
     }
     await nextTick();
 };
-const handleSubmit = (e: MouseEvent) => {
+const handleSubmit = (e: Event) => {
     e.preventDefault();
     formRef.value?.validate(async (errors) => {
         if (!errors) {

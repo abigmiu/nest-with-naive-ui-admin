@@ -7,11 +7,7 @@
             ref="basicFormRef"
         ></BasicForm>
         <div class="flex justify-end mb-4">
-            <NButton
-                class="mr-2"
-                type="primary"
-                @click="onQuery"
-            >查询</NButton>
+            <NButton class="mr-2" type="primary" @click="onQuery(false)">查询</NButton>
             <NButton @click="onReset">重置</NButton>
         </div>
         <BasicTable
@@ -27,9 +23,9 @@
 </template>
 <script setup lang="ts">
 import BasicForm, { type IBasicFormSchemas } from '@/components/form/BasicForm.vue';
-import { NButton, NCard, NCollapse, NCollapseItem, type DataTableBaseColumn, type DataTableColumns, type FormRules, type PaginationProps } from 'naive-ui';
+import { NButton, NCard, type DataTableBaseColumn, type FormRules, } from 'naive-ui';
 import { cloneDeep } from 'es-toolkit';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import BasicTable from '../table/BasicTable.vue';
 import type { IPageData } from '@/types/api/base';
 
@@ -43,7 +39,7 @@ interface IProps {
     fetchFn: IFetchFn;
     tableKey: string;
 }
-const props = defineProps<IProps>();
+defineProps<IProps>();
 
 const basicFormRef = ref<null | InstanceType<typeof BasicForm>>(null);
 const basicTableRef = ref<null | InstanceType<typeof BasicTable>>(null);
