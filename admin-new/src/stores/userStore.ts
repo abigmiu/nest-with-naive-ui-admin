@@ -25,6 +25,10 @@ export const useUserStore = defineStore(STORE_NAMES.USER, {
             this.userInfo = data;
             localStorage.setItem('token', data.token);
         },
+        clearUserInfo() {
+            this.userInfo = null;
+            localStorage.removeItem('token');
+        },
         hasMenuPermissions(permissions: string | string[]) {
             if (!Array.isArray(permissions)) {
                 permissions = [permissions];

@@ -12,6 +12,6 @@ export const dashboardWorkspaceRoute: RouteRecordRaw = {
         tab: true,
         title: '工作台',
         keepAlive: true,
-        tabDisallowClose: true
+        tabDisallowClose: true,
     }
 };

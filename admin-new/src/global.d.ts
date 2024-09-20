@@ -2,6 +2,7 @@ import type { VNode, VNodeChild } from "vue";
 
 declare module "vue-router" {
     interface RouteMeta {
+        isPublic?: boolean; // 是否是开放路由
         permission?: string | string[]; // 权限
         order?: number; // 菜单排序
         title: string; // 路由标题 

@@ -12,7 +12,7 @@
                     </NIcon>
                 </div>
             </div>
-            <div class="layout-header__right">
+            <div class="layout-header__right flex items-center">
                 <div class="layout-header-trigger layout-header-trigger-min" @click="toggleVisible">
                     <NTooltip placement="bottom-end">
                         <template #trigger>
@@ -23,6 +23,11 @@
                         项目配置
                     </NTooltip>
                 </div>
+                <div class="layout-header-trigger-min cursor-pointer">
+                    <NDropdown :options="avatarDropdownOptions" :on-select="onAvatarDropdownSelect">
+                        <NAvatar :src="avatarLink"></NAvatar>
+                    </NDropdown>
+                </div>
             </div>
         </div>
     </NLayoutHeader>
@@ -30,18 +35,66 @@
 </template>
 <script lang="ts" setup>
 import { MenuUnfoldOutlined, MenuFoldOutlined, SettingOutlined } from '@vicons/antd';
-import { ref } from 'vue';
-import { NIcon, NTooltip, NLayoutHeader } from 'naive-ui';
+import { computed, ref } from 'vue';
+import { NIcon, NTooltip, NLayoutHeader, NAvatar, NDropdown, type DropdownOption, type DropdownProps, useDialog } from 'naive-ui';
 import { useMenuStore } from '@/stores/menuStore';
 import { storeToRefs } from 'pinia';
 import { useSettingStore } from '@/stores/settingStore';
+import { useUserStore } from '@/stores/userStore';
+import { options } from 'node_modules/axios/index.cjs';
+import { reqLogout } from '@/api/auth';
+import { useRouter } from 'vue-router';
+import { loginRouteConstant } from '@/router/constant';
+
+const dialog = useDialog();
+const router = useRouter();
 
 const menuStore = useMenuStore();
 const settingStore = useSettingStore();
+const userStore = useUserStore();
+const { userInfo } = storeToRefs(userStore);
 const { collapsed, } = storeToRefs(menuStore);
 const { headerDark } = storeToRefs(settingStore);
 const { toggleVisible } = settingStore;
 const { toggleCollapsed } = menuStore;
+
+const avatarLink = computed(() => {
+  return userInfo.value?.avatar ?? '';
+});
+const avatarDropdownOptions: DropdownOption[] = [
+  { label: '个人资料', key: 'profile', action: () => {} },
+  { label: '退出登录', key: 'logout', action: () => onConfirmLogout() }
+];
+const onAvatarDropdownSelect: DropdownProps['onSelect'] = (key, option) => {
+  if (option.action) {
+    (option.action as Function)();
+  }
+};
+
+/** 确认退出 */
+const onConfirmLogout = () => {
+  const d = dialog.warning({
+    title: '提示',
+    content: '确认退出登录',
+    positiveText: '退出',
+    onPositiveClick: async () => {
+      d.loading = true;
+      try {
+        await reqLogout();
+        userStore.clearUserInfo();
+        await router.replace({
+          name: loginRouteConstant.index.name,
+        });
+        return true;
+      } catch {
+        return false;
+      } finally {
+        d.loading = false;
+      }
+    }
+  });
+};
+
 </script>
 
 <style lang="scss" scoped>
@@ -169,11 +222,4 @@ const { toggleCollapsed } = menuStore;
   left: 200px;
   z-index: 11;
 }
-
-//::v-deep(.menu-router-link) {
-//  color: #515a6e;
-//
-//  &:hover {
-//    color: #1890ff;
-//  }
-//}</style>
+</style>

@@ -27,17 +27,20 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
-  const { title, permission, keepAlive } = to.meta;
+  const { title, permission, keepAlive, isPublic } = to.meta;
   if (title) {
     document.title = title;
   }
-  // 权限
-  if (permission) {
-    const userStore = useUserStoreWithout();
+  const userStore = useUserStoreWithout();
+  // 是否登录
+  if (permission || !isPublic) {
     if (!userStore.userInfo) {
       message.info('请先登录');
       return { name: loginRouteConstant.index.name };
     }
+  }
+  // 权限
+  if (permission) {
     if (!userStore.hasMenuPermissions(permission)) {
       message.info('没有权限');
       return false;

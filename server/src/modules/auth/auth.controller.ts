@@ -18,4 +18,12 @@ export class AuthController {
         const { ip } = req;
         return this.authService.login(body, ip);
     }
+
+    @Post('logout')
+    @ApiOperation({ summary: '退出登录' })
+    @ApiOkResponse()
+    logout(@Req() req: Request) {
+        const { ip, user } = req; 
+        return this.authService.logout(user.id, ip);
+    }
 }

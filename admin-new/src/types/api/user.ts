@@ -13,6 +13,7 @@ export interface ILoginResponse {
 	username: string;
 	actionPermissions: string[];
 	token: string;
+	avatar: string | null;
 }
 
 export interface IUserPageRequest extends IPageQuery {

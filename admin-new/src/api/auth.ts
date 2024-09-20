@@ -10,3 +10,11 @@ export function reqLogin(data: ILoginRequest): Promise<ILoginResponse> {
         method: 'POST',
     });
 }
+
+/** 退出登录 */
+export function reqLogout(): Promise<null> {
+    return http.request<null>({
+        url: '/api/auth/logout',
+        method: 'POST',
+    });
+}

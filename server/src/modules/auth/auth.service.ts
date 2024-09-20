@@ -69,6 +69,13 @@ export class AuthService {
         });
     }
 
+    /** 退出登录 */
+    async logout(userId: number, ip: string) {
+        // TODO: ip 应该和 登录账号关联起来
+        await this.removeIncorrectTimes(ip);
+
+    }
+
     /** 登录错误次数过多，返回稍后重试异常 */
     private async banByIncorrectTimes(ip: string, times?: number) {
         const redisKey = mergeRedisKey(REDIS_LOGIN_INCORRECT_TIMES, ip);
