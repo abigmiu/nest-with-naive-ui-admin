@@ -9,6 +9,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UserBaseQueryResponseDto } from './dto/query-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UpdateProfileRequestDto } from './dto/update-profile.dto';
+import { UpdatePasswordRequestDto } from './dto/update-password.dot';
 
 @ApiTags('用户')
 @Controller('user')
@@ -78,5 +79,12 @@ export class UserController {
     updateProfile(@Body() body: UpdateProfileRequestDto, @Req() req: Request) {
         const { user } = req;
         return this.userService.updateProfile(user.id, body);
+    }
+
+    @ApiOperation({ summary: '修改用户密码', description: '读取的token'})
+    @Post('update-password')
+    updatePassword(@Body() body: UpdatePasswordRequestDto, @Req() req: Request) {
+        const { user: { id } } = req;
+        return this.userService.updatePassword(id, body);
     }
 }

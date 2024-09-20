@@ -9,12 +9,15 @@ import { createHmac } from 'crypto';
 import { UserBaseQueryResponseDto } from './dto/query-user.dto';
 import { UpdateProfileRequestDto } from './dto/update-profile.dto';
 import { Prisma } from '@prisma/client';
+import { UpdatePasswordRequestDto } from './dto/update-password.dot';
+import { CommonService } from '../common/common.service';
 
 @Injectable()
 export class UserService {
     constructor(
-    private readonly prismaService: PrismaService,
-    private readonly configService: ConfigService,
+        private readonly prismaService: PrismaService,
+        private readonly configService: ConfigService,
+        private readonly commonService: CommonService
     ) { }
 
     /** 获取用户基本信息 */
@@ -22,7 +25,6 @@ export class UserService {
         const foundData = await this.prismaService.user.findFirst({
             where: {
                 id: userId,
-
             },
             include: {
                 role: true,
@@ -182,6 +184,7 @@ export class UserService {
         return foundData;
     }
 
+    /** 更新用户基本信息 */
     async updateProfile(userId: number, body: UpdateProfileRequestDto) {
         const userData = await this.prismaService.user.findFirst({
             where: {
@@ -200,12 +203,36 @@ export class UserService {
         if (body.avatar) {
             updateData.avatar = body.avatar;
         }
-        
+
         await this.prismaService.user.update({
             data: updateData,
             where: {
                 id: userId
             }
         });
+    }
+
+    /** 更新用户密码 */
+    async updatePassword(userId: number, body: UpdatePasswordRequestDto) {
+        await this.findUserById(userId);
+        await this.prismaService.user.update({
+            where: { id: userId },
+            data: { password: this.commonService.signPassword(body.password) }
+        });
+    }
+
+    /** 查找用户是否存在 */
+    private async findUserById(userId: number) {
+        const userData = await this.prismaService.user.findFirst({
+            where: {
+                id: userId
+            }
+        });
+
+        if (!userData) {
+            throw new BadRequestException("用户不存在");
+        }
+
+        return userData;
     }
 }

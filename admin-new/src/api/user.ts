@@ -8,6 +8,11 @@ export interface IReqUserUpdateProfile {
     avatar?: string;
 }
 
+/** 修改用户密码 */
+export interface IReqUserUpdatePassword {
+    password: string;
+}
+
 
 export function reqUserPage(query: IUserPageRequest): Promise<IPageData<ILoginResponse>> {
     return http.request<IPageData<ILoginResponse>>({
@@ -85,6 +90,15 @@ export function reqUserEdit(data: IUserEditRequest) {
 export function reqUserUpdateProfile(data: IReqUserUpdateProfile) {
     return http.request({
         url: '/api/user/update-profile',
+        method: 'POST',
+        data,
+    });
+}
+
+/** 修改用户密码 */
+export function reqUserUpdatePassword(data: IReqUserUpdatePassword) {
+    return http.request({
+        url: '/api/user/update-password',
         method: 'POST',
         data,
     });
