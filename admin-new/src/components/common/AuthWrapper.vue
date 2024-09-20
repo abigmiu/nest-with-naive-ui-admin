@@ -11,7 +11,7 @@ const slots = useSlots();
 const userStore = useUserStore();
 
 function render() {
-    const hasPermission = userStore.hasActionPermissions(props.auth);
+    const hasPermission = userStore.hasPermissions(props.auth);
     if (hasPermission) {
         return slots.default?.();
     }

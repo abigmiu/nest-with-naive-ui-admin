@@ -29,20 +29,12 @@ export const useUserStore = defineStore(STORE_NAMES.USER, {
             this.userInfo = null;
             localStorage.removeItem('token');
         },
-        hasMenuPermissions(permissions: string | string[]) {
-            console.log("🚀 ~ hasMenuPermissions ~ permissions:", permissions);
+        hasPermissions(permissions: string | string[]) {
             if (!Array.isArray(permissions)) {
-                permissions = [permissions];
-            }
-            return true;
-            return permissions.every((p) => this.userInfo!.menuPermissions.includes(p));
-        },
-        hasActionPermissions(permissions: string | string[]) {
-            if (!Array.isArray(permissions)) {
-                permissions = [permissions];
+                return this.userInfo!.permissions.includes(permissions);
             }  
-            return true;
-            return permissions.every((p) => this.userInfo!.actionPermissions.includes(p));
+        
+            return permissions.every((p) => this.userInfo!.permissions.includes(p));
         }
     }
 });

@@ -8,10 +8,9 @@ export interface ILoginRequest {
 }
 
 export interface ILoginResponse {
-	menuPermissions: string[];
 	createdAt: dateStr;
 	username: string;
-	actionPermissions: string[];
+	permissions: string[];
 	token: string;
 	avatar: string | null;
 }

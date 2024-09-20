@@ -48,23 +48,14 @@ export class AuthService {
                 }
             }
         });
-        const menuPermissions: string[] = [];
-        const actionPermissions: string[] = [];
-
-        roleToPermission.forEach(item => {
-            if (item.permission.type === 1) {
-                menuPermissions.push(item.permission.value);
-            } else if (item.permission.type === 2) {
-                actionPermissions.push(item.permission.value);
-            }
-        });
+      
+        const permissions = roleToPermission.map((item) => item.permission.value);
 
         const token = await this.generateToken(foundData.id, foundData.roleId);
         await this.removeIncorrectTimes(ip);
         return new LoginResponseDto({
             ...foundData,
-            menuPermissions,
-            actionPermissions,
+            permissions,
             token,
         });
     }

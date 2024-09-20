@@ -54,7 +54,7 @@ const permissions = [
                         type: 2,
                         parentId: 3,
                         name: '新增图片',
-                        value: 'content.article.create',
+                        value: 'content.image.create',
                         children: null
                     },
                     {
@@ -62,7 +62,7 @@ const permissions = [
                         type: 2,
                         parentId: 3,
                         name: '编辑图片',
-                        value: 'content.article.update',
+                        value: 'content.image.update',
                         children: null
                     },
                     {
@@ -70,7 +70,7 @@ const permissions = [
                         type: 2,
                         parentId: 3,
                         name: '删除图片',
-                        value: 'content.article.delete',
+                        value: 'content.image.delete',
                         children: null
                     }
                 ]

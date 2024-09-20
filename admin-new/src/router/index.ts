@@ -43,7 +43,7 @@ router.beforeEach((to) => {
   }
   // 权限
   if (permission) {
-    if (!userStore.hasMenuPermissions(permission)) {
+    if (!userStore.hasPermissions(permission)) {
       message.info('没有权限');
       return false;
     }

@@ -15,9 +15,13 @@ export class LoginRequestDto {
 
 @Exclude()
 export class LoginResponseDto implements Partial<User> {
-    constructor(data: Partial<User & { token: string, menuPermissions: string[], actionPermissions: string[] }>) {
+    constructor(data: Partial<LoginResponseDto>) {
         Object.assign(this, data);
     }
+
+    @ApiProperty({ title: '头像地址' })
+    @Expose()
+    avatar: string | null;
 
     @ApiProperty({ title: '用户名' })
     @Expose()
@@ -28,15 +32,11 @@ export class LoginResponseDto implements Partial<User> {
     token: string;
 
     /** 权限列表 */
-    @ApiProperty({ title: '页面权限列表' })
+    @ApiProperty({ title: '权限列表' })
     @Expose()
-    menuPermissions: string[];
-
-    @Expose()
-    @ApiProperty({ title: '按钮权限列表' })
-    actionPermissions: string[];
+    permissions: string[];
     
     @ApiProperty({ title: '创建时间' })
     @Expose()
-    createdAt?: Date;
+    createdAt: Date;
 }

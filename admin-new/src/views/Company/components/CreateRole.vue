@@ -98,21 +98,17 @@ const fetchPermission = async () => {
     originPermissionTreeData = data;
     const treeData = listToTree(data);
     permissionTreeData.value = treeData as unknown as TreeOption[];
-    
 };
 
 // 权限修改
 let fullCheckedKeys: number[] = [];
-let halfCheckedKeys: number[] = [];
+let halfCheckedKeys: number[] = []; // 半勾选的权限
 const onPermissionChange = (keys: Array<number>) => {
     const formData = formRef.value!.formData;
     formData.permissionIds = keys;
     fullCheckedKeys = keys;
-    
 };
 const onHalfPermissionChange = (keys: Array<number>) => {
-    console.log("🚀 ~ onHalfPermissionChange ~ keys:", keys);
-    
     halfCheckedKeys = keys;
 };
 

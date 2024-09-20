@@ -41,6 +41,7 @@ const { userInfo } = userStore;
 const userName = ref(userInfo?.username || '');
 const [userNameLoading, setUserNameLoading] = useState(false);
 const onUpdateUserName = async () => {
+    if (userNameLoading.value) return;
     const trimmedUserName = userName.value.trim();
     if (!trimmedUserName.length) return;
     setUserNameLoading(true);
@@ -58,9 +59,18 @@ const onUpdateUserName = async () => {
 
 const userAvatar = ref(userInfo?.avatar || '');
 const [userAvatarLoading, setUserAvatarLoading] = useState(false);
-const onAvatarUpload = (url: string) => {
-    userAvatar.value = url;
-    userInfo!.avatar = url;
+const onAvatarUpload = async (url: string) => {
+    if (userAvatarLoading.value) return;
+    setUserAvatarLoading(true);
+    try {
+        await reqUserUpdateProfile({
+            avatar: url,
+        });
+        userInfo!.avatar = url;
+        userAvatar.value = url;
+    } finally {
+        setUserAvatarLoading(false);
+    }
 };
 </script>
 

@@ -9,6 +9,9 @@ export class UserBaseQueryResponseDto implements User {
     password: string;
 
     @Expose()
+    avatar: string;
+
+    @Expose()
     id: number;
     @Expose()
     account: string;

@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsOptional, IsString, IsUrl } from "class-validator";
+import { IsOptional, IsString, isURL, IsUrl } from "class-validator";
+
 
 export class UpdateProfileRequestDto {
     @ApiProperty({ title: '用户昵称', required: false, })
@@ -8,7 +9,9 @@ export class UpdateProfileRequestDto {
     username?: string;
 
     @ApiProperty({ title: '头像地址', required: false })
-    @IsUrl()
+    @IsUrl({
+        require_tld: false,
+    })
     @IsOptional()
     avatar?: string;
 }
