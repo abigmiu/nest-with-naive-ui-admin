@@ -53,3 +53,10 @@ export const loginRouteConstant = {
         name: 'login',
     }
 };
+
+export const userRouteConstant = {
+    index: {
+        path: '/user',
+        name: 'user',
+    },
+};

@@ -44,7 +44,7 @@ import { useUserStore } from '@/stores/userStore';
 import { options } from 'node_modules/axios/index.cjs';
 import { reqLogout } from '@/api/auth';
 import { useRouter } from 'vue-router';
-import { loginRouteConstant } from '@/router/constant';
+import { loginRouteConstant, userRouteConstant } from '@/router/constant';
 
 const dialog = useDialog();
 const router = useRouter();
@@ -62,7 +62,7 @@ const avatarLink = computed(() => {
   return userInfo.value?.avatar ?? '';
 });
 const avatarDropdownOptions: DropdownOption[] = [
-  { label: '个人资料', key: 'profile', action: () => {} },
+  { label: '个人资料', key: 'profile', action: () => onUserProfile() },
   { label: '退出登录', key: 'logout', action: () => onConfirmLogout() }
 ];
 const onAvatarDropdownSelect: DropdownProps['onSelect'] = (key, option) => {
@@ -92,6 +92,12 @@ const onConfirmLogout = () => {
         d.loading = false;
       }
     }
+  });
+};
+
+const onUserProfile = () => {
+  router.push({
+    name: userRouteConstant.index.name
   });
 };
 

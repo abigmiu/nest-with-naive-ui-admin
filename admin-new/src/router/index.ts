@@ -3,7 +3,7 @@ import { VLayout } from './lazyRoute';
 import { useUserStoreWithout } from '@/stores/userStore';
 import { message } from '@/utils/global';
 import { useAliveStoreWithout } from '@/stores/aliveStore';
-import { loginRouteConstant } from './constant';
+import { dashboardRouteConstant, loginRouteConstant } from './constant';
 import { loginRoute } from './login';
 
 const modules = import.meta.glob('./modules/**/*.ts', { eager: true });
@@ -21,8 +21,10 @@ const router = createRouter({
       path: '/',
       component: VLayout,
       children: allRoutes,
+      redirect: {
+        name: dashboardRouteConstant.workspace.name
+      }
     },
-    
   ]
 });
 

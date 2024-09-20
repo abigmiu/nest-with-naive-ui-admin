@@ -16,6 +16,7 @@ model User {
   roleId    Int      @default(1)
   account   String?
   role      Role     @relation(fields: [roleId], references: [id])
+  avatar String?
 
   @@index([roleId], map: "user_roleId_fkey")
   @@map("user")

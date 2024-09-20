@@ -1,13 +1,14 @@
-import { Body, Controller, Get, Post, Query, Res, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, Res, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserRequestDto } from './dto/create-user.dto';
 import { UserResetPasswordDto } from './dto/reset-password.dto';
 import { UserImportService } from './user-import.service';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { createReadStream } from 'fs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserBaseQueryResponseDto } from './dto/query-user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { UpdateProfileRequestDto } from './dto/update-profile.dto';
 
 @ApiTags('用户')
 @Controller('user')
@@ -70,5 +71,12 @@ export class UserController {
     @Get('page')
     getUserPageData() {
         return this.userService.getUserPageData();
+    }
+
+    @ApiOperation({ summary: '更新自己的用户信息', description: '读取的token信息，只能修改自己的用户信息' })
+    @Post('update-profile')
+    updateProfile(@Body() body: UpdateProfileRequestDto, @Req() req: Request) {
+        const { user } = req;
+        return this.userService.updateProfile(user.id, body);
     }
 }

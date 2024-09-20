@@ -30,16 +30,18 @@ export const useUserStore = defineStore(STORE_NAMES.USER, {
             localStorage.removeItem('token');
         },
         hasMenuPermissions(permissions: string | string[]) {
+            console.log("🚀 ~ hasMenuPermissions ~ permissions:", permissions);
             if (!Array.isArray(permissions)) {
                 permissions = [permissions];
             }
-
+            return true;
             return permissions.every((p) => this.userInfo!.menuPermissions.includes(p));
         },
         hasActionPermissions(permissions: string | string[]) {
             if (!Array.isArray(permissions)) {
                 permissions = [permissions];
             }  
+            return true;
             return permissions.every((p) => this.userInfo!.actionPermissions.includes(p));
         }
     }

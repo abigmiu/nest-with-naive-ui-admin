@@ -3,6 +3,11 @@ import type { IBaseUserInfoResponse, ILoginRequest, ILoginResponse, IUserCreateR
 import { http } from "@/utils/http";
 
 
+export interface IReqUserUpdateProfile {
+    username?: string;
+    avatar?: string;
+}
+
 
 export function reqUserPage(query: IUserPageRequest): Promise<IPageData<ILoginResponse>> {
     return http.request<IPageData<ILoginResponse>>({
@@ -73,5 +78,14 @@ export function reqUserEdit(data: IUserEditRequest) {
         url: '/api/user/edit',
         method: 'POST',
         data
+    });
+}
+
+/** 更新用户自己的基本信息 */
+export function reqUserUpdateProfile(data: IReqUserUpdateProfile) {
+    return http.request({
+        url: '/api/user/update-profile',
+        method: 'POST',
+        data,
     });
 }

@@ -7,6 +7,8 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { createHmac } from 'crypto';
 import { UserBaseQueryResponseDto } from './dto/query-user.dto';
+import { UpdateProfileRequestDto } from './dto/update-profile.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -178,5 +180,32 @@ export class UserService {
             },
         });
         return foundData;
+    }
+
+    async updateProfile(userId: number, body: UpdateProfileRequestDto) {
+        const userData = await this.prismaService.user.findFirst({
+            where: {
+                id: userId
+            }
+        });
+
+        if (!userData) {
+            return new BadRequestException("用户不存在");
+        }
+
+        const updateData: Prisma.UserUpdateInput = {};
+        if (body.username) {
+            updateData.username = body.username;
+        }
+        if (body.avatar) {
+            updateData.avatar = body.avatar;
+        }
+        
+        await this.prismaService.user.update({
+            data: updateData,
+            where: {
+                id: userId
+            }
+        });
     }
 }
