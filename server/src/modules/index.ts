@@ -5,6 +5,7 @@ import { FileModule } from './file/file.module';
 import { ListModule } from './list/list.module';
 import { PermissionModule } from './permission/permission.module';
 import { RoleModule } from './role/role.module';
+import { SettingModule } from './setting/setting.module';
 import { UserModule } from './user/user.module';
 
 const businessModules = [
@@ -16,5 +17,6 @@ const businessModules = [
     ArticleModule,
     FileModule,
     CommonModule,
+    SettingModule
 ];
 export default businessModules;

@@ -60,7 +60,7 @@ const formRules: FormRules = {};
 
 const formSchemas: IBasicFormSchemas[] = [
     {
-        field: 'name',
+        filed: 'name',
         label: '名称',
         type: 'input',
         props: {

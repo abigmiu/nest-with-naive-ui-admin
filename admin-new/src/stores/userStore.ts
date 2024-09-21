@@ -22,6 +22,7 @@ export const useUserStore = defineStore(STORE_NAMES.USER, {
     },
     actions: {
         setUserInfo(data: IUserInfo) {
+            console.log('setUserInfo');
             this.userInfo = data;
             localStorage.setItem('token', data.token);
         },

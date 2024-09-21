@@ -27,7 +27,7 @@
                     <Draggerable
                         v-model="dragList"
                         animation="300"
-                        item-key="field"
+                        item-key="filed"
                         filter=".no-draggable"
                         :move="onDragMove"
                         @end="onDragEnd"
@@ -42,13 +42,13 @@
                                 <NIcon size="18" class="drag-icon mr-2">
                                     <DragOutlined></DragOutlined>
                                 </NIcon>
-                                <NCheckbox :label="element.title" :value="element.field"></NCheckbox>
+                                <NCheckbox :label="element.title" :value="element.filed"></NCheckbox>
                                 <div class="flex items-center ml-auto">
                                     <NTooltip trigger="hover" placement="bottom-end">
                                         <template #trigger>
                                             <NIcon
                                                 size="18"
-                                                @click="setColumnFixed(element.field, 'left')"
+                                                @click="setColumnFixed(element.filed, 'left')"
                                                 :color="element.fixed === 'left' ? primaryColor : ''"
                                             >
                                                 <VerticalRightOutlined />
@@ -61,7 +61,7 @@
                                         <template #trigger>
                                             <NIcon
                                                 size="18"
-                                                @click="setColumnFixed(element.field, 'right')"
+                                                @click="setColumnFixed(element.filed, 'right')"
                                                 :color="element.fixed === 'right' ? primaryColor : ''"
                                             >
                                                 <VerticalLeftOutlined />
@@ -106,7 +106,7 @@ const initColumn = () => {
     if (!columnSetting.value.length) {
         props.columns.forEach((item) => {
             columnSetting.value.push({
-                field: item.key as string,
+                filed: item.key as string,
                 title: item.title as string,
                 show: true,
                 fixed: item.fixed,
@@ -114,7 +114,7 @@ const initColumn = () => {
         });
     }
 
-    columnChecked.value = columnSetting.value.filter((item) => item.show).map((item) => item.field);
+    columnChecked.value = columnSetting.value.filter((item) => item.show).map((item) => item.filed);
 };
 initColumn();
 
@@ -141,21 +141,21 @@ const onDragEnd = () => {
 const handleColumnCheck: CheckboxGroupProps['onUpdate:value'] = (checkedValue, meta) => {
     const { actionType, value } = meta;
 
-    const column = columnSetting.value.find((item) => item.field === value)!;
+    const column = columnSetting.value.find((item) => item.filed === value)!;
     column.show = actionType === 'check';
     columnChecked.value = checkedValue as string[];
 };
 
 // 设置列的固定
-const setColumnFixed = (field: string, fixed: 'left' | 'right') => {
-    const column = columnSetting.value.find((item) => item.field === field)!;
+const setColumnFixed = (filed: string, fixed: 'left' | 'right') => {
+    const column = columnSetting.value.find((item) => item.filed === filed)!;
     if (column.fixed === fixed) {
         column.fixed = undefined;
         return;
     }
     column.fixed = fixed;
 
-    // const index = columnSetting.value.findIndex((item) => item.field === field)!;
+    // const index = columnSetting.value.findIndex((item) => item.filed === filed)!;
     // if (fixed === 'left') {
     //     columnSetting.value.splice(index, 1);
     //     columnSetting.value.unshift(column);

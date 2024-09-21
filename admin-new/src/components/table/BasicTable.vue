@@ -111,7 +111,7 @@ const innerTableColumns = computed((): DataTableColumns => {
             return;
         }
 
-        const column = clonedColumn.find((col) => col.key === setting.field);
+        const column = clonedColumn.find((col) => col.key === setting.filed);
         if (!column) {
             return;
         }

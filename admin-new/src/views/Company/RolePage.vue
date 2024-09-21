@@ -34,7 +34,7 @@ defineOptions({
 // 搜索表单配置
 const formRules: FormRules = {};
 const formSchemas: IBasicFormSchemas[] = [
-    { field: 'name', label: '角色名称', type: 'input', props: { placeholder: '请输入角色名称' } }
+    { filed: 'name', label: '角色名称', type: 'input', props: { placeholder: '请输入角色名称' } }
 ];
 
 // 表格配置

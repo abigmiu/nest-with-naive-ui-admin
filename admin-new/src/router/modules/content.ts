@@ -7,7 +7,7 @@ import { contentRouteConstant } from "../constant";
 /** 内容管理 - 文章管理路由 */
 export const contentArticleRoute: RouteRecordRaw = {
     name: contentRouteConstant.article.name,
-    path: mergeRoutePath(contentRouteConstant.index.path, contentRouteConstant.article.path),
+    path: contentRouteConstant.article.path,
     component: () => import('@/views/Content/ArticlePage.vue'),
     meta: {
         tab: true,
@@ -21,7 +21,7 @@ export const contentArticleRoute: RouteRecordRaw = {
 /** 内容管理 - 创建管理路由 */
 export const contentCreateArticleRoute: RouteRecordRaw = {
     name: contentRouteConstant.articleCreate.name,
-    path: mergeRoutePath(contentRouteConstant.index.path, contentRouteConstant.articleCreate.path),
+    path: contentRouteConstant.articleCreate.path,
     component: () => import('@/views/Content/CreateArticle.vue'),
     meta: {
         tab: true,
@@ -35,7 +35,7 @@ export const contentCreateArticleRoute: RouteRecordRaw = {
 /** 内容管理 - 图片管理路由 */
 export const contentImageRoute: RouteRecordRaw = {
     name: contentRouteConstant.image.name,
-    path: mergeRoutePath(contentRouteConstant.index.path, contentRouteConstant.image.path),
+    path: contentRouteConstant.image.path,
     component: () => import('@/views/Content/ImagePage.vue'),
     meta: {
         tab: true,
@@ -49,7 +49,7 @@ export const contentImageRoute: RouteRecordRaw = {
 /** 内容管理 - 创建管理路由 */
 export const contentCreateImageRoute: RouteRecordRaw = {
     name: contentRouteConstant.imageCreate.name,
-    path: mergeRoutePath(contentRouteConstant.index.path, contentRouteConstant.imageCreate.path),
+    path: contentRouteConstant.imageCreate.path,
     component: () => import('@/views/Content/CreateImage.vue'),
     meta: {
         tab: true,

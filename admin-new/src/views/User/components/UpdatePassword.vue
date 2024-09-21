@@ -53,8 +53,8 @@ const rules: FormRules = {
     ]
 };
 const schemas: IBasicFormSchemas[] = [
-    { label: '密码', field: 'password', type: 'input', props: { type: 'password' } },
-    { label: '确认密码', field: 'confirmPassword', type: 'input', props: { type: 'password' } }
+    { label: '密码', filed: 'password', type: 'input', props: { type: 'password' } },
+    { label: '确认密码', filed: 'confirmPassword', type: 'input', props: { type: 'password' } }
 ];
 
 const [submitLoading, setSubmitLoading] = useState(false);

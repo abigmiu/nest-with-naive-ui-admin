@@ -30,7 +30,7 @@ const router  = useRouter();
 
 // 表单配置
 const formSchemas: IBasicFormSchemas[] = [
-    { field: 'title', label: '文章名称', type: 'input' }
+    { filed: 'title', label: '文章名称', type: 'input' }
 ];
 const formRules: FormRules = {};
 

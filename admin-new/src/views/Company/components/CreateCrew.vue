@@ -65,7 +65,7 @@ const formRules: FormRules = {
 };
 const formSchemas = reactive<IBasicFormSchemas[]>([
     {
-        field: 'account',
+        filed: 'account',
         label: '账号',
         type: 'input',
         props: {
@@ -73,7 +73,7 @@ const formSchemas = reactive<IBasicFormSchemas[]>([
         }
     },
     {
-        field: 'username',
+        filed: 'username',
         label: '名称',
         type: 'input',
         props: {
@@ -81,7 +81,7 @@ const formSchemas = reactive<IBasicFormSchemas[]>([
         }
     },
     {
-        field: 'password',
+        filed: 'password',
         label: '密码',
         type: 'input',
         props: {
@@ -89,7 +89,7 @@ const formSchemas = reactive<IBasicFormSchemas[]>([
         }
     },
     {
-        field: 'roleId',
+        filed: 'roleId',
         label: '角色',
         type: 'select',
         props: {
@@ -102,7 +102,7 @@ const formSchemas = reactive<IBasicFormSchemas[]>([
 // 获取角色数据
 async function getRoleData() {
     // @ts-expect-error 实例化过深
-    const roleIdSchema = formSchemas.find((item) => item.field === 'roleId');
+    const roleIdSchema = formSchemas.find((item) => item.filed === 'roleId');
     const roleList = await reqRoleSimpleList();
 
     if (roleIdSchema) {

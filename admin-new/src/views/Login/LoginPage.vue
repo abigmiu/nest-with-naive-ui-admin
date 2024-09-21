@@ -75,6 +75,7 @@ import { reqLogin } from '@/api/auth';
 import { useUserStore } from '@/stores/userStore';
 import { MD5 } from 'crypto-js';
 import { dashboardRouteConstant } from '@/router/constant';
+import { useSystemSettingStore } from '@/stores/systemSettingStore';
 
 
 const formRef = ref<FormInst>();
@@ -92,6 +93,7 @@ const rules = {
 };
 
 const userStore = useUserStore();
+const systemSettingStore = useSystemSettingStore();
 
 const router = useRouter();
 const route = useRoute();
@@ -105,6 +107,9 @@ const handleLogin = async () => {
 
     const loginResponse = await reqLogin(params);
     userStore.setUserInfo(loginResponse);
+
+    await systemSettingStore.getList();
+
     const { redirect } = route.query;
     if (redirect && typeof redirect === 'string') {
         router.replace(decodeURIComponent(redirect));

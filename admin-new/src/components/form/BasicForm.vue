@@ -9,25 +9,25 @@
         <NGrid :cols="gridColSpanTotal">
             <NFormItemGi
                 :span="gridColSpan"
-                :path="schema.field"
+                :path="schema.filed"
                 v-for="schema in schemas"
-                :key="schema.field"
+                :key="schema.filed"
                 :label="schema.label"
             >
                 <template v-if="schema.type === 'input'">
                     <NInput
-                        v-model:value="formData[schema.field]"
+                        v-model:value="formData[schema.filed]"
                         v-bind="schema.props"
                     ></NInput>
                 </template>
                 <template v-if="schema.type === 'select'">
                     <NSelect
-                        v-model:value="formData[schema.field]"
+                        v-model:value="formData[schema.filed]"
                         v-bind="schema.props"
                     ></NSelect>
                 </template>
                 <template v-if="schema.type === 'slot'">
-                    <slot :name="schema.field"></slot>
+                    <slot :name="schema.filed"></slot>
                 </template>
             </NFormItemGi>
         </NGrid>
@@ -40,7 +40,7 @@ import { cloneDeep } from 'es-toolkit';
 
 type ISchemaTypes = 'input' | 'select' | 'slot';
 type IBasicFormSchemasBase<T extends ISchemaTypes> = {
-    field: string;
+    filed: string;
     label: string;
     type: T;
     props?: T extends 'input'
@@ -80,12 +80,12 @@ const formRules = computed(() => {
 
     Object.keys(rules)
         .forEach((key) => {
-            let fieldRules = props.rules![key];
-            if (!Array.isArray(fieldRules)) {
-                fieldRules = [fieldRules];
+            let filedRules = props.rules![key];
+            if (!Array.isArray(filedRules)) {
+                filedRules = [filedRules];
             }
 
-            fieldRules.forEach((rule) => {
+            filedRules.forEach((rule) => {
                 if (rule.required) {
                     if (!(rule.message || rule.validator || rule.asyncValidator)) {
                         rule.message = '未填写该字段';

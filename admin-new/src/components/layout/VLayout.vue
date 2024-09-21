@@ -12,15 +12,43 @@
         </NLayout>
     </NLayout>
     <LayoutSetting></LayoutSetting>
+    <NWatermark
+        v-if="watermark"
+        cross
+        fullscreen
+        :content="watermarkContent"
+        :x-offset="12"
+        :y-offset="60"
+        :width="384"
+        :height="384"
+        :rotate="-15"
+    ></NWatermark>
 </template>
 
 <script lang="ts" setup>
-import { NLayout, NBackTop, NLayoutHeader, NDrawer, NMenu, NLayoutSider, NLayoutContent, NSplit } from 'naive-ui';
+import { NLayout,  NLayoutContent, NWatermark } from 'naive-ui';
 import LayoutMenu from './components/LayoutMenu.vue';
 import LayoutHeader from './components/LayoutHeader.vue';
 import LayoutContent from './components/LayoutContent.vue';
 import LayoutTabs from './components/LayoutTabs.vue';
 import LayoutSetting from './components/LayoutSetting.vue';
+import { computed } from 'vue';
+import { useUserStore } from '@/stores/userStore';
+import { storeToRefs } from 'pinia';
+import { useSystemSettingStore } from '@/stores/systemSettingStore';
+
+const userStore = useUserStore();
+const { userInfo } = storeToRefs(userStore);
+const watermarkContent = computed(() => {
+  if (!userInfo.value) return '';
+  return `${userInfo.value.username}`;
+});
+
+const systemSettingStore = useSystemSettingStore();
+const { watermark } = storeToRefs(systemSettingStore);
+
+systemSettingStore.getList();
+
 </script>
 
 <style lang="scss">

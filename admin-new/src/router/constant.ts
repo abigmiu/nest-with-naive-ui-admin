@@ -60,3 +60,14 @@ export const userRouteConstant = {
         name: 'user',
     },
 };
+
+export const systemRouteConstant = {
+    index: {
+        path: '/system',
+        name: 'system',
+    },
+    globalSetting: {
+        path: '/globalSetting',
+        name: 'system.globalSetting'
+    }
+};

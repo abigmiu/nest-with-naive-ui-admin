@@ -47,9 +47,9 @@ import { getBasicForm } from '@/hooks/basicComponent';
 import { message } from '@/utils/global';
 
 const formSchemas: IBasicFormSchemas[] = [
-    { field: 'fileName', label: '文件名', type: 'input' },
-    { field: 'remark', label: '备注', type: 'input' },
-    { field: 'tags', label: '标签', type: 'slot' },
+    { filed: 'fileName', label: '文件名', type: 'input' },
+    { filed: 'remark', label: '备注', type: 'input' },
+    { filed: 'tags', label: '标签', type: 'slot' },
 ];
 
 const tags = ref<string[]>([]);

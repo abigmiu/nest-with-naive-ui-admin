@@ -3,11 +3,11 @@ import { renderIcon } from "@/router/util";
 import ManageAccountsOutlined from "@vicons/material/es/ManageAccountsOutlined";
 import type { MenuOption } from "naive-ui";
 import {  dashboardWorkspaceRoute } from "@/router/modules/dashboard";
-import { DashboardOutlined } from "@vicons/antd";
+import { DashboardOutlined, SettingOutlined } from "@vicons/antd";
 import { contentArticleRoute, contentImageRoute } from "@/router/modules/content";
 
 import { ArticleOutlined } from '@vicons/material';
-import { dashboardRouteConstant, companyRouteConstant, contentRouteConstant } from "@/router/constant";
+import { dashboardRouteConstant, companyRouteConstant, contentRouteConstant, systemRouteConstant } from "@/router/constant";
 
 export type IMenuMeta = {
     routeName: string;
@@ -91,8 +91,27 @@ const contentMenus: ILayoutMenuOptions = [
     }
 ];
 
+const systemMenus: ILayoutMenuOptions = [
+    {
+        label: '系统设置',
+        key: systemRouteConstant.index.name,
+        icon: renderIcon(SettingOutlined),
+        children: [
+            {
+                label: '全局设置',
+                key: systemRouteConstant.globalSetting.name,
+                meta: {
+                    routeName: systemRouteConstant.globalSetting.name,
+                    // TODO: 权限
+                } as IMenuMeta,
+            }
+        ]
+    }
+];
+
 export const layoutMenus: ILayoutMenuOptions = [
     ...dashboardMenus,
     ...companyMenus,
-    ...contentMenus
+    ...contentMenus,
+    ...systemMenus
 ];

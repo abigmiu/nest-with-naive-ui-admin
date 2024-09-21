@@ -18,7 +18,7 @@ export interface ISettingTable {
 
 /** 表格列设置 */
 export type ISettingTableColumn = {
-    field: string;
+    filed: string;
     width?: number;
     fixed?: DataTableBaseColumn['fixed'];
     /** 是否展示 */

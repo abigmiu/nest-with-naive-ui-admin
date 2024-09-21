@@ -20,8 +20,8 @@
                     :data="permissionTreeOptions"
                     expand-on-click
                     checkable
-                    key-field="id"
-                    label-field="name"
+                    key-filed="id"
+                    label-filed="name"
                     @update-checked-keys="onPermissionChange"
                     @update-indeterminate-keys="onHalfPermissionChange"
                 ></NTree>
@@ -60,9 +60,9 @@ const formRules: FormRules = {
 };
 
 const formSchemas = reactive<IBasicFormSchemas[]>([
-    { field: 'name', label: '角色名称', type: 'input', props: { placeholder: '请输入角色名称' } },
-    { field: 'remark', label: '备注', type: 'input', props: { placeholder: '请输入备注' } },
-    { field: 'permissionIds', label: '权限', type: 'slot' }
+    { filed: 'name', label: '角色名称', type: 'input', props: { placeholder: '请输入角色名称' } },
+    { filed: 'remark', label: '备注', type: 'input', props: { placeholder: '请输入备注' } },
+    { filed: 'permissionIds', label: '权限', type: 'slot' }
 ]);
 
 // 提交编辑
