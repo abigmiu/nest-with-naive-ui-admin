@@ -59,3 +59,16 @@ export const contentCreateImageRoute: RouteRecordRaw = {
         permission: PERMISSIONS.IMAGE_CREATE
     }
 };
+
+export const contentCreateNotifyRoute: RouteRecordRaw = {
+    name: contentRouteConstant.notify.name,
+    path: contentRouteConstant.notify.path,
+    component: () => import('@/views/Content/CreateNotify.vue'),
+    meta: {
+        tab: true,
+        keepAlive: true,
+        title: '通知管理'
+        // TODO:
+        // permission: 
+    }
+};

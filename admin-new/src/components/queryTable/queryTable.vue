@@ -1,12 +1,13 @@
 <template>
     <NCard>
         <BasicForm
+            v-if="formSchemas"
             :col="4"
             :rules="formRules"
             :schemas="formSchemas"
             ref="basicFormRef"
         ></BasicForm>
-        <div class="flex justify-end mb-4">
+        <div class="flex justify-end mb-4" v-if="formSchemas">
             <NButton class="mr-2" type="primary" @click="onQuery(false)">查询</NButton>
             <NButton @click="onReset">重置</NButton>
         </div>
@@ -32,8 +33,8 @@ import type { IPageData } from '@/types/api/base';
 export type IFetchFn = (...args: any[]) => Promise<any[] | IPageData>;
 
 interface IProps {
-    formRules: FormRules;
-    formSchemas: IBasicFormSchemas[];
+    formRules?: FormRules;
+    formSchemas?: IBasicFormSchemas[];
     tableColumns: DataTableBaseColumn<any>[];
     pageable: boolean;
     fetchFn: IFetchFn;

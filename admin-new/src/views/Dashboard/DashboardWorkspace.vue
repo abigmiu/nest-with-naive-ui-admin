@@ -8,7 +8,7 @@
                             <NAvatar circle :size="64" :src="avatar || ''" />
                         </div>
                         <div>
-                            <p class="px-4 text-xl">早安，{{ username }}，开始您一天的工作吧！</p>
+                            <p class="px-4 text-xl">{{ username }}，开始您一天的工作吧！</p>
                             <p class="px-4 text-gray-400">您已使用系统 {{ usedDays }} 天</p>
                         </div>
                     </div>
@@ -23,7 +23,9 @@
             <NCard :bordered="false" title="登录日志">
                 <LoginLog />
             </NCard>
-            <NCard :bordered="false" class="ml-2">3123</NCard>
+            <NCard :bordered="false" class="ml-2" title="系统通知">
+                <NotifyBox></NotifyBox>
+            </NCard>
         </div>
        
     </div>
@@ -35,6 +37,7 @@ import { useUserStore } from '@/stores/userStore';
 import dayjs from 'dayjs';
 import { NCard, NGrid, NGi, NAvatar } from 'naive-ui';
 import LoginLog from './LoginLog.vue';
+import NotifyBox from './NotifyBox.vue';
 
 defineOptions({
     name: dashboardRouteConstant.workspace.name

@@ -122,3 +122,13 @@ model LoginLog {
   loginAt DateTime @default(now()) @map("login_at")
   device String?
 }
+
+model Notify {
+  @@map("notify")
+  id Int @id @default(autoincrement())
+  published Boolean @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  content String @db.VarChar(2000)
+  title String 
+}

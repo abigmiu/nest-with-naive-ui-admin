@@ -85,6 +85,15 @@ const contentMenus: ILayoutMenuOptions = [
                     routeName: contentRouteConstant.image.name,
                     permission: contentImageRoute.meta?.permission
                 } as IMenuMeta
+            },
+            {
+                label: '通知管理',
+                key: contentRouteConstant.notify.name,
+                meta: {
+                    routeName: contentRouteConstant.notify.name,
+                    // TODO: 权限
+                    // permission: 
+                } as IMenuMeta,
             }
 
         ]

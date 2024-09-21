@@ -33,6 +33,10 @@ export const contentRouteConstant = {
     imageCreate: {
         path: '/content/image-create',
         name: 'content.imageCreate'
+    },
+    notify: {
+        path: '/content/notify',
+        name: 'content.notifyCreate'
     }
 };
 
