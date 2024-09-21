@@ -113,3 +113,12 @@ model SettingConfig {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 }
+
+model LoginLog {
+  @@map("login_log")
+  id Int @id @default(autoincrement())
+  userId Int
+  ip String?
+  loginAt DateTime @default(now()) @map("login_at")
+  device String?
+}

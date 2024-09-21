@@ -5,8 +5,10 @@ import { PrismaService } from '@/app/depend/prisma/prisma.service';
 import { CommonService } from '../common/common.service';
 import { AppRedisService } from '@/app/depend/redis/redis.service';
 import { mergeRedisKey } from '@/utils';
-import { REDIS_LOGIN_INCORRECT_TIMES } from '@/constant/redis';
+import { REDIS_LOGIN_INCORRECT_TIMES, REDIS_LOGIN_INFO } from '@/constant/redis';
 import { ConfigService } from '@nestjs/config';
+import { IRedisLoginInfo } from '@/types/redis';
+import { MD5 } from 'crypto-js';
 
 @Injectable()
 export class AuthService {
@@ -43,16 +45,25 @@ export class AuthService {
                 permission: {
                     select: {
                         value: true,
-                        type: true  
+                        type: true
                     }
                 }
             }
         });
-      
+
         const permissions = roleToPermission.map((item) => item.permission.value);
 
         const token = await this.generateToken(foundData.id, foundData.roleId);
         await this.removeIncorrectTimes(ip);
+
+        const loginDate = new Date();
+
+        await this.storeLoginInfo(token, {
+            userId: foundData.id,
+            roleId: foundData.roleId,
+            ip,
+            loginDate: loginDate.toISOString(),
+        });
         return new LoginResponseDto({
             ...foundData,
             permissions,
@@ -60,11 +71,16 @@ export class AuthService {
         });
     }
 
-    /** 退出登录 */
-    async logout(userId: number, ip: string) {
-        // TODO: ip 应该和 登录账号关联起来
-        await this.removeIncorrectTimes(ip);
+    async storeLoginInfo(token: string, data: IRedisLoginInfo) {
+        await this.redisService.client.hset(`${REDIS_LOGIN_INFO}:${token}`, data);
+    }
 
+    /** 退出登录 */
+    async logout(token: string) {
+        const redisKey = `${REDIS_LOGIN_INFO}:${token}`;
+        const ip = await this.redisService.client.hget(redisKey, 'ip');
+        await this.redisService.client.del(redisKey);
+        await this.removeIncorrectTimes(ip);
     }
 
     /** 登录错误次数过多，返回稍后重试异常 */
@@ -73,12 +89,12 @@ export class AuthService {
         if (!times) {
             times = await this.redisService.getJson<number>(redisKey) || 0;
         }
-        
+
         const incorrectRetryTimes = this.configService.get<number>('incorrectRetryTimes');
         if (times + 1 > incorrectRetryTimes) {
             const incorrectRetryExpire = this.configService.get<number>('incorrectRetryExpire');
             await this.redisService.client.set(redisKey, times, 'EX', incorrectRetryExpire);
-            throw new BadRequestException(`登录错误次数过多, 请${Math.floor(incorrectRetryExpire/60)}分钟后稍后重试`);
+            throw new BadRequestException(`登录错误次数过多, 请${Math.floor(incorrectRetryExpire / 60)}分钟后稍后重试`);
         }
     }
 
@@ -103,6 +119,8 @@ export class AuthService {
             id,
             roleId,
         });
-        return token;
+        return MD5(token).toString();
+        
+        
     }
 }

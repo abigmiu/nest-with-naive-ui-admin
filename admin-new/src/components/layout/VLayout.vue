@@ -13,7 +13,7 @@
     </NLayout>
     <LayoutSetting></LayoutSetting>
     <NWatermark
-        v-if="watermark"
+        v-if="config.watermark"
         cross
         fullscreen
         :content="watermarkContent"
@@ -45,7 +45,7 @@ const watermarkContent = computed(() => {
 });
 
 const systemSettingStore = useSystemSettingStore();
-const { watermark } = storeToRefs(systemSettingStore);
+const { config } = storeToRefs(systemSettingStore);
 
 systemSettingStore.getList();
 

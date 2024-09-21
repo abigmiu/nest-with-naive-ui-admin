@@ -23,7 +23,7 @@ export class AuthController {
     @ApiOperation({ summary: '退出登录' })
     @ApiOkResponse()
     logout(@Req() req: Request) {
-        const { ip, user } = req; 
-        return this.authService.logout(user.id, ip);
+        const { token } = req; 
+        return this.authService.logout(token);
     }
 }

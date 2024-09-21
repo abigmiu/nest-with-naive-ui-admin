@@ -1,14 +1,18 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AppLoggerService } from '@/app/depend/logger/logger.service';
 import { Reflector } from '@nestjs/core';
 import { PUBLIC_KEY } from '@/constant/decorator';
+import { AppRedisService } from '@/app/depend/redis/redis.service';
+import { IRedisLoginInfo } from '@/types/redis';
+import { REDIS_LOGIN_INFO } from '@/constant/redis';
 
 @Injectable()
 export class LoginGuard implements CanActivate {
     constructor(
         private reflector: Reflector,
         private jwtService: JwtService,
+        private redisService: AppRedisService,
         private appLoggerService: AppLoggerService,
     ) { }
 
@@ -21,17 +25,27 @@ export class LoginGuard implements CanActivate {
 
         const token = this.extractTokenFromHeader(request);
 
+        let tokenAvailable = false;
         if (token) {
             try {
-                const payload = await this.jwtService.verifyAsync(token);
-                request['user'] = payload;
+                const payload: Record<keyof IRedisLoginInfo, string> = await this.redisService.client.hgetall(`${REDIS_LOGIN_INFO}:${token}`);
+                request['user'] = {
+                    id: Number(payload.userId),
+                    roleId: Number(payload.roleId),
+                };
+                request['token'] = token;
+                tokenAvailable = true;
                 return true;
             } catch (e) {
                 this.appLoggerService.error('token 校验失败', e, token);
             }
         }
 
-        return !!isPublic;
+        if (!isPublic && !tokenAvailable) {
+            throw new UnauthorizedException("登录过期");
+        }
+
+        return true;
     }
 
     private extractTokenFromHeader(request: Request): string | undefined {
