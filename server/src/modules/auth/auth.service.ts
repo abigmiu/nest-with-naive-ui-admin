@@ -9,6 +9,7 @@ import { REDIS_LOGIN_INCORRECT_TIMES, REDIS_LOGIN_INFO } from '@/constant/redis'
 import { ConfigService } from '@nestjs/config';
 import { IRedisLoginInfo } from '@/types/redis';
 import { MD5 } from 'crypto-js';
+import * as Bowser from "bowser";
 
 @Injectable()
 export class AuthService {
@@ -21,7 +22,7 @@ export class AuthService {
     ) { }
 
     /** 登录 */
-    async login(data: LoginRequestDto, ip: string) {
+    async login(data: LoginRequestDto, ip: string, ua: string) {
         await this.banByIncorrectTimes(ip);
 
         const signedPassword = this.commonService.signPassword(data.password);
@@ -64,6 +65,7 @@ export class AuthService {
             ip,
             loginDate: loginDate.toISOString(),
         });
+        await this.recordsLoginLog(foundData.id, ip, ua);
         return new LoginResponseDto({
             ...foundData,
             permissions,
@@ -71,6 +73,20 @@ export class AuthService {
         });
     }
 
+    /** 将登录日志保存到数据库 */
+    async recordsLoginLog(userId: number, ip: string, ua: string) {
+        const {  os, browser } = Bowser.parse(ua);
+        await this.prismaService.loginLog.create({
+            data: {
+                userId,
+                device: `${os.name} - ${browser.name} - ${browser.version}`,
+                ip,
+                loginAt: new Date(),
+            }
+        });
+    }
+
+    /** 将登录信息保存到redis */
     async storeLoginInfo(token: string, data: IRedisLoginInfo) {
         await this.redisService.client.hset(`${REDIS_LOGIN_INFO}:${token}`, data);
     }
@@ -120,7 +136,7 @@ export class AuthService {
             roleId,
         });
         return MD5(token).toString();
-        
-        
+
+
     }
 }

@@ -103,3 +103,17 @@ export function reqUserUpdatePassword(data: IReqUserUpdatePassword) {
         data,
     });
 }
+
+export interface IReqLoginLogResponse {
+    loginAt: Date | null;
+    ip: string;
+    device: string;
+    id: number;
+}
+
+/** 用户自己的最近登录日志 */
+export function reqUserRecentLoginLog() {
+    return http.request<IReqLoginLogResponse[]>({
+        url: '/api/login-log/recent'
+    });
+}

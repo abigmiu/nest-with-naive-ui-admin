@@ -94,12 +94,14 @@ const props = defineProps<IProps>();
 const settingStore = useSettingStore();
 const { getTableSetting } = settingStore;
 const currentTableSetting = getTableSetting(props.tableKey);
+console.log("🚀 ~ currentTableSetting:", currentTableSetting);
 const columnSetting = computed(() => currentTableSetting.column);
 const tableSetting = currentTableSetting.table;
 
+console.log('innerTable');
 // 表格列
 const innerTableColumns = computed((): DataTableColumns => {
-    console.log('columnSetting', columnSetting);
+    console.log('columnSetting', JSON.stringify(columnSetting.value));
     const clonedColumn = cloneDeep(props.tableColumns);
     if (!columnSetting.value.length) {
         return clonedColumn;
@@ -126,6 +128,7 @@ const innerTableColumns = computed((): DataTableColumns => {
             type: 'selection',
         });
     }
+    console.log('newColumns', newColumns);
     return newColumns;
 });
 

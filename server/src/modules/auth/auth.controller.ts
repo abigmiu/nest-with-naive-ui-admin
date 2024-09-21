@@ -15,15 +15,15 @@ export class AuthController {
     @ApiOperation({ summary: '登录' })
     @ApiOkResponse({ type: LoginResponseDto })
     login(@Body() body: LoginRequestDto, @Req() req: Request): Promise<LoginResponseDto> {
-        const { ip } = req;
-        return this.authService.login(body, ip);
+        const { ip, headers } = req;
+        return this.authService.login(body, ip, headers['user-agent']);
     }
 
     @Post('logout')
     @ApiOperation({ summary: '退出登录' })
     @ApiOkResponse()
     logout(@Req() req: Request) {
-        const { token } = req; 
+        const { token } = req;
         return this.authService.logout(token);
     }
 }

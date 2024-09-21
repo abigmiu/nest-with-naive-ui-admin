@@ -1,0 +1,10 @@
+-- CreateTable
+CREATE TABLE `login_log` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` INTEGER NOT NULL,
+    `ip` VARCHAR(191) NULL,
+    `login_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `device` VARCHAR(191) NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

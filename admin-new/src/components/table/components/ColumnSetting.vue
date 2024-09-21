@@ -103,18 +103,21 @@ const columnSetting = computed(() => currentTableSetting.column);
 const columnChecked = ref<string[]>([]);
 
 const initColumn = () => {
+    console.log('initColumn', JSON.stringify(currentTableSetting.column));
     if (!columnSetting.value.length) {
-        props.columns.forEach((item) => {
-            columnSetting.value.push({
+        currentTableSetting.column = props.columns.map((item) => {
+            return {
                 filed: item.key as string,
                 title: item.title as string,
                 show: true,
                 fixed: item.fixed,
-            });
+            };
         });
     }
 
-    columnChecked.value = columnSetting.value.filter((item) => item.show).map((item) => item.filed);
+    console.log(JSON.stringify(currentTableSetting.column));
+
+    columnChecked.value = currentTableSetting.column.filter((item) => item.show).map((item) => item.filed);
 };
 initColumn();
 

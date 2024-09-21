@@ -3,6 +3,7 @@ import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { FileModule } from './file/file.module';
 import { ListModule } from './list/list.module';
+import { LoginLogModule } from './login-log/login-log.module';
 import { PermissionModule } from './permission/permission.module';
 import { RoleModule } from './role/role.module';
 import { SettingModule } from './setting/setting.module';
@@ -17,6 +18,7 @@ const businessModules = [
     ArticleModule,
     FileModule,
     CommonModule,
-    SettingModule
+    SettingModule,
+    LoginLogModule
 ];
 export default businessModules;
