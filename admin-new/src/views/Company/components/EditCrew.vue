@@ -20,6 +20,7 @@ import { reqUserBaseInfo, reqUserCreate, reqUserEdit } from '@/api/user';
 import BasicModal from '@/components/common/BasicModal.vue';
 import BasicForm, { type IBasicFormSchemas } from '@/components/form/BasicForm.vue';
 import type { IBaseUserInfoResponse, IUserEditForm, IUserEditRequest } from '@/types/api/user';
+import { message } from '@/utils/global';
 import { useMessage, type FormRules, type SelectProps } from 'naive-ui';
 import { onMounted, reactive, ref, watch } from 'vue';
 
@@ -115,7 +116,7 @@ watch(() => props.userId, (userId) => {
 });
 
 const loading = ref(false);
-const message = useMessage();
+
 async function onSubmit() {
     formRef.value!.validateForm();
     const formData = formRef.value!.formData as IUserEditForm;

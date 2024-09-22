@@ -30,10 +30,9 @@ import { reqUserUpdateProfile } from '@/api/user';
 import BasicUpload from '@/components/common/BasicUpload.vue';
 import { useState } from '@/hooks/common';
 import { useUserStore } from '@/stores/userStore';
+import { message } from '@/utils/global';
 import { NInput, NButton, NAvatar, useMessage, NTooltip } from 'naive-ui';
 import { ref } from 'vue';
-
-const message = useMessage();
 
 const userStore = useUserStore();
 const { userInfo } = userStore;

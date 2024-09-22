@@ -5,7 +5,7 @@
         collapse-mode="width"
         :collapsed-width="64"
         :width="240"
-        :collapsed="collapsed"
+        :collapsed="asideCollapsed"
     >
         <NMenu
             ref="menuRef"
@@ -15,7 +15,7 @@
             :on-update:expanded-keys="onExpandedKeysUpdate"
             :value="selectMenuKey"
             :expanded-keys="expandedKeys"
-            :collapsed="collapsed"
+            :collapsed="asideCollapsed"
             :collapsed-width="64"
             :collapsed-icon-size="22"
         ></NMenu>
@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useMenuStore } from '@/stores/menuStore';
+
 import { useSettingStore } from '@/stores/settingStore';
 import { useUserStore } from '@/stores/userStore';
 import { layoutMenus, type IMenuMeta } from '@/utils/menus';
@@ -32,10 +32,10 @@ import { storeToRefs } from 'pinia';
 import { nextTick, ref, watch } from 'vue';
 import { useRoute, useRouter, } from 'vue-router';
 
-const menuStore = useMenuStore();
+
 const settingStore = useSettingStore();
-const { collapsed } = storeToRefs(menuStore);
-const { menuDark } = storeToRefs(settingStore);
+
+const { menuDark, asideCollapsed } = storeToRefs(settingStore);
 
 const router = useRouter();
 const route = useRoute();

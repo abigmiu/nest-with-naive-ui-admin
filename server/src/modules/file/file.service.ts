@@ -39,8 +39,7 @@ export class FileService {
     async upload(file: Express.Multer.File) {
         const localPath = file.path.slice(file.destination.length + 1);
         const urlDomain = this.configService.get<string>('fileStaticUrlDomain');
-        const urlPrefix = this.configService.get<string>('fileStaticUrl');
-        const url = urlDomain + urlPrefix + localPath;
+        const url = urlDomain + localPath;
         const toSaveData: Prisma.FileCreateInput = {
             location: localPath,
             url: url,

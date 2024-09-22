@@ -23,14 +23,14 @@
 import { reqSystemSettingGroupUpdate, type ISystemSettingUpdate } from '@/api/setting';
 import { useState } from '@/hooks/common';
 import { useSystemSettingStore } from '@/stores/systemSettingStore';
-import { dialog } from '@/utils/global';
+import { dialog, message } from '@/utils/global';
 import { cloneDeep } from 'es-toolkit';
 import { NCard, NList, NListItem, NThing, NSwitch, NButton, useMessage } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 import { onMounted, ref, watch } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 
-const message = useMessage();
+
 
 const systemSettingStore = useSystemSettingStore();
 const loading = ref(false);

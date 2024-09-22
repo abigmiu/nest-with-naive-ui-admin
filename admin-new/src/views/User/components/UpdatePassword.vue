@@ -20,6 +20,7 @@ import { reqUserUpdatePassword } from '@/api/user';
 import BasicModal from '@/components/common/BasicModal.vue';
 import BasicForm, { type IBasicFormSchemas } from '@/components/form/BasicForm.vue';
 import { useState } from '@/hooks/common';
+import { message } from '@/utils/global';
 import { MD5 } from 'crypto-js';
 
 import { useMessage, type FormRules } from 'naive-ui';
@@ -27,7 +28,6 @@ import { ref } from 'vue';
 
 const modalVisible = defineModel({ default: false });
 
-const message = useMessage();
 
 const formRef = ref<InstanceType<typeof BasicForm> | null>(null);
 

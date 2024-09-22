@@ -1,19 +1,19 @@
 import { reqSystemSettingList } from "@/api/setting";
 import { defineStore } from "pinia";
+import store from "./store";
 
 interface IState {
     config: {
         watermark: boolean
     },
- 
-    inited: boolean;
-
+    initialized: boolean;
 }
 
+/** 系统全局设置，由接口传入 */
 export const useSystemSettingStore = defineStore('system-store', {
     state(): IState {
         return {
-            inited: false,
+            initialized: false,
             config: {
                 watermark: false,
             },
@@ -21,7 +21,7 @@ export const useSystemSettingStore = defineStore('system-store', {
     },
     actions: {
         async getList() {
-            if (this.inited) return this.config;
+            if (this.initialized) return this.config;
             const res = await reqSystemSettingList();
             const newState = res.reduce((prev, curr) => {
                 // @ts-ignore
@@ -34,8 +34,12 @@ export const useSystemSettingStore = defineStore('system-store', {
             this.$patch({
                 config: newState
             });
-            this.inited = true;
+            this.initialized = true;
             return this.config;
         }
     }
 });
+
+export const useSystemSettingStoreOutside = () => {
+    useSystemSettingStore(store);
+};

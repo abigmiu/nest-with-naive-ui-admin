@@ -2,9 +2,11 @@ import type { ISettingTableColumn, ISettingTable } from "@/types/setting";
 import { STORE_NAMES } from "@/utils/constant";
 import { cloneDeep } from "es-toolkit";
 import { defineStore } from "pinia";
+import store from "./store";
 
 interface IState {
-    visible: boolean;
+    asideCollapsed: boolean;
+    settingVisible: boolean;
     menuDark: boolean;
     headerDark: boolean;
     tableSetting: Record<'default' | string, {
@@ -16,23 +18,27 @@ interface IState {
     animationName: string;
 }
 
+
+const defaultTableSetting: IState['tableSetting'][keyof IState['tableSetting']]['table'] = {
+    striped: false,
+    density: 'medium',
+    selection: false,
+    border: false,
+    resizable: false,
+    realtime: true,
+};
+
 export const useSettingStore = defineStore(STORE_NAMES.SETTING, {
     persist: true,
     state(): IState {
         return {
-            visible: false,
+            asideCollapsed: false,
+            settingVisible: false,
             menuDark: true,
             headerDark: false,
             tableSetting: {
                 default: {
-                    table: {
-                        striped: false,
-                        density: 'medium',
-                        selection: false,
-                        border: false,
-                        resizable: false,
-                        realtime: true,
-                    },
+                    table: defaultTableSetting,
                     column: []
                 }
             },
@@ -42,8 +48,20 @@ export const useSettingStore = defineStore(STORE_NAMES.SETTING, {
         };
     },
     actions: {
-        toggleVisible() {
-            this.visible = !this.visible;
+        toggleAsideCollapsed(status?: boolean) {
+            if (typeof status === 'boolean') {
+                this.asideCollapsed = status;
+            } else {
+                this.asideCollapsed = !this.asideCollapsed;
+            }
+        },
+        toggleSettingVisible(status?: boolean) {
+            if (typeof status === 'boolean') {
+                this.settingVisible = status;
+            } else {
+                this.settingVisible =  !this.settingVisible;
+            }
+            
         },
         /** 设置头部变黑 */
         setHeaderDark(status?: boolean) {
@@ -70,7 +88,7 @@ export const useSettingStore = defineStore(STORE_NAMES.SETTING, {
             if (this.tableSetting[tableKey]) {
                 return this.tableSetting[tableKey];
             }
-            
+
             this.tableSetting[tableKey] = {
                 table: cloneDeep(this.tableSetting.default.table),
                 column: [],
@@ -88,3 +106,7 @@ export const useSettingStore = defineStore(STORE_NAMES.SETTING, {
         }
     }
 });
+
+export const useSettingStoreOutside = () => {
+    return useSettingStore(store);
+};

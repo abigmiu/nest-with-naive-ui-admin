@@ -76,10 +76,10 @@ import { useUserStore } from '@/stores/userStore';
 import { MD5 } from 'crypto-js';
 import { dashboardRouteConstant } from '@/router/constant';
 import { useSystemSettingStore } from '@/stores/systemSettingStore';
+import { message } from '@/utils/global';
 
 
 const formRef = ref<FormInst>();
-const message = useMessage();
 const loading = ref(false);
 const autoLogin = ref(true);
 const formInline = reactive({

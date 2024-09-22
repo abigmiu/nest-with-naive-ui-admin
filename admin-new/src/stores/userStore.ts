@@ -1,17 +1,13 @@
 import { STORE_NAMES } from "@/utils/constant";
 import { defineStore } from "pinia";
-import store from "./sotre";
+import store from "./store";
 import type { ILoginResponse } from "@/types/api/user";
 
-export function useUserStoreWithout() {
-    return useUserStore(store);
-}
 
 type IUserInfo = ILoginResponse;
 interface IUserStoreState {
     userInfo: IUserInfo | null;
 }
-
 
 export const useUserStore = defineStore(STORE_NAMES.USER, {
     persist: true,
@@ -22,7 +18,6 @@ export const useUserStore = defineStore(STORE_NAMES.USER, {
     },
     actions: {
         setUserInfo(data: IUserInfo) {
-            console.log('setUserInfo');
             this.userInfo = data;
             localStorage.setItem('token', data.token);
         },
@@ -39,3 +34,7 @@ export const useUserStore = defineStore(STORE_NAMES.USER, {
         }
     }
 });
+
+export function useUserStoreOutside() {
+    return useUserStore(store);
+}

@@ -7,7 +7,7 @@
         :fetch-fn="fetchTableData"
         :table-key="contentRouteConstant.article.name"
     >
-        <NButton @click="onAddBtn">新增</NButton>
+        <NButton @click="onAddBtn" type="primary">新增</NButton>
     </QueryTable>
 </template>
 <script setup lang="ts">

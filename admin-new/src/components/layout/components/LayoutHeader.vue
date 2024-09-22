@@ -3,8 +3,8 @@
         <div class="layout-header">
             <div class="layout-header__left">
                 <!-- 菜单收起 -->
-                <div class="ml-1 layout-header-trigger layout-header-trigger-min" @click="toggleCollapsed">
-                    <NIcon size="18" v-if="collapsed">
+                <div class="ml-1 layout-header-trigger layout-header-trigger-min" @click="toggleAsideCollapsed">
+                    <NIcon size="18" v-if="asideCollapsed">
                         <MenuUnfoldOutlined />
                     </NIcon>
                     <NIcon size="18" v-else>
@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="layout-header__right flex items-center">
-                <div class="layout-header-trigger layout-header-trigger-min" @click="toggleVisible">
+                <div class="layout-header-trigger layout-header-trigger-min" @click="toggleSettingVisible">
                     <NTooltip placement="bottom-end">
                         <template #trigger>
                             <NIcon size="18">
@@ -37,26 +37,21 @@
 import { MenuUnfoldOutlined, MenuFoldOutlined, SettingOutlined } from '@vicons/antd';
 import { computed, ref } from 'vue';
 import { NIcon, NTooltip, NLayoutHeader, NAvatar, NDropdown, type DropdownOption, type DropdownProps, useDialog } from 'naive-ui';
-import { useMenuStore } from '@/stores/menuStore';
 import { storeToRefs } from 'pinia';
 import { useSettingStore } from '@/stores/settingStore';
 import { useUserStore } from '@/stores/userStore';
 import { reqLogout } from '@/api/auth';
 import { useRouter } from 'vue-router';
 import { loginRouteConstant, userRouteConstant } from '@/router/constant';
+import { dialog } from '@/utils/global';
 
-const dialog = useDialog();
 const router = useRouter();
 
-const menuStore = useMenuStore();
 const settingStore = useSettingStore();
 const userStore = useUserStore();
 const { userInfo } = storeToRefs(userStore);
-const { collapsed, } = storeToRefs(menuStore);
-const { headerDark } = storeToRefs(settingStore);
-const { toggleVisible } = settingStore;
-const { toggleCollapsed } = menuStore;
-
+const { headerDark, asideCollapsed } = storeToRefs(settingStore);
+const { toggleAsideCollapsed, toggleSettingVisible } = settingStore;
 const avatarLink = computed(() => {
   return userInfo.value?.avatar ?? '';
 });

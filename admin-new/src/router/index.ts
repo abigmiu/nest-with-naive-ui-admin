@@ -1,16 +1,14 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
-import { VLayout } from './lazyRoute';
-import { useUserStoreWithout } from '@/stores/userStore';
-import { message } from '@/utils/global';
+import { useUserStoreOutside } from '@/stores/userStore';
+import { loadingBar, message } from '@/utils/global';
 import { useAliveStoreWithout } from '@/stores/aliveStore';
 import { dashboardRouteConstant, loginRouteConstant } from './constant';
 import { loginRoute } from './login';
+import { useLoadingBar } from 'naive-ui';
 
 const modules = import.meta.glob('./modules/**/*.ts', { eager: true });
 const allRoutes: RouteRecordRaw[] = Object.values(modules)
   .flatMap((routeModule) => Object.values(routeModule as Record<string, RouteRecordRaw>));
-console.log("🚀 ~ allRoutes:", allRoutes);
-
 
 
 const router = createRouter({
@@ -19,7 +17,7 @@ const router = createRouter({
     loginRoute,
     {
       path: '/',
-      component: VLayout,
+      component: () => import('@/components/layout/VLayout.vue'),
       children: allRoutes,
       redirect: {
         name: dashboardRouteConstant.workspace.name
@@ -28,12 +26,13 @@ const router = createRouter({
   ]
 });
 
+
 router.beforeEach((to) => {
   const { title, permission, keepAlive, isPublic } = to.meta;
   if (title) {
     document.title = title;
   }
-  const userStore = useUserStoreWithout();
+  const userStore = useUserStoreOutside();
   // 是否登录
   if (permission || !isPublic) {
     if (!userStore.userInfo) {
@@ -57,6 +56,12 @@ router.beforeEach((to) => {
       keepAliveStore.setKeepCmp(cmpName as string, true);
     }
   }
+  
+  loadingBar.start();
+});
+
+router.afterEach(() => {
+  loadingBar.finish();
 });
 
 export default router;

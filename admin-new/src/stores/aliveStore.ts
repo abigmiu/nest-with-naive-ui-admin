@@ -1,14 +1,11 @@
 import { STORE_NAMES } from "@/utils/constant";
 import { defineStore } from "pinia";
-import store from "./sotre";
+import store from "./store";
 
 interface IState {
     keepComps: string[];
 }
 
-export const useAliveStoreWithout = () => {
-    return useAliveStore(store);
-};
 
 export const useAliveStore = defineStore(STORE_NAMES.ALIVE, {
     state(): IState {
@@ -26,7 +23,11 @@ export const useAliveStore = defineStore(STORE_NAMES.ALIVE, {
             if (index >= 0 && !status) {
                 this.keepComps.splice(index, 1);
             }
-
         }
     }
 });
+
+
+export const useAliveStoreWithout = () => {
+    return useAliveStore(store);
+};

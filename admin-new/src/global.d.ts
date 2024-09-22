@@ -15,4 +15,10 @@ declare module "vue-router" {
     }
 }
 
+
+declare global {
+    interface Window {
+        loadingBar: any;
+    }
+  }
 export { };

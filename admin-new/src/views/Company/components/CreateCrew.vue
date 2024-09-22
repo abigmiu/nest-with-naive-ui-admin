@@ -34,8 +34,8 @@ import type { IUserCreateRequest } from '@/types/api/user';
 import { NButton, NModal, useMessage, type FormRules, type SelectOption, type SelectProps } from 'naive-ui';
 import { cloneDeep } from 'es-toolkit';
 import { watch, ref, onMounted, reactive } from 'vue';
+import { message } from '@/utils/global';
 
-const message = useMessage();
 
 const modelVisible = ref(false);
 

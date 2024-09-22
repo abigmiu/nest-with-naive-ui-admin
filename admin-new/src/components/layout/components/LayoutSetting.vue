@@ -1,5 +1,5 @@
 <template>
-    <NDrawer v-model:show="visible" placement="right" width="300">
+    <NDrawer v-model:show="settingVisible" placement="right" width="300">
         <NDrawerContent title="偏好设置" class="drawer">
 
             <NDivider title-placement="center">导航栏风格</NDivider>
@@ -80,7 +80,7 @@ import { storeToRefs } from 'pinia';
 import { THEME_LIST, ANIMATIONS } from '@/utils/constant';
 
 const settingStore = useSettingStore();
-const { visible, menuDark, headerDark, themeColor, enableAnimation, animationName } = storeToRefs(settingStore);
+const { settingVisible, menuDark, headerDark, themeColor, enableAnimation, animationName } = storeToRefs(settingStore);
 const { setMenuDark, setHeaderDark } = settingStore;
 </script>
 

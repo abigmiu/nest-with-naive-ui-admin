@@ -48,6 +48,7 @@ import { DownOutlined } from '@vicons/antd';
 import AuthWrapper from '@/components/common/AuthWrapper.vue';
 import { PERMISSIONS } from '@/utils/constant';
 import { companyRouteConstant } from '@/router/constant';
+import { dialog, message } from '@/utils/global';
 
 defineOptions({
     name: companyRouteConstant.crew.name
@@ -77,8 +78,7 @@ const moreActionOptions: DropdownProps['options'] = [
 ];
 
 
-const dialog = useDialog();
-const message = useMessage();
+
 const resetPassword = (rowData: IUserPageResponse) => {
     const d = dialog.warning({
         title: '重置密码',
