@@ -41,7 +41,6 @@ import { useMenuStore } from '@/stores/menuStore';
 import { storeToRefs } from 'pinia';
 import { useSettingStore } from '@/stores/settingStore';
 import { useUserStore } from '@/stores/userStore';
-import { options } from 'node_modules/axios/index.cjs';
 import { reqLogout } from '@/api/auth';
 import { useRouter } from 'vue-router';
 import { loginRouteConstant, userRouteConstant } from '@/router/constant';
