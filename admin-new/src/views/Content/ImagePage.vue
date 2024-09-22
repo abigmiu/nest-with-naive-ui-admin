@@ -1,6 +1,7 @@
 <template>
-    <div>
-        <div class="list">
+    <NCard>
+        <NButton type="primary" @click="onCreateBtn">新增</NButton>
+        <div class="list mt-2">
             <NGrid x-gap="12" y-gap="12" :cols="4">
                 <NGi v-for="item in imgList" :key="item.id">
                     <NCard class="file-record">
@@ -17,13 +18,14 @@
             </NGrid>
 
         </div>
-    </div>
+    </NCard>
 </template>
 <script setup lang="ts">
 import { reqFileRecordPage, type IReqFileRecordPageResponse } from '@/api/file';
 import { contentRouteConstant } from '@/router/constant';
-import { NCard, NGrid, NImage, NTag, NGi } from 'naive-ui';
+import { NCard, NGrid, NImage, NTag, NGi, NButton } from 'naive-ui';
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 defineOptions({
     name: contentRouteConstant.image.name
@@ -38,6 +40,13 @@ const getImgList = async () => {
 };
 
 onMounted(getImgList);
+
+const router = useRouter();
+const onCreateBtn = () => {
+    router.push({
+        name: contentRouteConstant.imageCreate.name,
+    });
+};
 </script>
 
 <style lang="scss">

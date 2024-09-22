@@ -3,12 +3,19 @@
         <LayoutMenu></LayoutMenu>
         <NLayout>
             <LayoutHeader />
+          
+            <LayoutTabs class="layout-default-background"></LayoutTabs>
+            
+                
             <NLayoutContent class="layout-content layout-default-background" :native-scrollbar="false">
-                <LayoutTabs></LayoutTabs>
+                
                 <div class="layout-content-main">
                     <LayoutContent></LayoutContent>
                 </div>
             </NLayoutContent>
+         
+            
+           
         </NLayout>
     </NLayout>
     <LayoutSetting></LayoutSetting>
@@ -26,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { NLayout,  NLayoutContent, NWatermark } from 'naive-ui';
+import { NLayout,  NLayoutContent, NLayoutHeader, NWatermark } from 'naive-ui';
 import LayoutMenu from './components/LayoutMenu.vue';
 import LayoutHeader from './components/LayoutHeader.vue';
 import LayoutContent from './components/LayoutContent.vue';
@@ -64,7 +71,7 @@ systemSettingStore.getList();
   }
 }
 </style>
-<style lang="scss" scoped>
+<style lang="scss">
 .layout {
   display: flex;
   flex-direction: row;
@@ -99,7 +106,7 @@ systemSettingStore.getList();
 
   .layout-content {
     flex: auto;
-    height: calc(100vh - $layoutHeaderHeight);
+    height: calc(100vh - $layoutHeaderHeight - $layoutTabsHeight);
   }
 
   .n-layout-header.n-layout-header--absolute-positioned {

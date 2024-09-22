@@ -1,46 +1,53 @@
 <template>
-    <div class="tabs-card">
-        <span class="tabs-card-prev" v-show="scrollable">
-            <NIcon size="16" color="#515a6e">
-                <LeftOutlined />
-            </NIcon>
-        </span>
-        <div class="flex-1 overflow-hidden" ref="scrollWrapEl">
-            <div class="tabs-card-scroll" ref="scrollEl">
-                <div
-                    class="tabs-card-scroll-item"
-                    v-for="item in tabs"
-                    :key="item.name"
-                    @contextmenu="(e) => onTabsMenuShow(e, item)"
-                    :class="{ 'active-item': activeRouteName === item.name }"
-                    @click="onJumpRoute(item)"
-                >
-                    <span>{{ item.title }}</span>
-                    <NIcon size="14" @click.stop="closeTab(item)" v-if="item.closeAble" >
-                        <CloseOutlined />
-                    </NIcon>
+
+    <NLayoutHeader>
+        <div class="tabs-card">
+            <span class="tabs-card-prev" v-show="scrollable">
+                <NIcon size="16" color="#515a6e">
+                    <LeftOutlined />
+                </NIcon>
+            </span>
+            <div class="flex-1 overflow-hidden" ref="scrollWrapEl">
+                <div class="tabs-card-scroll" ref="scrollEl">
+                    <div
+                        class="tabs-card-scroll-item"
+                        v-for="item in tabs"
+                        :key="item.name"
+                        @contextmenu="(e) => onTabsMenuShow(e, item)"
+                        :class="{ 'active-item': activeRouteName === item.name }"
+                        @click="onJumpRoute(item)"
+                    >
+                        <span>{{ item.title }}</span>
+                        <NIcon size="14" @click.stop="closeTab(item)" v-if="item.closeAble">
+                            <CloseOutlined />
+                        </NIcon>
+                    </div>
                 </div>
             </div>
+            <span class="tabs-card-next" v-show="scrollable">
+                <NIcon size="16" color="#515a6e">
+                    <RightOutlined />
+                </NIcon>
+            </span>
         </div>
-        <span class="tabs-card-next" v-show="scrollable">
-            <NIcon size="16" color="#515a6e">
-                <RightOutlined />
-            </NIcon>
-        </span>
-    </div>
-    <NDropdown 
-        :options="tabsMenuOptions"
-        :x="tabsMenuX"
-        :y="tabsMenuY"
-        :show="tabsMenusShow"
-        :on-clickoutside="onTabsMenuClickOutside"
-        @select="onTabsMenuSelect"
-        placement="bottom-start"
-        trigger="manual"
-    ></NDropdown>
+        <NDropdown
+            :options="tabsMenuOptions"
+            :x="tabsMenuX"
+            :y="tabsMenuY"
+            :show="tabsMenusShow"
+            :on-clickoutside="onTabsMenuClickOutside"
+            @select="onTabsMenuSelect"
+            placement="bottom-start"
+            trigger="manual"
+        >
+        </NDropdown>
+    </NLayoutHeader>
+
+
+
 </template>
 <script setup lang="ts">
-import { NIcon, useThemeVars, type DropdownNodeProps, type DropdownOption, type DropdownProps, NDropdown } from 'naive-ui';
+import { NIcon, useThemeVars, type DropdownNodeProps, type DropdownOption, type DropdownProps, NDropdown, NLayoutHeader } from 'naive-ui';
 import { CloseOutlined, ColumnWidthOutlined, LeftOutlined, MinusOutlined, RightOutlined } from '@vicons/antd';
 import { computed, nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useDebounceFn } from '@vueuse/core';
@@ -102,7 +109,7 @@ function handleRouteChange() {
         return;
     }
 
-    
+
     tabs.value.push({
         name: route.name as string,
         title: route.meta.title,
@@ -124,12 +131,12 @@ function closeTab(item: ITab, jumpRoute = true) {
     if (jumpRoute) {
         jumpLastTab();
     }
-    
+
 }
 
 const jumpLastTab = () => {
-// 获取上一个路由
-const lastRoute = tabs.value[tabs.value.length - 1] || tabs.value[0];
+    // 获取上一个路由
+    const lastRoute = tabs.value[tabs.value.length - 1] || tabs.value[0];
     if (!lastRoute) return;
     router.push({
         name: lastRoute.name
@@ -182,7 +189,7 @@ const closeOther = () => {
     });
     jumpLastTab();
 };
-const closeAll= () => {
+const closeAll = () => {
     const closeableTabs = tabs.value.filter((item) => item.closeAble);
     closeableTabs.forEach((item) => {
         closeTab(item, false);
@@ -227,7 +234,7 @@ const tabsMenuOptions = computed((): DropdownProps['options'] => {
         {
             label: '关闭全部',
             key: '4',
-            disabled : isDisable,
+            disabled: isDisable,
             icon: renderIcon(MinusOutlined)
         }
     ];
@@ -267,6 +274,7 @@ const tabsMenuOptions = computed((): DropdownProps['options'] => {
     &-scroll {
         white-space: nowrap;
         display: flex;
+
         &-item {
             background: #fff;
             color: rgb(31, 34, 37);
