@@ -1,10 +1,12 @@
 <template>
     <RouterView v-slot="{ Component, route }">
-        <KeepAlive :include="keepAliveCmps">
-            <Transition :name="getAnimation" mode="out-in" appear>
+        
+        <Transition :name="getAnimation" mode="out-in" appear>
+            <KeepAlive :include="keepAliveCmps">
                 <component :is="Component" :key="route.name"></component>
-            </Transition>
-        </KeepAlive>
+            </KeepAlive>
+        </Transition>
+       
     </RouterView>
 </template>
 <script setup lang="ts">

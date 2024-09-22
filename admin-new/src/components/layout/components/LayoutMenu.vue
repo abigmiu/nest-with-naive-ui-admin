@@ -70,7 +70,6 @@ const onMenuItemClick: MenuProps['onUpdate:value'] = async (key: string, option)
 /** 展开当前菜单的父菜单 */
 const expandParentMenu = async () => {
     await nextTick();
-    console.log('expandParentMenu', selectMenuKey.value);
     menuRef.value!.showOption(selectMenuKey.value);
 };
 

@@ -23,7 +23,7 @@ import { useState } from '@/hooks/common';
 import { message } from '@/utils/global';
 import { MD5 } from 'crypto-js';
 
-import { useMessage, type FormRules } from 'naive-ui';
+import { type FormRules } from 'naive-ui';
 import { ref } from 'vue';
 
 const modalVisible = defineModel({ default: false });

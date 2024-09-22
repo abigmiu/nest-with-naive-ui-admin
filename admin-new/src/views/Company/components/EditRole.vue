@@ -102,7 +102,6 @@ const onPermissionChange = (keys: Array<number>) => {
     defaultPermissionIds.value = keys;
 };
 const onHalfPermissionChange = (keys: Array<number>) => {
-    console.log("🚀 ~ onHalfPermissionChange ~ keys:", keys);
     
     halfCheckedKeys = keys;
 };

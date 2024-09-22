@@ -20,10 +20,11 @@ import { useRouter } from 'vue-router';
 import  { h } from 'vue';
 import { renderBasicTableActionColumn } from '@/hooks/basicComponent';
 import { contentRouteConstant } from '@/router/constant';
+import { contentArticleRoute } from '@/router/modules/content';
 
 
 defineOptions({
-    name: contentRouteConstant.article.name,
+    name: contentArticleRoute.name as string,
 });
 
 const router  = useRouter();
@@ -41,9 +42,6 @@ const tableRowActionRender = (row: any) => {
         { title: '删除', props: {} },
         { type: 'more', props: {
             onSelect(key, rowData) {
-                console.log("🚀 ~ onSelect ~ rowData:", rowData);
-                console.log("🚀 ~ onSelect ~ key:", key);
-                
             },
             rowData: row,
             options: [

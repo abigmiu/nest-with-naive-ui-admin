@@ -26,7 +26,7 @@
 import BasicForm, { type IBasicFormSchemas } from '@/components/form/BasicForm.vue';
 import { NButton, NCard, type DataTableBaseColumn, type FormRules, } from 'naive-ui';
 import { cloneDeep } from 'es-toolkit';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import BasicTable from '../table/BasicTable.vue';
 import type { IPageData } from '@/types/api/base';
 
@@ -59,6 +59,4 @@ function onReset() {
     basicFormRef.value!.resetForm();
     onQuery();
 }
-
-
 </script>

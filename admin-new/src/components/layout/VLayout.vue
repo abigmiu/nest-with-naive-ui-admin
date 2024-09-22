@@ -39,7 +39,7 @@ import LayoutHeader from './components/LayoutHeader.vue';
 import LayoutContent from './components/LayoutContent.vue';
 import LayoutTabs from './components/LayoutTabs.vue';
 import LayoutSetting from './components/LayoutSetting.vue';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import { storeToRefs } from 'pinia';
 import { useSystemSettingStore } from '@/stores/systemSettingStore';

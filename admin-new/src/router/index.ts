@@ -4,10 +4,10 @@ import { loadingBar, message } from '@/utils/global';
 import { useAliveStoreWithout } from '@/stores/aliveStore';
 import { dashboardRouteConstant, loginRouteConstant } from './constant';
 import { loginRoute } from './login';
-import { useLoadingBar } from 'naive-ui';
+
 
 const modules = import.meta.glob('./modules/**/*.ts', { eager: true });
-const allRoutes: RouteRecordRaw[] = Object.values(modules)
+const moduleRoutes: RouteRecordRaw[] = Object.values(modules)
   .flatMap((routeModule) => Object.values(routeModule as Record<string, RouteRecordRaw>));
 
 
@@ -18,7 +18,7 @@ const router = createRouter({
     {
       path: '/',
       component: () => import('@/components/layout/VLayout.vue'),
-      children: allRoutes,
+      children: moduleRoutes,
       redirect: {
         name: dashboardRouteConstant.workspace.name
       }

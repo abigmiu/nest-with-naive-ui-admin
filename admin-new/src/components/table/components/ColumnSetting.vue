@@ -103,7 +103,6 @@ const columnSetting = computed(() => currentTableSetting.column);
 const columnChecked = ref<string[]>([]);
 
 const initColumn = () => {
-    console.log('initColumn', JSON.stringify(currentTableSetting.column));
     if (!columnSetting.value.length) {
         currentTableSetting.column = props.columns.map((item) => {
             return {
@@ -115,7 +114,6 @@ const initColumn = () => {
         });
     }
 
-    console.log(JSON.stringify(currentTableSetting.column));
 
     columnChecked.value = currentTableSetting.column.filter((item) => item.show).map((item) => item.filed);
 };

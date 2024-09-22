@@ -21,7 +21,6 @@
     </dir>
 </template>
 <script setup lang="ts">
-import BasicModal from '@/components/common/BasicModal.vue';
 import { NButton, NList, NListItem, NThing } from 'naive-ui';
 import UpdatePassword from './UpdatePassword.vue';
 import { useState } from '@/hooks/common';

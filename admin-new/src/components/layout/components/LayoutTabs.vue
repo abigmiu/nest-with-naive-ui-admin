@@ -102,7 +102,6 @@ onUnmounted(() => {
 const router = useRouter();
 const route = useRoute();
 function handleRouteChange() {
-    console.log(route.meta);
     activeRouteName.value = route.name as string;
     const isExit = tabs.value.some((tab) => tab.name === route.name);
     if (isExit) {
