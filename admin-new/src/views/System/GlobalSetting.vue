@@ -75,9 +75,13 @@ const onSave = async () => {
 };
 
 onBeforeRouteLeave(async (to, from, next) => {
+
+
     if (!originSetting || saved) {
         next();
     } else {
+
+
         const hasModify = Object.keys(originSetting).some((key) => {
             // @ts-ignore
             return JSON.stringify(originSetting[key]) !== JSON.stringify(systemSetting.value[key]);

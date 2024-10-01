@@ -28,7 +28,7 @@ import { NButton, NCard, type DataTableBaseColumn, type FormRules, } from 'naive
 import { cloneDeep } from 'es-toolkit';
 import { onMounted, ref } from 'vue';
 import BasicTable from '../table/BasicTable.vue';
-import type { IPageData } from '@/types/api/base';
+import type { IPageData } from '@/api/base';
 
 export type IFetchFn = (...args: any[]) => Promise<any[] | IPageData>;
 

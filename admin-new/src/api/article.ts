@@ -1,4 +1,4 @@
-import type { IPageQuery } from "@/types/api/base";
+import type { IPageQuery } from "@/api/base";
 import type { dateStr } from "@/util";
 import { http } from "@/utils/http";
 

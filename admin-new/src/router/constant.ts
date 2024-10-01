@@ -48,8 +48,14 @@ export const dashboardRouteConstant = {
     workspace: {
         path: '/dashboard/workspace',
         name: 'dashboard.workspace'
+    },
+    dataTable: {
+        path: '/dashboard/datatable',
+        name: 'dashboard.datatable',
     }
 };
+
+
 
 export const loginRouteConstant = {
     index: {

@@ -76,7 +76,7 @@ import ColumnSetting from './components/ColumnSetting.vue';
 import { computed, ref } from 'vue';
 import { ColumnHeightOutlined, ReloadOutlined } from '@vicons/antd';
 import { useBasicTable } from '@/hooks/basicComponent';
-import type { IPageData } from '@/types/api/base';
+import type { IPageData } from '@/api/base';
 import { cloneDeep } from 'es-toolkit';
 import { useSettingStore } from '@/stores/settingStore';
 

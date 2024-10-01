@@ -1,6 +1,6 @@
 import type BasicForm from "@/components/form/BasicForm.vue";
 import TableActionMore from "@/components/table/components/TableActionMore.vue";
-import type { IPageData } from "@/types/api/base";
+import type { IPageData } from "@/api/base";
 import type { IBasicPagination } from "@/types/common";
 import { NButton, type ButtonProps, type PaginationProps } from "naive-ui";
 import { h } from "vue";

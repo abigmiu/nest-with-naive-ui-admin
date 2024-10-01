@@ -1,4 +1,4 @@
-import type { IPageData } from "@/types/api/base";
+import type { IPageData } from "@/api/base";
 import type { dateStr } from "@/util";
 import { http } from "@/utils/http";
 import type { AxiosRequestConfig } from "axios";

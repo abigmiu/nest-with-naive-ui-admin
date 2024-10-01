@@ -1,12 +1,10 @@
 import axios from "axios";
-
-import type { IBaseResponse } from "@/types/api/base";
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CreateAxiosDefaults } from "axios";
 
 import { IgnoreLastRequestError } from "./errors";
-import { download, getHttpHeaderFilename } from "./file";
+import type { IBaseResponse } from "@/api/base";
+import { download, getHttpHeaderFilename } from "@/utils/index";
 import { message } from "./global";
-import { httpArticleCreateReq } from "@/api/article";
 import { reqLogin } from "@/api/auth";
 
 class VAxios {

@@ -3,6 +3,7 @@ import { fileURLToPath, URL } from 'node:url';
 import { CommonServerOptions, defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
+import { visualizer } from "rollup-plugin-visualizer";
 
 /** env 配置的代理变vite的proxy参数 */
 function createProxy(envValue: string): CommonServerOptions['proxy'] {
@@ -43,6 +44,13 @@ export default defineConfig(({ mode }) => {
     plugins: [
       vue(),
       vueJsx(),
+      visualizer({
+        gzipSize: true,
+        brotliSize: true,
+        emitFile: false,
+        filename: "test.html", //分析图生成的文件名
+        open:true //如果存在本地服务端口，将在打包后自动展示
+      })
     ],
     resolve: {
       alias: {

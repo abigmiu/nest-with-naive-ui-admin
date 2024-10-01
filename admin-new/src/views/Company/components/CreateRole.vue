@@ -33,13 +33,13 @@ import { reqPermissionSimpleList } from '@/api/permission';
 import BasicModal from '@/components/common/BasicModal.vue';
 import BasicForm, { type IBasicFormSchemas } from '@/components/form/BasicForm.vue';
 import { useState } from '@/hooks/common';
-import type { IPermissionSimpleListResponse } from '@/types/api/permission';
-import { listToTree } from '@/utils/data';
+import type { IPermissionSimpleListResponse } from '@/api/permission';
+import { listToTree } from '@/utils/index';
 import type { FormRules, TreeOption } from 'naive-ui';
 import { reactive, ref, watch } from 'vue';
 import { NTree } from 'naive-ui';
 import { reqRoleCreate } from '@/api/role';
-import type { IRoleCreateRequest } from '@/types/api/role';
+import type { IRoleCreateRequest } from '@/api/role';
 // modal 弹窗
 const visible = defineModel<boolean>({ default: false });
 const [modalVisible, setModalVisible] = useState<boolean>(false);

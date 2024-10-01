@@ -7,6 +7,17 @@
         :width="240"
         :collapsed="asideCollapsed"
     >
+        <div class="p-4">
+            <NButton size="large" type="primary" block> 
+                <template #icon>
+                    <NIcon>
+                        <PlusCircleOutlined></PlusCircleOutlined>
+                    </NIcon>
+                </template>
+                发布视频
+            </NButton>
+        </div>
+
         <NMenu
             ref="menuRef"
             :options="menuOptions"
@@ -26,11 +37,12 @@
 
 import { useSettingStore } from '@/stores/settingStore';
 import { useUserStore } from '@/stores/userStore';
-import { layoutMenus, type IMenuMeta } from '@/utils/menus';
-import { NMenu, type MenuOption, NLayoutSider, type MenuProps } from 'naive-ui';
+import { layoutMenus, type IMenuMeta } from './menus';
+import { NMenu, NIcon, NButton, type MenuOption, NLayoutSider, type MenuProps } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 import { nextTick, ref, watch } from 'vue';
 import { useRoute, useRouter, } from 'vue-router';
+import { PlusCircleOutlined } from '@vicons/antd';
 
 
 const settingStore = useSettingStore();
@@ -55,7 +67,7 @@ const onExpandedKeysUpdate = (keys: string[]) => {
 };
 const onMenuItemClick: MenuProps['onUpdate:value'] = async (key: string, option) => {
     const meta = option.meta as IMenuMeta;
-    
+
     if (selectMenuKey.value === key) return;
 
     const navigateResult = await router.push({
@@ -74,7 +86,7 @@ const expandParentMenu = async () => {
 };
 
 watch(() => route.name, (routeName) => {
-    if (routeName) { 
+    if (routeName) {
         selectMenuKey.value = routeName as string;
         expandParentMenu();
     }

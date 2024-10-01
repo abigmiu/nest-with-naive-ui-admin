@@ -15,3 +15,15 @@ export const dashboardWorkspaceRoute: RouteRecordRaw = {
         tabDisallowClose: true,
     }
 };
+
+export const dashboardDataTableRoute: RouteRecordRaw = {
+    path: dashboardRouteConstant.dataTable.path,
+    name: dashboardRouteConstant.dataTable.name,
+    component: () => import("@/views/Dashboard/DataTable.vue"),
+    meta: {
+        tab: true,
+        title: '数据看板',
+        keepAlive: false,
+        tabDisallowClose: false,
+    }
+};
