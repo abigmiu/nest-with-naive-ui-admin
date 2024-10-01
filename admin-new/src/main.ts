@@ -1,6 +1,8 @@
 import './assets/main.scss';
 import './assets/tailwind.css';
 
+import 'virtual:svg-icons-register';
+
 import { createApp } from 'vue';
 
 import App from './App.vue';

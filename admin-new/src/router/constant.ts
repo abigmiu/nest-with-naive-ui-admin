@@ -81,3 +81,14 @@ export const systemRouteConstant = {
         name: 'system.globalSetting'
     }
 };
+
+export const worksRouteConstant = {
+    uploadVideo: {
+        path: '/works/upload-video',
+        name: 'works/uploadVideo'
+    },
+    publish: {
+        path: '/works/publish',
+        name: 'works.publish'
+    }
+};

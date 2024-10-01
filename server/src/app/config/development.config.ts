@@ -32,7 +32,7 @@ const config: IConfig = {
     incorrectRetryExpire: 5 * 60,
     fileStaticUrl: '/static/',
     fileStoragePath: 'upload',
-    fileStaticUrlDomain: 'http://localhost:3000/static',
+    fileStaticUrlDomain: 'http://localhost:3000/static/',
 };
 
 export default config;

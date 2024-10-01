@@ -7,8 +7,13 @@
         :width="240"
         :collapsed="asideCollapsed"
     >
-        <div class="p-4">
-            <NButton size="large" type="primary" block> 
+        <!-- <div class="p-4">
+            <NButton
+                size="large"
+                type="primary"
+                block
+                @click.stop="jumpUpload"
+            > 
                 <template #icon>
                     <NIcon>
                         <PlusCircleOutlined></PlusCircleOutlined>
@@ -16,7 +21,7 @@
                 </template>
                 发布视频
             </NButton>
-        </div>
+        </div> -->
 
         <NMenu
             ref="menuRef"
@@ -38,11 +43,13 @@
 import { useSettingStore } from '@/stores/settingStore';
 import { useUserStore } from '@/stores/userStore';
 import { layoutMenus, type IMenuMeta } from './menus';
+import { userMenus } from './userMenus';
 import { NMenu, NIcon, NButton, type MenuOption, NLayoutSider, type MenuProps } from 'naive-ui';
 import { storeToRefs } from 'pinia';
 import { nextTick, ref, watch } from 'vue';
 import { useRoute, useRouter, } from 'vue-router';
 import { PlusCircleOutlined } from '@vicons/antd';
+import { worksRouteConstant } from '@/router/constant';
 
 
 const settingStore = useSettingStore();
@@ -54,7 +61,7 @@ const route = useRoute();
 
 const userStore = useUserStore();
 
-const menuOptions = layoutMenus;
+const menuOptions = userMenus;
 
 
 
@@ -91,4 +98,11 @@ watch(() => route.name, (routeName) => {
         expandParentMenu();
     }
 }, { immediate: true });
+
+
+const jumpUpload = () => {
+    router.push({
+        name: worksRouteConstant.uploadVideo.name
+    });
+};
 </script>

@@ -21,6 +21,7 @@ export function setupSwagger(
     const documentBuilder = new DocumentBuilder()
         .setTitle(title)
         .setDescription(desc)
+        .addBearerAuth()
         .build();
     const document = SwaggerModule.createDocument(app, documentBuilder);
     SwaggerModule.setup(url, app, document);

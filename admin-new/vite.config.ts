@@ -4,6 +4,8 @@ import { CommonServerOptions, defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import { visualizer } from "rollup-plugin-visualizer";
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
+import path from 'node:path';
 
 /** env 配置的代理变vite的proxy参数 */
 function createProxy(envValue: string): CommonServerOptions['proxy'] {
@@ -50,6 +52,9 @@ export default defineConfig(({ mode }) => {
         emitFile: false,
         filename: "test.html", //分析图生成的文件名
         open:true //如果存在本地服务端口，将在打包后自动展示
+      }),
+      createSvgIconsPlugin({
+        iconDirs: [path.resolve(process.cwd(), 'src/assets/svg')]
       })
     ],
     resolve: {

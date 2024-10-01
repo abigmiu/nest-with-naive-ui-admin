@@ -1,134 +1,197 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+    provider = "mysql"
+    url      = env("DATABASE_URL")
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  username  String
-  password  String
-  roleId    Int      @default(1)
-  account   String?
-  role      Role     @relation(fields: [roleId], references: [id])
-  avatar String?
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+    username  String
+    password  String
+    roleId    Int      @default(1)
+    account   String?
+    role      Role     @relation(fields: [roleId], references: [id])
+    avatar    String?
 
-  @@index([roleId], map: "user_roleId_fkey")
-  @@map("user")
+    videos UserVideo[]
+
+    fans  Fans[] @relation("UserFans")
+    users Fans[] @relation("FanUsers")
+
+    @@index([roleId], map: "user_roleId_fkey")
+    @@map("user")
 }
 
 model Good {
-  id             Int      @id @default(autoincrement())
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
-  name           String
-  restCount      Int      @map("rest_count")
-  cover          String
-  productionData DateTime @map("production_data")
-  address        String
+    id             Int      @id @default(autoincrement())
+    createdAt      DateTime @default(now()) @map("created_at")
+    updatedAt      DateTime @updatedAt @map("updated_at")
+    name           String
+    restCount      Int      @map("rest_count")
+    cover          String
+    productionData DateTime @map("production_data")
+    address        String
 
-  @@map("good")
+    @@map("good")
 }
 
 model Permission {
-  id        Int                @id @unique
-  createdAt DateTime           @default(now()) @map("created_at")
-  updatedAt DateTime           @updatedAt @map("updated_at")
-  type      Int
-  parentId  Int?               @map("parent_id")
-  name      String
-  value     String
-  roles     RoleToPermission[]
+    id        Int                @id @unique
+    createdAt DateTime           @default(now()) @map("created_at")
+    updatedAt DateTime           @updatedAt @map("updated_at")
+    type      Int
+    parentId  Int?               @map("parent_id")
+    name      String
+    value     String
+    roles     RoleToPermission[]
 
-  @@map("permission")
+    @@map("permission")
 }
 
 model Role {
-  id          Int                @id @default(autoincrement())
-  createdAt   DateTime           @default(now()) @map("created_at")
-  updatedAt   DateTime           @updatedAt @map("updated_at")
-  name        String
-  remark      String?
-  permissions RoleToPermission[]
-  users       User[]
+    id          Int                @id @default(autoincrement())
+    createdAt   DateTime           @default(now()) @map("created_at")
+    updatedAt   DateTime           @updatedAt @map("updated_at")
+    name        String
+    remark      String?
+    permissions RoleToPermission[]
+    users       User[]
 
-  @@map("role")
+    @@map("role")
 }
 
 model RoleToPermission {
-  roleId       Int
-  permissionId Int
-  permission   Permission @relation(fields: [permissionId], references: [id])
-  role         Role       @relation(fields: [roleId], references: [id])
+    roleId       Int
+    permissionId Int
+    permission   Permission @relation(fields: [permissionId], references: [id])
+    role         Role       @relation(fields: [roleId], references: [id])
 
-  @@id([roleId, permissionId])
-  @@index([permissionId], map: "RoleToPermission_permissionId_fkey")
+    @@id([roleId, permissionId])
+    @@index([permissionId], map: "RoleToPermission_permissionId_fkey")
 }
 
 model Article {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  title     String
-  content   String   @db.Text
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+    title     String
+    content   String   @db.Text
 
-  @@map("article")
+    @@map("article")
 }
 
 model File {
-  id         Int         @id @default(autoincrement())
-  width      Int?
-  height     Int?
-  mimetype   String
-  fileName   String      @map("file_name")
-  location   String
-  url        String
-  FileRecord FileRecord?
+    id         Int         @id @default(autoincrement())
+    width      Int?
+    height     Int?
+    mimetype   String
+    fileName   String      @map("file_name")
+    location   String
+    url        String
+    FileRecord FileRecord?
 
-  @@map("file")
+    @@map("file")
 }
 
 model FileRecord {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  remark    String?
-  tags      Json?
-  file      File     @relation(fields: [fileid], references: [id])
-  fileid    Int      @unique
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+    remark    String?
+    tags      Json?
+    file      File     @relation(fields: [fileid], references: [id])
+    fileid    Int      @unique
 
-  @@map("file_record")
+    @@map("file_record")
 }
 
-
 model SettingConfig {
-  @@map("setting_config")
-  filed String @id @unique
-  value Json
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+    filed     String   @id @unique
+    value     Json
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@map("setting_config")
 }
 
 model LoginLog {
-  @@map("login_log")
-  id Int @id @default(autoincrement())
-  userId Int
-  ip String?
-  loginAt DateTime @default(now()) @map("login_at")
-  device String?
+    id      Int      @id @default(autoincrement())
+    userId  Int
+    ip      String?
+    loginAt DateTime @default(now()) @map("login_at")
+    device  String?
+
+    @@map("login_log")
 }
 
 model Notify {
-  @@map("notify")
-  id Int @id @default(autoincrement())
-  published Boolean @default(true)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  content String @db.VarChar(2000)
-  title String 
+    id        Int      @id @default(autoincrement())
+    published Boolean  @default(true)
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+    content   String   @db.VarChar(2000)
+    title     String
+
+    @@map("notify")
+}
+
+model UserVideo {
+    id Int @id @default(autoincrement())
+
+    publishStatus   Int      @default(0) @map("publish_status")
+    createdAt       DateTime @default(now()) @map("created_at")
+    updatedAt       DateTime @updatedAt @map("updated_at")
+    desc            String   @db.VarChar(1000)
+    videoUrl        String   @map("video_url") @db.VarChar(100)
+    coverUrl        String   @map("cover_url") @db.VarChar(100)
+    title           String   @db.VarChar(50)
+    likeCount       Int      @default(0) @map("like_count")
+    collectionCount Int      @default(0) @map("collection_count")
+    replyCount      Int      @default(0) @map("replay_count")
+    shareCount      Int      @default(0) @map("share_count")
+    viewCount       Int      @default(0) @map("view_count")
+    location        String   @db.VarChar(100)
+
+    authorId Int  @map("author_id")
+    author   User @relation(fields: [authorId], references: [id])
+
+    compilationId Int         @map("compilation_id")
+    compilation   Compilation @relation(fields: [compilationId], references: [id])
+
+    @@map("user-video")
+}
+
+model Compilation {
+
+    id          Int      @id @default(autoincrement())
+    createdAt   DateTime @default(now()) @map("created_at")
+    updatedAt   DateTime @updatedAt @map("updated_at")
+    publishedAt DateTime @default(now()) @map("published_at")
+
+    publishStauts   Int    @map("publish_status")
+    collectionCount Int    @map("collection_count")
+    title           String @db.VarChar(100)
+    desc            String @db.VarChar(1000)
+
+    videos UserVideo[]
+
+    @@map("compilation")
+}
+
+model Fans {
+    id        Int      @id @default(autoincrement())
+    userId    Int      @map("user_id")
+    user      User     @relation("UserFans", fields: [userId], references: [id])
+    fanId     Int      @map("fan_id")
+    fan       User     @relation("FanUsers", fields: [fanId], references: [id])
+    status    Int
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@map("fans")
 }

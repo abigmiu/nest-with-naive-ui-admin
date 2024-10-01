@@ -8,10 +8,12 @@ import { NotifyModule } from './notify/notify.module';
 import { PermissionModule } from './permission/permission.module';
 import { RoleModule } from './role/role.module';
 import { SettingModule } from './setting/setting.module';
+import { UserVideoModule } from './user-video/user-video.module';
 import { UserModule } from './user/user.module';
 
 const businessModules = [
     AuthModule,
+    UserVideoModule,
     UserModule,
     ListModule,
     PermissionModule,
