@@ -193,6 +193,11 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/login/password',
+    meta: {
+      customTransition: true,
+      enterTransition: 'up',
+      leaveTransition: 'down',
+    },
     component: () => import('@/pages/login/PasswordLogin.vue')
   },
   {

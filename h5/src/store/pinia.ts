@@ -2,10 +2,15 @@ import { defineStore } from 'pinia'
 import { friends, panel } from '@/api/user'
 import enums from '@/utils/enums'
 import resource from '@/assets/data/resource'
+import { pinia } from '.'
 
 export const useBaseStore = defineStore('base', {
   state: () => {
     return {
+      transitionName: 'go',
+      isRouteBack: false,
+      useCustomTransition: false, // 页面使用自定义动画
+
       bodyHeight: document.body.clientHeight,
       bodyWidth: document.body.clientWidth,
       maskDialog: false,
@@ -93,3 +98,7 @@ export const useBaseStore = defineStore('base', {
     }
   }
 })
+
+export const useBaseStoreOutside = () => {
+  return useBaseStore(pinia);
+}

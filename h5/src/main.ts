@@ -5,9 +5,10 @@ import { startMock } from '@/mock'
 import router from './router'
 import mixin from './utils/mixin'
 import VueLazyload from '@jambonn/vue-lazyload'
-import { createPinia } from 'pinia'
+
 import { useClick } from '@/utils/hooks/useClick'
 import bus, { EVENT_KEY } from '@/utils/bus'
+import { pinia } from './store'
 
 window.isMoved = false
 window.isMuted = true
@@ -35,7 +36,7 @@ HTMLElement.prototype.addEventListener = new Proxy(HTMLElement.prototype.addEven
 })
 
 const vClick = useClick()
-const pinia = createPinia()
+
 const app = createApp(App)
 app.mixin(mixin)
 const loadImage = new URL('./assets/img/icon/img-loading.png', import.meta.url).href

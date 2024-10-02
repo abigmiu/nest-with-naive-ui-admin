@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import routes from './routes'
-import { useBaseStore } from '@/store/pinia'
+import { useBaseStore, useBaseStoreOutside } from '@/store/pinia'
 import { IS_SUB_DOMAIN } from '@/config'
 
 const router = createRouter({
@@ -15,8 +15,22 @@ const router = createRouter({
     }
   }
 })
+
+let position = 0;
 router.beforeEach((to, from) => {
-  const baseStore = useBaseStore()
+  console.log('beforeEach')
+  const baseStore = useBaseStoreOutside()
+  const isBack = position > window.history.state.position;
+  baseStore.isRouteBack = isBack;
+
+  const transitionMeta = isBack ? from.meta : to.meta;
+  const { customTransition, enterTransition, leaveTransition } = transitionMeta;
+
+  baseStore.useCustomTransition = !!customTransition;
+  baseStore.transitionName = baseStore.useCustomTransition 
+    ? (isBack ? leaveTransition : enterTransition) as string 
+    : '';
+  
   //footer下面的5个按钮，对跳不要用动画
   const noAnimation = ['/', '/home', '/me', '/shop', '/message', '/publish', '/home/live', '/test']
   if (noAnimation.indexOf(from.path) !== -1 && noAnimation.indexOf(to.path) !== -1) {
@@ -44,6 +58,9 @@ router.beforeEach((to, from) => {
     }
   }
   return true
+})
+router.afterEach(() => {
+  position = window.history.state.position;
 })
 
 export default router

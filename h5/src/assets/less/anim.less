@@ -10,3 +10,36 @@
     transform: translateX(1rem);
   }
 }
+
+
+.up-enter-from {
+  transform: translateY(100%);
+}
+.up-enter-to {
+  transform: translateY(0);
+}
+.up-enter-active,
+.up-leave-active {
+  transition: all 0.3s;
+}
+
+
+.down-enter-from {
+  transform: translateY(0);
+}
+.down-enter-to {
+  transform: translateY(0);
+}
+.down-leave-from {
+  transform: translateY(0);
+}
+.down-leave-to {
+  transform: translateY(100%);
+}
+.down-leave-active {
+  z-index: 1;
+  transition: all 0.3s;
+}
+.down-enter-active {
+  transition: all 0.3s;
+}

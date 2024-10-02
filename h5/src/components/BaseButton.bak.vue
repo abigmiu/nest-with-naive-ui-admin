@@ -1,5 +1,10 @@
 <template>
-  <div class="button" :class="class1" :style="{ 'border-radius': radius + 'rem' }" @click.capture.stop="check">
+  <div
+    class="button"
+    :class="class1"
+    :style="{ 'border-radius': radius + 'rem' }"
+    @click.capture.stop="check"
+  >
     <img v-show="loading" src="../assets/img/icon/loading-white.png" alt="" />
     <slot name="prefix"></slot>
     <slot v-if="showText"></slot>
@@ -7,57 +12,77 @@
     <div :style="{ width: progress + '%' }" v-if="$props.progress" class="progress"></div>
   </div>
 </template>
-<script lang="ts" setup>
-import { computed } from 'vue';
-
-defineOptions({
-  name: 'BaseButton'
-});
-
-const props = withDefaults(defineProps<{
-  loading?: boolean;
-  progress?: number | null;
-  loadingWithText?: boolean;
-  disabled?: boolean;
-  type?: string;
-  active?: boolean;
-  border?: boolean;
-  size?: string;
-  radius?: string;
-}>(), {
-  loading: false,
-  progress: null,
-  loadingWithText: false,
-  disabled: false,
-  type: '',
-  active: true,
-  border: true,
-  size: 'normal',
-  radius: '6'
-})
-const emits = defineEmits<{
-  click: []
-}>()
-
-const class1 = computed(() => {
-  return [
-    props.type,
-    props.active ? '' : 'no-active',
-    props.border ? '' : 'no-border',
-    props.disabled && 'disabled',
-    props.size
-  ]
-})
-const showText = computed(() => {
-  if (props.loading) {
-    return props.loadingWithText;
+<script>
+export default {
+  name: 'BaseButton',
+  props: {
+    loading: {
+      type: Boolean,
+      default: false,
+      
+    },
+    progress: {
+      type: Number,
+      default: null
+    },
+    loadingWithText: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    type: {
+      type: String,
+      default: ''
+    },
+    active: {
+      type: Boolean,
+      default: true
+    },
+    border: {
+      type: Boolean,
+      default: true
+    },
+    size: {
+      type: String,
+      default: 'normal'
+      //small
+    },
+    radius: {
+      type: String,
+      default: '6'
+    }
+  },
+  data() {
+    return {}
+  },
+  computed: {
+    class1() {
+      return [
+        this.type,
+        this.active ? '' : 'no-active',
+        this.border ? '' : 'no-border',
+        this.disabled && 'disabled',
+        this.size
+      ]
+    },
+    showText() {
+      if (this.loading) {
+        return this.loadingWithText
+      }
+      return true
+    }
+  },
+  created() {},
+  methods: {
+    check() {
+      if (this.disabled) return
+      if (this.loading) return
+      return this.$emit('click')
+    }
   }
-  return true;
-})
-
-const check = () => {
-  if (props.disabled || props.loading) return;
-  emits('click');
 }
 </script>
 
@@ -94,7 +119,6 @@ const check = () => {
       0% {
         transform: rotate(-360deg);
       }
-
       100% {
         transform: rotate(0deg);
       }

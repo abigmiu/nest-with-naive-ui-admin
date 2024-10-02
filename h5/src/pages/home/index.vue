@@ -197,17 +197,6 @@
 
     <ShareToFriend v-model="state.shareToFriend" />
 
-    <BaseMask v-if="!isMobile" @click="isMobile = true" />
-    <div v-if="!isMobile" class="guide">
-      <Icon class="danger" icon="mynaui:danger-triangle" />
-      <Icon class="close" icon="simple-line-icons:close" @click="isMobile = true" />
-      <div class="txt">
-        <h2>切换至手机模式获取最佳体验</h2>
-        <h3>1. 按 F12 调出控制台</h3>
-        <h3>2. 按 Ctrl+Shift+M，或点击下面图标</h3>
-      </div>
-      <img src="@/assets/img/guide.png" alt="" />
-    </div>
   </div>
 </template>
 

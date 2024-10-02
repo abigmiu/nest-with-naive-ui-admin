@@ -13,23 +13,23 @@
 * try {navigator.control.gesture(false);} catch (e) {} //UC浏览器关闭默认手势事件
 try {navigator.control.longpressMenu(false);} catch (e) {} //关闭长按弹出菜单
 * */
-import routes from './router/routes'
 import Call from './components/Call.vue'
 import { useBaseStore } from '@/store/pinia.js'
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import type { RouteRecordRaw } from 'vue-router'
-import BaseMask from '@/components/BaseMask.vue'
 import { BASE_URL } from '@/config'
 
 const store = useBaseStore()
 const route = useRoute()
-const transitionName = ref('go')
+const transitionName = computed(() => store.transitionName);
 
 // watch $route 决定使用哪种过渡
 watch(
   () => route.path,
   (to, from) => {
+    console.log('route path cahnge')
+    if (store.useCustomTransition) return;
+    console.log('routeChange');
     store.setMaskDialog({ state: false, mode: store.maskDialogMode })
     //底部tab的按钮，跳转是不需要用动画的
     let noAnimation = [
@@ -44,12 +44,15 @@ watch(
       'slide',
       '/test'
     ]
+
+
     if (noAnimation.indexOf(from) !== -1 && noAnimation.indexOf(to) !== -1) {
-      return (transitionName.value = '')
+      store.transitionName = '';
+      return;
     }
-    const toDepth = routes.findIndex((v: RouteRecordRaw) => v.path === to)
-    const fromDepth = routes.findIndex((v: RouteRecordRaw) => v.path === from)
-    transitionName.value = toDepth > fromDepth ? 'go' : 'back'
+
+
+    store.transitionName = store.isRouteBack ? 'back' : 'go'
   }
 )
 
@@ -88,8 +91,8 @@ onMounted(() => {
   #app {
     width: 500px !important;
     position: relative;
-    left: 50%;
-    transform: translateX(-50%);
+    margin: 0 auto;
+    overflow: hidden;
   }
 }
 

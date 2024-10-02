@@ -409,7 +409,7 @@ function touchend(e) {
     transition:
       height,
       margin-top 0.3s;
-    //background: black;
+
     /*position: absolute;*/
   }
 

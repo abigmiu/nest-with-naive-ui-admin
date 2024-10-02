@@ -1,38 +1,29 @@
 <template>
-  <div
-    ref="input"
-    :placeholder="placeholder"
-    class="auto-input"
-    contenteditable
-    @input="changeText"
-  >
+  <div ref="input" :placeholder="placeholder" class="auto-input" contenteditable @input="changeText">
     {{ modelValue }}
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'AutoInput',
-  props: {
-    modelValue: String,
-    placeholder: {
-      type: String,
-      default: '留下你的精彩评论吧'
-    }
-  },
-  mounted() {
-    // this.$refs.input.setAttribute("placeholder", "改变")
-  },
-  computed: {},
-  data: function () {
-    return {}
-  },
-  methods: {
-    changeText() {
-      this.$emit('update:modelValue', this.$el.innerText)
-    }
-  }
+<script lang="ts" setup>
+defineOptions({
+  name: 'AutoInput'
+});
+
+const props = withDefaults(defineProps<{
+  placeholder: string;
+}>(), {
+  placeholder: '留下你的精彩评论吧'
+})
+
+const modelValue = defineModel({
+  type: String
+})
+
+const changeText = (e: Event) => {
+  const value = (e.target as HTMLInputElement).value;
+  modelValue.value = value;
 }
+
 </script>
 
 <style scoped lang="less">

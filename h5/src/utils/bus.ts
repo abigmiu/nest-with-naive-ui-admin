@@ -15,7 +15,7 @@ export default {
   once(eventType, cb) {
     this.eventMap.set(eventType, [cb])
   },
-  off(eventType, fn) {
+  off(eventType, fn?) {
     const cbs = this.eventMap.has(eventType)
     if (cbs) {
       if (fn) {
