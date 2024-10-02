@@ -1,3 +1,4 @@
+import { AppUserModule } from './app-user/app-user.module';
 import { ArticleModule } from './article/article.module';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
@@ -12,6 +13,8 @@ import { UserVideoModule } from './user-video/user-video.module';
 import { UserModule } from './user/user.module';
 
 const businessModules = [
+    AppUserModule,
+
     AuthModule,
     UserVideoModule,
     UserModule,

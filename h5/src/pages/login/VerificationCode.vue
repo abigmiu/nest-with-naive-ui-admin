@@ -39,7 +39,7 @@
 import LoginInput from './components/LoginInput.vue'
 import { onMounted, reactive } from 'vue'
 import { useNav } from '@/utils/hooks/useNav'
-import { _hideLoading, _showConfirmDialog, _showLoading, _showNoticeDialog, _sleep } from '@/utils'
+import { _hideLoading, _no, _showConfirmDialog, _showLoading, _showNoticeDialog, _sleep } from '@/utils'
 
 defineOptions({
   name: 'VerificationCode'
@@ -100,13 +100,14 @@ function login() {
   setTimeout(() => {
     data.isSendVerificationCode = true
     data.loading = false
+    _no()
   }, 1000)
 }
 </script>
 
 <style scoped lang="less">
 @import '../../assets/less/index';
-@import 'Base.less';
+@import './loginBase.less';
 
 .VerificationCode {
   position: fixed;

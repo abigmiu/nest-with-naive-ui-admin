@@ -14,6 +14,12 @@ axiosInstance.interceptors.request.use(
     if (!config.headers['Content-Type']) {
       config.headers['Content-Type'] = 'application/json'
     }
+
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+
     return config
   },
   (error) => {
@@ -31,6 +37,18 @@ axiosInstance.interceptors.response.use(
     /*
      * 响应成功的拦截器，主要是对data作处理，如果没有返回data，那么会添加一个data字段，并把response.data的内容合并到data里面，然后返回
      * */
+
+    const { url } = response.config;
+    if (url.startsWith('/api')) {
+      const { result, code } = response.data;
+      if (code === 200) {
+        return result;
+      }
+
+      return Promise.reject(response.data);
+      
+    }
+
     const { data } = response
     // console.log(response)
     if (data === undefined || data === null || data === '') {
@@ -113,18 +131,14 @@ axiosInstance.interceptors.response.use(
 export interface ApiResponse<T = any> {
   data: T
   success: boolean
+  code: number;
+  message: string;
 }
 
 export async function request<T = any>(config: AxiosRequestConfig): Promise<ApiResponse<T>> {
   /*
    *  then和catch里面返回的数据必须加as const，否则调用方无法推断出类型
    * */
-  return axiosInstance
-    .request<T>(config)
-    .then(({ data }) => {
-      return { success: true, data } as const
-    })
-    .catch((err) => {
-      return { success: false, data: err } as const
-    })
+  return axiosInstance.request(config)
+    
 }

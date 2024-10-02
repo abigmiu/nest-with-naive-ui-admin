@@ -15,7 +15,7 @@ const config: IConfig = {
         url: 'swagger',
     },
     app: {
-        port: 3000,
+        port: 3001,
         host: '0.0.0.0', // 这样局域网可以访问
         apiPrefix: '/api',
     },

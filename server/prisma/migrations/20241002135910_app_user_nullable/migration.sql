@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `app_user` MODIFY `intro` VARCHAR(300) NULL,
+    MODIFY `birth` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    MODIFY `location` VARCHAR(100) NULL,
+    MODIFY `school` VARCHAR(50) NULL;

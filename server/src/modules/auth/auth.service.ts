@@ -136,7 +136,5 @@ export class AuthService {
             roleId,
         });
         return MD5(token).toString();
-
-
     }
 }

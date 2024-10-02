@@ -14,6 +14,7 @@ export class UserVideoService {
 
     /** 用户创建视频 */
     async createVideo(dto: CreateUserVideoRequestDto, userId: number) {
+        // @ts-ignore
         const userVideoCreateData: Prisma.UserVideoCreateArgs['data'] = {
             title: dto.title,
             coverUrl: '',
@@ -21,6 +22,9 @@ export class UserVideoService {
             desc: dto.desc,
             location: '',
             authorId: userId,
+            // author
+            // author: {  }
+
         };
         const savedRes = await this.prismaService.userVideo.create({
             data: userVideoCreateData

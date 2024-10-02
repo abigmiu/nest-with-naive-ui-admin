@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue';
 import bus, { EVENT_KEY } from '../utils/bus'
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useUserStore } from '@/store/user';
 
 defineOptions({
@@ -64,16 +64,16 @@ const tab = (index: number) => {
             $nav('/');
             break;
         case 2:
-            $nav('/shop')
+            onNavWithCheckLogin('/shop')
             break
         case 3:
-            $nav('/publish')
+            onNavWithCheckLogin('/publish')
             break
         case 4:
-            $nav('/message')
+            onNavWithCheckLogin('/message')
             break
         case 5:
-            onNavToMe();
+            onNavWithCheckLogin('/me');
             break
     }
 }
@@ -90,13 +90,13 @@ const refresh = (index: number) => {
     }
 }
 
-
-const onNavToMe = () => {
+const route = useRoute();
+const onNavWithCheckLogin = (path: string) => {
     if (!userInfo.value) {
-        $nav('/login/password')
+        $nav(`/login?redirect_url=${route.path}`)
         return;
     } else {
-        $nav('/me')
+        $nav(path)
     }
 }
 

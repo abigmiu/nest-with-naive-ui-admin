@@ -144,7 +144,7 @@ export default {
 
 <style scoped lang="less">
 @import '../../assets/less/index';
-@import 'Base.less';
+@import './loginBase.less';
 
 .RetrievePassword {
   position: fixed;

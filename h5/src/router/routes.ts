@@ -186,18 +186,22 @@ const routes: RouteRecordRaw[] = [
   },
 
   // {path: '/login', component: Login},
-  { path: '/login', component: () => import('@/pages/login/Login.vue') },
+  {
+    path: '/login',
+    meta: {
+      customTransition: true,
+      enterTransition: 'up',
+      leaveTransition: 'down',
+    },
+    component: () => import('@/pages/login/Login.vue')
+  },
   {
     path: '/login/other',
     component: () => import('@/pages/login/OtherLogin.vue')
   },
   {
     path: '/login/password',
-    meta: {
-      customTransition: true,
-      enterTransition: 'up',
-      leaveTransition: 'down',
-    },
+    
     component: () => import('@/pages/login/PasswordLogin.vue')
   },
   {

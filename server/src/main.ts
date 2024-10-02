@@ -8,11 +8,16 @@ import { IAppConfig, IAppDevConfig } from '@/types/app/config';
 import { join } from 'path';
 
 import { __IS_DEV__ } from './app/constant/process';
+import * as cors from 'cors';
+
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
         logger: ['error']
     });
+
+    app.use(cors());
+
     const configService = app.get(ConfigService<IAppConfig & IAppDevConfig>);
 
     const staticFileUrl = configService.get<string>('fileStaticUrl');
@@ -20,6 +25,8 @@ async function bootstrap() {
     app.useStaticAssets(join(process.cwd(), fileStoragePath), {
         prefix: staticFileUrl,
     });
+
+    // app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
     const { port, host, apiPrefix } = configService.get<IAppConfig['app']>('app');
     if (apiPrefix) {

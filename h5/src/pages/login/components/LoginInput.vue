@@ -149,7 +149,7 @@ export default {
 .input-number {
   display: flex;
   background: whitesmoke;
-  padding: 15rem 10rem;
+  padding: 12rem 10rem;
   font-size: 14rem;
 
   .left {

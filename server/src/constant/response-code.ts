@@ -1,0 +1,1 @@
+export const APP_USER_NOT_EXIST = 1001;

@@ -16,7 +16,7 @@ export class ResponseTransformInterceptor implements NestInterceptor {
         const response = context.switchToHttp().getResponse<Response>();
         if (
             request.method === 'POST' &&
-      response.statusCode === HttpStatus.CREATED
+            response.statusCode === HttpStatus.CREATED
         ) {
             response.status(HttpStatus.OK);
         }

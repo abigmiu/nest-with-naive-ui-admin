@@ -133,6 +133,7 @@ async function fetchData() {
 
 //TODO 有个bug，一开始只返回了6条数据，但第二次前端传过来的pageNo是2了，就是会从第10条数据开始返回，导致中间漏了4条
 export async function startMock() {
+  mock.onAny(/^\/api/).passThrough();
   mock.onGet(/video\/recommended/).reply(async (config) => {
     const { start, pageSize } = config.params
     // console.log('allRecommendVideos', cloneDeep(allRecommendVideos.length), config.params)

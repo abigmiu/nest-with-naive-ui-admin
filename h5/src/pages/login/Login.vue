@@ -13,43 +13,24 @@
         <div class="sub-title">认证服务由中国移动提供</div>
       </div>
 
-      <dy-button
-        type="primary"
-        :loading="data.loading.login"
-        :active="false"
-        :loadingWithText="true"
-        @click="login"
-      >
+      <dy-button type="primary" :loading="data.loading.login" :active="false" :loadingWithText="true" @click="login">
         {{ data.loading.login ? '登录中' : '一键登录' }}
       </dy-button>
-      <dy-button :active="false" type="white" @click="nav('/login/other')"
-        >其他手机号码登录
+      <dy-button :active="false" type="white" @click="loginOther">其他手机号码登录
       </dy-button>
-
-      <div class="protocol" :class="data.showAnim ? 'anim-bounce' : ''">
-        <Tooltip style="top: -100%; left: -10rem" v-model="data.showTooltip" />
-        <div class="left">
-          <Check v-model="data.isAgree" />
-        </div>
-        <div class="right">
+      <LoginProtocol ref="protocolRef">
+        <div>
           我已阅读并同意
-          <span class="link" @click="nav('/service-protocol', { type: '“抖音”用户服务协议' })"
-            >用户协议</span
-          >
+          <span class="link" @click="nav('/service-protocol', { type: '“抖音”用户服务协议' })">用户协议</span>
           和
-          <span class="link" @click="nav('/service-protocol', { type: '“抖音”隐私政策' })"
-            >隐私政策</span
-          >
+          <span class="link" @click="nav('/service-protocol', { type: '“抖音”隐私政策' })">隐私政策</span>
           <div>
             以及
-            <span class="link" @click="nav('/service-protocol', { type: '中国移动认证服务协议' })"
-              >《中国移动认证服务条款》</span
-            >
+            <span class="link" @click="nav('/service-protocol', { type: '中国移动认证服务协议' })">《中国移动认证服务条款》</span>
             ，同时登录并使用抖音火山版（原“火山小视频”）和抖音
           </div>
         </div>
-      </div>
-
+      </LoginProtocol>
       <div class="other-login">
         <transition name="fade">
           <div v-if="data.isOtherLogin" class="icons">
@@ -61,23 +42,21 @@
         </transition>
       </div>
       <transition name="fade">
-        <span
-          v-if="!data.isOtherLogin"
-          class="other-login-text link"
-          @click="data.isOtherLogin = !data.isOtherLogin"
-          >其他方式登录</span
-        >
+        <span v-if="!data.isOtherLogin" class="other-login-text link"
+          @click="data.isOtherLogin = !data.isOtherLogin">其他方式登录</span>
       </transition>
     </div>
   </div>
+
 </template>
 <script setup lang="ts">
-import Check from '../../components/Check.vue'
-import Tooltip from './components/Tooltip.vue'
+
+import LoginProtocol from './components/LoginProtocol.vue'
 import Loading from '../../components/Loading.vue'
-import { onMounted, reactive } from 'vue'
+import { onActivated, onMounted, reactive, ref } from 'vue'
 import { useNav } from '@/utils/hooks/useNav'
-import { _no, _sleep } from '@/utils'
+import { _no, _notice, _sleep } from '@/utils'
+import { useRoute, useRouter } from 'vue-router'
 
 defineOptions({
   name: 'login'
@@ -105,26 +84,29 @@ async function getPhone() {
   data.loading.getPhone = false
 }
 
+
+const protocolRef = ref<InstanceType<typeof LoginProtocol> | null>(null);
 function login() {
-  if (data.isAgree) {
-    data.loading.login = true
-  } else {
-    if (!data.showAnim && !data.showTooltip) {
-      data.showAnim = true
-      setTimeout(() => {
-        data.showAnim = false
-        data.showTooltip = true
-      }, 500)
-      setTimeout(() => {
-        data.showTooltip = false
-      }, 3000)
-    }
-  }
+  const verifyRes = protocolRef.value!.verify();
+  if (!verifyRes) return;
+  _no();
 }
+
+const router = useRouter()
+const route = useRoute()
+const loginOther = () => {
+  router.replace({
+    path: '/login/other',
+    query: route.query,
+  })
+}
+
+
 </script>
 
 <style scoped lang="less">
 @import '../../assets/less/index';
+@import './loginBase.less';
 
 .login {
   position: fixed;
@@ -138,7 +120,7 @@ function login() {
   background: white;
 
   .content {
-    padding: 60rem 30rem;
+
 
     .desc {
       margin-bottom: 60rem;
@@ -147,9 +129,7 @@ function login() {
       align-items: center;
       flex-direction: column;
 
-      .title {
-        margin-bottom: 20rem;
-      }
+
 
       .phone-number {
         letter-spacing: 3rem;
@@ -157,10 +137,7 @@ function login() {
         margin-bottom: 10rem;
       }
 
-      .sub-title {
-        font-size: 12rem;
-        color: var(--second-text-color);
-      }
+
     }
 
     .button {
@@ -168,18 +145,6 @@ function login() {
       margin-bottom: 5rem;
     }
 
-    .protocol {
-      position: relative;
-      color: gray;
-      margin-top: 20rem;
-      font-size: 12rem;
-      display: flex;
-
-      .left {
-        padding-top: 1rem;
-        margin-right: 5rem;
-      }
-    }
 
     .other-login {
       position: absolute;

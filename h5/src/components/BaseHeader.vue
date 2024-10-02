@@ -1,18 +1,20 @@
 <template>
+
   <div id="BaseHeader" :class="[props.isFixed ? 'fixed' : '']">
     <div class="header">
-      <dy-back
-        :mode="props.backMode"
-        :img="props.backImg"
-        @click="back"
-        class="left"
-        direction="left"
-      />
-      <slot name="center"><span></span></slot>
-      <slot name="right"><span></span></slot>
+      <dy-back :mode="props.backMode" :img="props.backImg" @click="back" class="left" direction="left" />
+      <div :class="{ dark: props.backMode === 'dark' }">
+        <slot name="center"><span></span></slot>
+      </div>
+      <div :class="{ dark: props.backMode === 'dark' }">
+        <slot name="right" ><span></span></slot>
+      </div>
+    
     </div>
     <slot name="bottom"></slot>
   </div>
+
+  <div class="holder" v-if="props.isFixed"></div>
 </template>
 <script setup lang="ts">
 import { useAttrs } from 'vue'
@@ -54,7 +56,9 @@ function back() {
 
 <style scoped lang="less">
 @import '@/assets/less/index';
-
+.holder {
+  height: var(--common-header-height);
+}
 #BaseHeader {
   width: 100%;
   color: white;
@@ -79,7 +83,7 @@ function back() {
       left: 10rem;
     }
 
-    & > :nth-last-child(1) {
+    &> :nth-last-child(1) {
       height: 100%;
       position: absolute;
       right: 17px;
@@ -87,6 +91,10 @@ function back() {
       display: flex;
       align-items: center;
     }
+  }
+
+  .dark {
+    color: #1c1e26;
   }
 }
 </style>

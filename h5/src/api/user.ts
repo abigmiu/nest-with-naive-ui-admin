@@ -1,5 +1,21 @@
 import { request } from '@/utils/request'
 
+export interface IHttpPhonePasswordLogin {
+  type: 1;
+  phone: string;
+  password: string;
+}
+
+
+/** 登录 */
+export function httpPhonePasswordLogin(data: IHttpPhonePasswordLogin) {
+  return request({
+    url: '/api/app/user/login-phone-password',
+    method: 'POST',
+    data,
+  })
+}
+
 export function userinfo(params?: any, data?: any) {
   return request({ url: '/user/userinfo', method: 'get', params, data })
 }

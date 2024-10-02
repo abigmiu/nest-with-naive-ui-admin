@@ -167,7 +167,6 @@ model UserVideo {
 }
 
 model Compilation {
-
     id          Int      @id @default(autoincrement())
     createdAt   DateTime @default(now()) @map("created_at")
     updatedAt   DateTime @updatedAt @map("updated_at")
@@ -194,4 +193,26 @@ model Fans {
     updatedAt DateTime @updatedAt @map("updated_at")
 
     @@map("fans")
+}
+// app 创建的url
+model AppUser {
+    id Int @id @default(autoincrement())
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+    nickname String @db.VarChar(50)
+    account String @db.VarChar(100) @unique
+    password String @db.VarChar(50)
+    phone String @db.VarChar(30) @unique
+    avatar String @db.VarChar(150)
+    intro String? @db.VarChar(300)
+    sex Int @default(0)
+    birth DateTime? @default(now())
+    location String? @db.VarChar(100)
+    school String? @db.VarChar(50)
+    likeCount Int @default(0) @map("like_count")
+    friendCount Int @default(0) @map("friend_count")
+    followCount Int @default(0) @map("follow_count")
+    fansCount Int @default(0) @map("fans_count")
+
+    @@map("app_user")
 }
