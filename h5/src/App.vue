@@ -27,9 +27,9 @@ const transitionName = computed(() => store.transitionName);
 watch(
   () => route.path,
   (to, from) => {
-    console.log('route path cahnge')
+
     if (store.useCustomTransition) return;
-    console.log('routeChange');
+   
     store.setMaskDialog({ state: false, mode: store.maskDialogMode })
     //底部tab的按钮，跳转是不需要用动画的
     let noAnimation = [

@@ -18,14 +18,11 @@ const router = createRouter({
 
 let position = 0;
 router.beforeEach((to, from) => {
-  console.log('beforeEach')
   const baseStore = useBaseStoreOutside()
   const isBack = position > window.history.state.position;
-  console.log("🚀 ~ router.beforeEach ~ isBack:", isBack);
   baseStore.isRouteBack = isBack;
 
   const transitionMeta = isBack ? from.meta : to.meta;
-  console.log("🚀 ~ router.beforeEach ~ transitionMeta:", transitionMeta);
   const { customTransition, enterTransition, leaveTransition } = transitionMeta;
 
   baseStore.useCustomTransition = !!customTransition;

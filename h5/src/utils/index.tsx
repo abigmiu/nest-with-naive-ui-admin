@@ -45,14 +45,14 @@ export function _copy(val) {
   document.body.removeChild(textarea)
 }
 
-export function _formatNumber(num) {
-  if (!num) return
+export function _formatNumber(num: number, defaultDisplay = '0'): string {  
+  if (typeof num !== 'number' || Number.isNaN(num)) return defaultDisplay;
   if (num > 100000000) {
     return (num / 100000000).toFixed(1) + '亿'
   } else if (num > 10000) {
     return (num / 10000).toFixed(1) + '万'
   } else {
-    return num
+    return num.toString();
   }
 }
 

@@ -1,18 +1,32 @@
-import { request } from '@/utils/request'
+import { appRequest, request } from '@/utils/request'
 
-export interface IHttpPhonePasswordLogin {
+export interface IHttpPhonePasswordLoginReq {
   type: 1;
   phone: string;
   password: string;
 }
 
 
+export interface IHttpUserSelfStats {
+  likeCount: number;
+  fansCount: number;
+  followCount: number;
+  friendCount: number;
+}
+
 /** 登录 */
-export function httpPhonePasswordLogin(data: IHttpPhonePasswordLogin) {
-  return request({
+export function httpPhonePasswordLogin(data: IHttpPhonePasswordLoginReq) {
+  return appRequest({
     url: '/api/app/user/login-phone-password',
     method: 'POST',
     data,
+  })
+}
+
+/** 获取用户自己的统计数据 */
+export function httpUserSelfStats() {
+  return appRequest<IHttpUserSelfStats>({
+    url: '/api/app/user/stats',
   })
 }
 

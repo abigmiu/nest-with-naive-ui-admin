@@ -46,7 +46,7 @@ axiosInstance.interceptors.response.use(
       }
 
       return Promise.reject(response.data);
-      
+
     }
 
     const { data } = response
@@ -140,5 +140,9 @@ export async function request<T = any>(config: AxiosRequestConfig): Promise<ApiR
    *  then和catch里面返回的数据必须加as const，否则调用方无法推断出类型
    * */
   return axiosInstance.request(config)
-    
+
+}
+
+export async function appRequest<T = any>(config: AxiosRequestConfig): Promise<T> {
+  return axiosInstance.request(config)
 }

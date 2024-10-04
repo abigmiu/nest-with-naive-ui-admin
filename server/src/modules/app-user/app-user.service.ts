@@ -2,7 +2,7 @@ import { PrismaService } from '@/app/depend/prisma/prisma.service';
 import {  BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { AppLoginRequestDto, AppRegisterRequestDto } from './dto/request.dto';
 import { APP_USER_NOT_EXIST } from '@/constant/response-code';
-import { AppLoginResponseDto, AppRegisterResponseDto } from './dto/response.dto';
+import { AppLoginResponseDto, AppRegisterResponseDto, AppUserStatsResponseDto } from './dto/response.dto';
 import { Prisma } from '@prisma/client';
 import { generateRandomString } from '@/utils';
 import { v4 } from 'uuid';
@@ -44,6 +44,7 @@ export class AppUserService {
         return res;
     }
 
+    /** 手机密码登录 */
     async phonePasswordRegister(data: Pick<AppRegisterRequestDto, 'phone' | 'password'>) {
         const exitPhone = await this.prismaService.appUser.findFirst({
             where: {
@@ -73,5 +74,25 @@ export class AppUserService {
         return this.jwtService.sign({
             userId: appUserId
         });
+    }
+
+    /** 获取点赞、朋友熟等数据 */
+    async getUserStats(userId: number) {
+        const foundData = await this.prismaService.appUser.findFirst({
+            where: {
+                id: userId
+            },
+            select: {
+                likeCount: true,
+                fansCount: true,
+                followCount: true,
+                friendCount: true,
+            }
+        });
+        if (!foundData) {
+            throw new BadRequestException('用户不存在');
+        }
+
+        return new AppUserStatsResponseDto(foundData);
     }
 }

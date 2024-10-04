@@ -2,6 +2,7 @@ import { SEX_TYPE } from "@/constant/business";
 import { ApiProperty } from "@nestjs/swagger";
 import { Exclude, Expose } from "class-transformer";
 
+/** app 登录响应 */
 @Exclude()
 export class AppLoginResponseDto {
     constructor(data: Partial<AppLoginResponseDto>) {
@@ -65,6 +66,7 @@ export class AppLoginResponseDto {
     fansCount: number;
 }
 
+/** app 注册响应 */
 @Exclude()
 export class AppRegisterResponseDto {
     constructor(data: Partial<AppRegisterResponseDto>) {
@@ -126,4 +128,30 @@ export class AppRegisterResponseDto {
     @Expose()
     @ApiProperty({ title: '粉丝数' })
     fansCount: number;
+}
+
+
+/** app 用户 点赞，粉丝， 朋友等数据 */
+@Exclude()
+export class AppUserStatsResponseDto {
+    constructor(data: Partial<AppUserStatsResponseDto>) {
+        Object.assign(this, data);
+    }
+
+    @Expose()
+    @ApiProperty({title: '获赞数'})
+    likeCount: number;
+
+    @Expose()
+    @ApiProperty({title: '粉丝数'})
+    fansCount: number;
+
+    @Expose()
+    @ApiProperty({title: '关注数'})
+    followCount: number;
+
+    @Expose()
+    @ApiProperty({title: '朋友数'})
+    friendCount: number;
+
 }

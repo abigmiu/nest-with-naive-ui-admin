@@ -30,6 +30,7 @@
     "libarchive-wasm": "^1.1.0",
     "mockjs": "^1.1.0",
     "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^4.0.2",
     "vue": "3.4.21",
     "vue-router": "4.3.0"
   },
