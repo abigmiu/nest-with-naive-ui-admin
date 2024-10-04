@@ -41,7 +41,7 @@
                   <p class="name">{{ userInfo.nickname }}</p>
                   <div class="number mb1r">
                     <span class="mr1r" v-if="userinfo.is_private">私密账号</span>
-                    <span>抖音号：{{ _getUserDouyinId({ author: userinfo }) }}</span>
+                    <span>抖音号：{{ userInfo.account }}</span>
                     <img src="../../assets/img/icon/me/qrcode-gray.png" alt="" @click.stop="$nav('/me/my-card')" />
                   </div>
                 </div>
@@ -74,7 +74,7 @@
                   <span>点击添加介绍，让大家认识你...</span>
                   <img src="../../assets/img/icon/me/write-gray.png" alt="" />
                 </template>
-                <div v-else class="text" v-html="userinfo.signature"></div>
+                <div v-else class="text">{{ userInfo.intro || '暂无个性签名' }}</div>
               </div>
               <div class="more" @click="$nav('/me/edit-userinfo')">
                 <div class="age item" v-if="userinfo.user_age !== -1">

@@ -28,6 +28,13 @@ const config: IConfig = {
     fileStaticUrl: '/static/',
     fileStoragePath: 'upload',
     fileStaticUrlDomain: 'http://naive-admin-static.deffun.top',
+    qiniu: {
+        accessKey: process.env.QINIU_ACCESS_KEY,
+        secretKey: process.env.QINIU_SECRET_KEY,
+        bucket: process.env.QINIU_BUCKET,
+        uploadUrl: 'https://upload-z2.qiniup.com',
+        accessUrl: 'http://naive-short-admin.deffun.top'
+    }
 };
 
 export default config;

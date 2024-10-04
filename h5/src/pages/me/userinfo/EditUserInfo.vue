@@ -16,24 +16,24 @@
         </div>
         <span>点击更换头像</span>
       </div>
-      <div class="row" @click="nav('/me/edit-userinfo-item', { type: 1 })">
+      <div class="row" @click="nav('/me/edit-userinfo-item', { type: 'nickname' })">
         <div class="left">名字</div>
         <div class="right">
-          <span>{{ isEmpty(store.userinfo.nickname) }}</span>
+          <span>{{ userStore.userInfo.nickname }}</span>
           <dy-back scale=".8" direction="right"></dy-back>
         </div>
       </div>
-      <div class="row" @click="nav('/me/edit-userinfo-item', { type: 2 })">
+      <div class="row" @click="nav('/me/edit-userinfo-item', { type: 'account' })">
         <div class="left">抖音号</div>
         <div class="right">
-          <span>{{ isEmpty(_getUserDouyinId({ author: store.userinfo })) }}</span>
+          <span>{{ userStore.userInfo.account }}</span>
           <dy-back scale=".8" direction="right"></dy-back>
         </div>
       </div>
-      <div class="row" @click="nav('/me/edit-userinfo-item', { type: 3 })">
+      <div class="row" @click="nav('/me/edit-userinfo-item', { type: 'desc' })">
         <div class="left">简介</div>
         <div class="right">
-          <span>{{ isEmpty(store.userinfo.signature) }}</span>
+          <span>{{ isEmpty(userStore.userInfo.intro) }}</span>
           <dy-back scale=".8" direction="right"></dy-back>
         </div>
       </div>
@@ -99,11 +99,13 @@ import {
 } from '@/utils'
 import { computed, reactive } from 'vue'
 import { useNav } from '@/utils/hooks/useNav'
+import { useUserStore } from '@/store/user'
 
 defineOptions({
   name: 'EditUserInfo'
 })
 const store = useBaseStore()
+const userStore = useUserStore();
 const nav = useNav()
 const data = reactive({
   sexList: [

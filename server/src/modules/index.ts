@@ -1,3 +1,4 @@
+import { AppUploadModule } from './app-upload/app-upload.module';
 import { AppUserModule } from './app-user/app-user.module';
 import { ArticleModule } from './article/article.module';
 import { AuthModule } from './auth/auth.module';
@@ -14,6 +15,7 @@ import { UserModule } from './user/user.module';
 
 const businessModules = [
     AppUserModule,
+    AppUploadModule,
 
     AuthModule,
     UserVideoModule,

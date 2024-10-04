@@ -1,8 +1,15 @@
 import { httpUserSelfStats, type IHttpUserSelfStats } from "@/api/user";
 import { defineStore } from "pinia";
 
+export interface IUserInfo {
+    nickname: string;
+    account: string;
+    token: string;
+    intro: string;
+}
+
 interface IState {
-    userInfo: null | Record<string, any>;
+    userInfo: null | IUserInfo;
     stats: IHttpUserSelfStats
 }
 
@@ -12,7 +19,7 @@ export const useUserStore = defineStore('user-store', {
         return {
             userInfo: null,
             stats: {
-                lickCount: 0,
+                likeCount: 0,
                 fansCount: 0,
                 followCount: 0,
                 friendCount: 0,
@@ -20,7 +27,7 @@ export const useUserStore = defineStore('user-store', {
         }
     },
     actions: {
-        setUserInfo(data: Record<string, any>) {
+        setUserInfo(data: IUserInfo) {
             this.userInfo = data;
             if (data.token) {
                 localStorage.setItem('token', data.token);

@@ -14,6 +14,12 @@ export interface IHttpUserSelfStats {
   friendCount: number;
 }
 
+export interface IHttpUpdateUserInfo {
+  nickname?: string;
+  account?: string;
+  intro?: string;
+}
+
 /** 登录 */
 export function httpPhonePasswordLogin(data: IHttpPhonePasswordLoginReq) {
   return appRequest({
@@ -29,6 +35,15 @@ export function httpUserSelfStats() {
     url: '/api/app/user/stats',
   })
 }
+
+/** 更新用户信息 */
+export function httpUpdateUserInfo(data: IHttpUpdateUserInfo) {
+  return appRequest({
+    url: '/api/app/user/update-info',
+    method: 'POST',
+    data,
+  })
+} 
 
 export function userinfo(params?: any, data?: any) {
   return request({ url: '/user/userinfo', method: 'get', params, data })

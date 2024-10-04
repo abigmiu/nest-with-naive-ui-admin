@@ -49,4 +49,12 @@ export interface IAppConfig {
   fileStoragePath: string;
   fileStaticUrl: string;
   fileStaticUrlDomain: string;
+
+  qiniu: {
+    accessKey: string;
+    secretKey: string;
+    bucket: string;
+    uploadUrl: string;
+    accessUrl: string;
+  }
 }

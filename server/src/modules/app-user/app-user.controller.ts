@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AppUserService } from './app-user.service';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AppLoginRequestDto, AppRegisterRequestDto } from './dto/request.dto';
+import { AppLoginRequestDto, AppRegisterRequestDto, UpdateUserInfoRequestDto } from './dto/request.dto';
 import { AppLoginResponseDto, AppRegisterResponseDto, AppUserStatsResponseDto } from './dto/response.dto';
 import { Public } from '@/decorator/public.decorator';
 import { UserId } from '@/decorator/user.decorator';
@@ -33,5 +33,12 @@ export class AppUserController {
     @ApiResponse({ status: 200, type: AppUserStatsResponseDto})
     getAppUserStats(@UserId() userId: number) {
         return this.appUserService.getUserStats(userId);
+    }
+
+    @ApiOperation({ summary: '更新用户信息' })
+    @Post('update-info')
+    @ApiResponse({ status: 200 })
+    updateAppUserInfo(@UserId() userId: number, @Body() dto: UpdateUserInfoRequestDto){
+        return this.appUserService.updateUserInfo(userId, dto);
     }
 }

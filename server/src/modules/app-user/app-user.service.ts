@@ -1,6 +1,6 @@
 import { PrismaService } from '@/app/depend/prisma/prisma.service';
 import {  BadRequestException, HttpException, Injectable } from '@nestjs/common';
-import { AppLoginRequestDto, AppRegisterRequestDto } from './dto/request.dto';
+import { AppLoginRequestDto, AppRegisterRequestDto, UpdateUserInfoRequestDto } from './dto/request.dto';
 import { APP_USER_NOT_EXIST } from '@/constant/response-code';
 import { AppLoginResponseDto, AppRegisterResponseDto, AppUserStatsResponseDto } from './dto/response.dto';
 import { Prisma } from '@prisma/client';
@@ -94,5 +94,21 @@ export class AppUserService {
         }
 
         return new AppUserStatsResponseDto(foundData);
+    }
+
+    /** 更新用户信息 */
+    async updateUserInfo(userId: number, dto: UpdateUserInfoRequestDto) {
+        const updateData: Prisma.AppUserUpdateArgs['data'] = {};
+        if (dto.nickname) {
+            updateData.nickname = dto.nickname.trim();
+        }
+        
+        await this.prismaService.appUser.update({
+            where: {
+                id: userId
+            },
+            data: updateData,
+        });
+        
     }
 }
